@@ -8,5 +8,5 @@ app.get('/', (req, res) => {
 
 const PORT = 3000
 app.listen(PORT, () => {
-  console.log(`Server is up and running at https://localhost:${PORT}.`);
+  console.log(`Server is up and running at http://localhost:${PORT}.`);
 });

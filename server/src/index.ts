@@ -1,10 +1,8 @@
 import Express from "express";
-import morgan from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
 
 const app = Express();
-app.use(morgan("combined"));
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -20,6 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/register", (req, res) => {
+  console.log(`Your user "${req.body.username}" was successfully registered`);
   res.send({
     message: `Your user "${req.body.username}" was successfully registered`,
   });

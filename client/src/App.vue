@@ -1,6 +1,6 @@
 <template>
   <router-view class= ""/>
-</template>
+  </template>
 
 <script setup lang="ts">
 import AuthForm from "./components/AuthForm.vue";

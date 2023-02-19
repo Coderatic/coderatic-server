@@ -1,7 +1,8 @@
-import coderatic_sql from "../controller/config.js";
+import { coderatic_sql } from "../controller/config.js";
+import Model from "./model.js";
 import { Sequelize, DataTypes } from "sequelize";
 
-class CredentialsModel {
+class Credentials implements Model {
   schema: any;
   constructor() {
     this.schema = coderatic_sql.define("credentials", {
@@ -11,21 +12,22 @@ class CredentialsModel {
       },
       authProvider: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       authToken: {
         type: DataTypes.STRING,
         unique: true,
-        allowNull: false,
+        allowNull: true,
       },
     });
   }
-  async addTuple(
-    passwordHash: string,
-    authProvider: string = null,
-    authToken: string = null
-  ) {
+  async insert(credInfo: {
+    passwordHash: string;
+    authProvider?: string;
+    authToken?: string;
+  }) {
     try {
+      const { passwordHash, authProvider, authToken } = credInfo;
       const newCreds = await this.schema.create({
         passwordHash,
         authProvider,
@@ -36,7 +38,8 @@ class CredentialsModel {
       console.error("Error adding new credentials:", error);
     }
   }
-  async deleteSchema() {
+
+  async truncate() {
     try {
       await this.schema.destroy({ where: {} });
       console.log("Credentials table deleted successfully");
@@ -46,4 +49,4 @@ class CredentialsModel {
   }
 }
 
-export default CredentialsModel;
+export default Credentials;

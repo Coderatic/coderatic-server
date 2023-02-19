@@ -14,5 +14,4 @@ async function syncDatabase() {
   }
 }
 
-export default coderatic_sql;
-module.exports = syncDatabase;
+export { coderatic_sql, syncDatabase };

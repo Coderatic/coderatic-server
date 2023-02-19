@@ -1,26 +1,30 @@
 import app from "../controller/app.js";
-import UserModel from "../models/user.js";
-import CredentialsModel from "../models/credentials.js";
+import User from "../models/user.js";
+import Credentials from "../models/credentials.js";
+import { syncDatabase } from "../controller/config.js";
 
-let userTable = new UserModel();
-let credTable = new CredentialsModel();
+const createAuthTables = () => {
+  let userTable = new User();
+  let credTable = new Credentials();
+  syncDatabase();
+  return { userTable, credTable };
+};
 
-const authRoute = () => {
-  app.post("/register", (req, res) => {
-    const { username, email, password } = req.body;
+const regEndPoint = async (userTable: User, credTable: Credentials) => {
+  app.post("/register", async (req, res) => {
+    const { uName, email, password } = req.body;
     try {
-      userTable.addTuple(username, email);
-      credTable.addTuple(password);
+      await userTable.insert({ userName: uName, email: email });
+      await credTable.insert({ passwordHash: password });
       res.send({
         message: `You have successfuly been registered`,
       });
     } catch (err) {
       res.send({
-        message: `The username or email already exists`,
+        message: err,
       });
     }
   });
 };
 
-export default authRoute;
-
+export { regEndPoint, createAuthTables };

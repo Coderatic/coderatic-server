@@ -1,10 +1,11 @@
-import coderatic_sql from "../controller/config.js";
-import { Sequelize, DataTypes } from "sequelize";
+import { coderatic_sql } from "../controller/config.js";
+import Model from "./model.js";
+import { DataTypes, Op } from "sequelize";
 
-class UserModel {
+class User implements Model {
   schema: any;
   constructor() {
-    this.schema = coderatic_sql.define("User", {
+    this.schema = coderatic_sql.define("user", {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -23,15 +24,26 @@ class UserModel {
     });
   }
 
-  async addTuple(userName: string, email: string) {
+  async insert(userInfo: { userName: string; email: string }) {
     try {
-      const newUser = await this.schema.create({ userName, email });
+      const { userName: uName, email: email } = userInfo;
+      const existingUser = await this.schema.findOne({
+        where: {
+          [Op.or]: [{ userName: uName }, { email: email }],
+        },
+      });
+      if (existingUser) {
+        throw Error("User already exists");
+      }
+      const newUser = await this.schema.create({ userName: uName, email });
       console.log("New user created:", newUser.toJSON());
-    } catch (error) {
-      console.error("Error creating new user:", error);
+    } catch (err) {
+      console.error("Error creating new user:", err);
+      throw err;
     }
   }
-  async deleteSchema() {
+
+  async truncate() {
     try {
       await this.schema.destroy({ where: {} });
       console.log("Users table deleted successfully");
@@ -41,4 +53,4 @@ class UserModel {
   }
 }
 
-export default UserModel;
+export default User;

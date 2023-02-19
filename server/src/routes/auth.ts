@@ -12,16 +12,20 @@ const createAuthTables = () => {
 
 const regEndPoint = async (userTable: User, credTable: Credentials) => {
   app.post("/register", async (req, res) => {
-    const { uName, email, password } = req.body;
+    const { username, email, password } = req.body;
     try {
-      await userTable.insert({ userName: uName, email: email });
+      await userTable.insert({
+        userName: username,
+        email: email,
+      });
       await credTable.insert({ passwordHash: password });
-      res.send({
+      res.status(200).json({
         message: `You have successfuly been registered`,
       });
+      syncDatabase();
     } catch (err) {
-      res.send({
-        message: err,
+      res.status(500).json({
+        message: err.message,
       });
     }
   });

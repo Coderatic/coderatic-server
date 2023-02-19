@@ -1,7 +1,7 @@
 import Api from "./Api";
 
 export default {
-  register(credentials: any) {
+  register(credentials: { username: string; email: string; password: string }) {
     console.log(credentials);
     return Api().post("register", credentials);
   },

@@ -1,13 +1,13 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import AuthForm from "../components/AuthForm.vue";
+import Register from "../components/Register.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
     {
-      path: "/auth",
-      name: "Authorization Form",
-      component: AuthForm,
+      path: "/register",
+      name: "Registeration Page",
+      component: Register,
     },
   ],
 });

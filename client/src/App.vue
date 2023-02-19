@@ -1,9 +1,9 @@
 <template>
-  <router-view/>
+  <router-view />
 </template>
 
 <script setup lang="ts">
-import AuthForm from "./components/AuthForm.vue";
+import Register from "./components/Register.vue";
 </script>
 
 <style scoped>

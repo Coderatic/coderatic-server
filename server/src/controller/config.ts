@@ -1,17 +1,13 @@
-import { Sequelize } from "sequelize";
+import mongoose from "mongoose";
 
-const coderatic_sql = new Sequelize("coderatic", "saada", "YiJ5#Tj&7SqK6AEz", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const password = encodeURIComponent("nMNlOLixz5EMMnkD");
+const uri = `mongodb+srv://saada:${password}@coderatic.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
 
-async function syncDatabase() {
-  try {
-    await coderatic_sql.sync();
-    console.log("Database synchronized successfully");
-  } catch (error) {
-    console.error("Error synchronizing database:", error);
-  }
-}
-
-export { coderatic_sql, syncDatabase };
+mongoose
+  .connect(uri)
+  .then(() => {
+    console.log("Database connection successful");
+  })
+  .catch((err) => {
+    console.log(`Error connecting to database ${err}`);
+  });

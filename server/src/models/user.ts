@@ -1,56 +1,72 @@
-import { coderatic_sql } from "../controller/config.js";
-import Model from "./model.js";
-import { DataTypes, Op } from "sequelize";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import { MongoCursorInUseError } from "mongodb";
 
-class User implements Model {
-  schema: any;
-  constructor() {
-    this.schema = coderatic_sql.define("user", {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      userName: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-    });
-  }
-
-  async insert(userInfo: { userName: string; email: string }) {
-    try {
-      const { userName: uName, email: email } = userInfo;
-      const existingUser = await this.schema.findOne({
-        where: {
-          [Op.or]: [{ userName: uName }, { email: email }],
-        },
-      });
-      if (existingUser) {
-        throw Error("User already exists");
-      }
-      const newUser = await this.schema.create({ userName: uName, email });
-      console.log("New user created:", newUser.toJSON());
-    } catch (err) {
-      console.error("Error creating new user:", err);
-      throw err;
-    }
-  }
-
-  async truncate() {
-    try {
-      await this.schema.destroy({ where: {} });
-      console.log("Users table deleted successfully");
-    } catch (error) {
-      console.error("Error deleting users table:", error);
-    }
-  }
+interface IUser extends mongoose.Document {
+  username: string;
+  email: string;
+  hashed_password: string;
+  first_name?: string;
+  last_name?: string;
+  password: string;
+  hashPassword: (plainText: string) => string;
+  authenticate: (plainText: string) => Promise<boolean>;
+  virtual();
 }
 
-export default User;
+const UserSchema = new mongoose.Schema<IUser>(
+  {
+    first_name: String,
+    last_name: String,
+    username: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      max: 32,
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+      max: 32,
+    },
+    hashed_password: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+UserSchema.virtual("password")
+  .set(async function (this: IUser, plainText: string) {
+    this.hashed_password = await this.hashPassword(plainText);
+  })
+  .get(function () {
+    return this.hashed_password;
+  });
+
+UserSchema.pre("save", function (this: IUser, next) {
+  if (this.isModified("hashed_password"))
+    this.hashed_password = bcrypt.hashSync(this.hashed_password, 10);
+  next();
+});
+
+UserSchema.methods = {
+  hashPassword: async function (plainText: string) {
+    // Generate a salt
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+
+    // Hash the password with the salt
+    return await bcrypt.hash(plainText, salt);
+  },
+  authenticate: async function (plainText: string) {
+    return bcrypt.compare(plainText, this.hashed_password);
+  },
+};
+
+export default mongoose.model<IUser>("User", UserSchema);

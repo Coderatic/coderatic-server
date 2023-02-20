@@ -1,28 +1,28 @@
 import app from "../controller/app.js";
 import User from "../models/user.js";
-import Credentials from "../models/credentials.js";
-import { syncDatabase } from "../controller/config.js";
+import "../controller/config.js";
 
-const createAuthTables = () => {
-  let userTable = new User();
-  let credTable = new Credentials();
-  syncDatabase();
-  return { userTable, credTable };
-};
-
-const regEndPoint = async (userTable: User, credTable: Credentials) => {
+const regEndPoint = async () => {
   app.post("/register", async (req, res) => {
-    const { username, email, password } = req.body;
+    const {
+      username: _username,
+      email: _email,
+      password: _password,
+    } = req.body;
     try {
-      await userTable.insert({
-        userName: username,
-        email: email,
+      if (await User.exists({ username: _username }))
+        throw new Error("This username is taken");
+      if (await User.exists({ email: _email }))
+        throw new Error("This email is taken");
+      
+      await User.create({
+        username: _username,
+        email: _email,
+        hashed_password: _password,
       });
-      await credTable.insert({ passwordHash: password });
       res.status(200).json({
         message: `You have successfuly been registered`,
       });
-      syncDatabase();
     } catch (err) {
       res.status(500).json({
         message: err.message,
@@ -31,4 +31,4 @@ const regEndPoint = async (userTable: User, credTable: Credentials) => {
   });
 };
 
-export { regEndPoint, createAuthTables };
+export default regEndPoint;

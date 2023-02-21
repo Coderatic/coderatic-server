@@ -200,6 +200,6 @@ export default {
   transition-duration: 1s;
 }
 .curve{
-  border-radius: 30% 70% 64% 36% / 34% 47% 53% 66%  ;
+  border-radius: 83% 17% 82% 18% / 19% 80% 20% 81%   ;
 }
 </style>

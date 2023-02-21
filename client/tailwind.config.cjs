@@ -11,11 +11,11 @@ module.exports = {
         'accent-blue':'#1dcdfe',
         'accent-lightgreen':'#34f5c5',
         'accent-darkgreen': '#21d0b2',
-        'background-grey':'#282a36',
+        'background-grey':'#151515',
         'background-night':'#0a0a0a',
-        'accent-cream':'#6272a4',
-        'accent-s-yellow':'#f1fa8c',
-        'accent-m-yellow':'#f1fa52'
+        'accent-cream':'#fbfcd4',
+        'accent-s-yellow':'#ffdd02',
+        'accent-m-yellow':'#fac402'
         
   
       }

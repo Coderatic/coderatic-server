@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "jquery": "^3.6.3"
+    
   },
   "devDependencies": {
     "@types/vue-router": "^2.0.0",

@@ -1,7 +1,7 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import { regEndPoint, createAuthTables } from "../routes/auth.js";
+import regEndPoint from "../routes/auth.js";
 
 const app = Express();
 app.use(cors());
@@ -14,8 +14,7 @@ app.use(bodyParser.json());
 
 export default app;
 
-let authTables = createAuthTables();
-regEndPoint(authTables.userTable, authTables.credTable);
+regEndPoint();
 
 const PORT = 8081;
 app.listen(PORT, () => {

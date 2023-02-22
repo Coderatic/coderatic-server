@@ -96,10 +96,15 @@
               >
             </p>
           </div>
+          <div class="flex items-baseline my-2 px-4 w-[100%]">
+            <p class="text-white bg-red-700 font-bold font-montserrat text-sm w-[100%] text-center" v-if="!passwordsMatch">
+              Passwords donot match !
+            </p>
+          </div>
           <div class="w-[100%] text-center">
             <input
               id="reg-btn"
-              class="text-black bg-accent-s-yellow border-none rounded-3xl shadow-lg my-8 px-4 py-1 hover:bg-accent-m-yellow w-[50%] font-montserrat"
+              class="text-black bg-accent-s-yellow border-none rounded-3xl shadow-lg my-8 px-4 py-1 greyedout hover:bg-accent-m-yellow w-[50%] font-montserrat"
               type="submit"
               value="Register"
               @click="registerUser"
@@ -130,7 +135,12 @@ export default {
   },
   computed: {
     passwordsMatch() {
-      return this.password === this.confirm_password;
+      
+      if( this.password !== "" && this.confirm_password !== "" && this.password === this.confirm_password){
+        $("#reg-btn").removeClass("greyedout");
+        return true;
+      }
+      return false;
     },
   },
   mounted() {
@@ -219,5 +229,8 @@ export default {
 
 #reg-btn:hover {
   transform: translateY(-3px) scale(102%);
+}
+.greyedout{
+  background-color: grey !important;
 }
 </style>

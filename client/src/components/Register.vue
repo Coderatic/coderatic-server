@@ -6,7 +6,11 @@
       <div
         class="h-[100%] w-[100%] collapse lg:visible xl:visible flex flex-col justify-center items-center bg-accent-s-yellow curve-none"
       >
-        <img src="../assets/logo2.png" class="w-[200px] pb-8" alt="Logo" />
+      <h1 class="font-montserrat text-black font-semibold text-5xl mb-[10rem]">
+        CODE<span class="font-montserrat text-purple-700 font-black"
+          >RATIC</span
+        >
+      </h1>
         <p class="font-montserrat font-bold fonttext-md">
           Already A member?
           <a class="text-purple-900 hover:text-purple-300" href=""> Log In</a>
@@ -97,7 +101,10 @@
             </p>
           </div>
           <div class="flex items-baseline my-2 px-4 w-[100%]">
-            <p class="text-white bg-red-700 font-bold font-montserrat text-sm w-[100%] text-center" v-if="!passwordsMatch">
+            <p
+              class="text-white bg-red-700 font-bold font-montserrat text-sm w-[100%] text-center"
+              v-if="!passwordsMatch"
+            >
               Passwords donot match !
             </p>
           </div>
@@ -135,8 +142,7 @@ export default {
   },
   computed: {
     passwordsMatch() {
-      
-      if( this.password !== "" && this.confirm_password !== "" && this.password === this.confirm_password){
+      if (this.password === this.confirm_password) {
         $("#reg-btn").removeClass("greyedout");
         return true;
       }
@@ -230,7 +236,7 @@ export default {
 #reg-btn:hover {
   transform: translateY(-3px) scale(102%);
 }
-.greyedout{
+.greyedout {
   background-color: grey !important;
 }
 </style>

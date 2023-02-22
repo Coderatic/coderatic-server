@@ -3,13 +3,18 @@
     class="w-screen h-screen flex justify-center items-center bg-background-grey overflow-x-hidden"
   >
     <div class="w-0 h-[100%] lg:w-[50%] xl:w-[50%]">
-      <div class="h-[100%] w-[100%] collapse lg:visible xl:visible flex flex-col justify-center items-center bg-accent-s-yellow curve-none">
-        <img src="../assets/logo2.png" class ="w-[200px] pb-8" alt="Logo">
-        <p class="font-mono font-bold ">Already A member? <a  class="text-purple-900 hover:text-purple-300" href=""> Log In</a> instead.</p>
+      <div
+        class="h-[100%] w-[100%] collapse lg:visible xl:visible flex flex-col justify-center items-center bg-accent-s-yellow curve-none"
+      >
+        <img src="../assets/logo2.png" class="w-[200px] pb-8" alt="Logo" />
+        <p class="font-mono font-bold">
+          Already A member?
+          <a class="text-purple-900 hover:text-purple-300" href=""> Log In</a>
+          instead.
+        </p>
       </div>
-
     </div>
-    <div class="w-[100%] lg:w-[50%] xl:w-[50%]   flex justify-center">
+    <div class="w-[100%] lg:w-[50%] xl:w-[50%] flex justify-center">
       <form
         id="register-form"
         class="bg-accent-darkblue border-2 border-accent-cream rounded-xl bg-accent-cream hide"
@@ -124,11 +129,9 @@ export default {
   mounted() {
     setTimeout(() => {
       $(".hide").addClass("fadeup");
-
     }, 100);
-      setTimeout(() => {
+    setTimeout(() => {
       $(".curve-none").addClass("curve");
-
     }, 500);
   },
   methods: {
@@ -195,11 +198,11 @@ export default {
 
   opacity: 1;
 }
-.curve-none{
+.curve-none {
   border-radius: 0;
   transition-duration: 1s;
 }
-.curve{
-  border-radius: 67% 33% 55% 45% / 34% 19% 81% 66% ;
+.curve {
+  border-radius: 67% 33% 55% 45% / 34% 19% 81% 66%;
 }
 </style>

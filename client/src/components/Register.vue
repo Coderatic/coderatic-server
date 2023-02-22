@@ -202,12 +202,7 @@ export default {
   border-radius: 0;
   transition-duration: 1s;
 }
-<<<<<<< HEAD
-.curve {
-  border-radius: 67% 33% 55% 45% / 34% 19% 81% 66%;
-=======
 .curve{
   border-radius: 83% 17% 82% 18% / 19% 80% 20% 81%   ;
->>>>>>> f9ea7e91fc963f42c0baf05a56392738b9aadca8
 }
 </style>

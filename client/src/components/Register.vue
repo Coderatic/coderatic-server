@@ -5,7 +5,7 @@
     <div class="w-0 h-[100%] lg:w-[50%] xl:w-[50%]">
       <div class="h-[100%] w-[100%] collapse lg:visible xl:visible flex flex-col justify-center items-center bg-accent-s-yellow curve-none">
         <img src="../assets/logo2.png" class ="w-[200px] pb-8" alt="Logo">
-        <p class="font-mono font-bold ">Already A member? <a  class="text-purple-900 hover:text-purple-300" href=""> Log In</a> instead.</p>
+        <p class="font-montserrat font-bold fonttext-md   ">Already A member? <a  class="text-purple-900 hover:text-purple-300" href=""> Log In</a> instead.</p>
       </div>
 
     </div>
@@ -18,7 +18,7 @@
           class="flex flex-col justify-between items-center px-1 h-[100%] w-[100%]"
         >
           <h1
-            class="text-black text-4xl font-mono py-10 font-bold"
+            class="text-black text-4xl font-bold font-montserrat py-10  "
             id="title-register"
           >
             REGISTER
@@ -27,62 +27,62 @@
           <div class="w-[100%] px-5">
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="text"
                 name="fname"
                 v-model="fname"
-                placeholder="FIRST NAME"
+                placeholder="First Name"
               />
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="text"
                 name="lname"
                 v-model="lname"
-                placeholder="LAST NAME"
+                placeholder="Last Name"
               />
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="text"
                 name="username"
                 v-model="username"
-                placeholder="USERNAME"
+                placeholder="Username"
               />
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="email"
                 name="email"
                 v-model="email"
-                placeholder="EMAIL"
+                placeholder="E-mail"
               />
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="password"
                 name="password"
                 v-model="password"
-                placeholder="PASSWORD"
+                placeholder="Password"
               />
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat  "
                 type="password"
                 name="confirm-password"
                 v-model="confirm_password"
-                placeholder="CONFIRM PASSWORD"
+                placeholder="Confirm Password"
               />
             </div>
           </div>
           <div class="flex items-baseline my-2 px-4">
             <input type="checkbox" class="mx-2 accent-accent-m-yellow" />
-            <p class="text-black font-mono font-bold">
+            <p class="text-black font-bold font-montserrat text-sm    ">
               By signing up, I agree with the<a
                 class="text-purple-900 hover:text-purple-300"
                 href="www.google.com"
@@ -93,7 +93,8 @@
           </div>
           <div class="w-[100%] text-center">
             <input
-              class="text-black bg-accent-s-yellow border-none rounded my-8 px-4 py-1 font-bold hover:bg-accent-m-yellow w-[50%] font-mono"
+            id="reg-btn"
+              class="text-black bg-accent-s-yellow border-none rounded-3xl shadow-lg my-8 px-4 py-1  hover:bg-accent-m-yellow w-[50%] font-montserrat  "
               type="submit"
               value="Register"
               @click="registerUser"
@@ -197,9 +198,17 @@ export default {
 }
 .curve-none{
   border-radius: 0;
+  border-radius: 32% 68% 32% 68% / 61% 37% 63% 39% ;
   transition-duration: 1s;
 }
 .curve{
   border-radius: 83% 17% 82% 18% / 19% 80% 20% 81%   ;
+}
+#reg-btn{
+  transition-duration: 0.2s;
+}
+
+#reg-btn:hover{
+  transform: translateY(3px) scale(102%);
 }
 </style>

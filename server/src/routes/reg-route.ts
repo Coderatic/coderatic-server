@@ -2,7 +2,7 @@ import app from "../controller/app.js";
 import User from "../models/user.js";
 import "../controller/config.js";
 
-const regEndPoint = async () => {
+const regRoute = async () => {
   app.post("/register", async (req, res) => {
     const {
       username: _username,
@@ -35,4 +35,4 @@ const regEndPoint = async () => {
   });
 };
 
-export default regEndPoint;
+export default regRoute;

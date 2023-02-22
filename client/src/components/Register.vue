@@ -128,7 +128,7 @@
 
 <script lang="ts">
 import $ from "jquery";
-import { Axios, AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import regService from "../services/regService";
 export default {
   name: "RegisterPage",
@@ -171,7 +171,6 @@ export default {
           this.lname
         )
         .then((res: AxiosResponse<any, any>) => {
-          console.log(res);
           alert(res.data.message);
         })
         .catch((err: AxiosError<any>) => {

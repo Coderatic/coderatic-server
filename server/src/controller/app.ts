@@ -1,7 +1,8 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import regEndPoint from "../routes/reg-route.js";
+import regRoute from "../routes/reg-route.js";
+import authRoute from "../routes/auth-route.js";
 
 const app = Express();
 app.use(cors());
@@ -14,7 +15,8 @@ app.use(bodyParser.json());
 
 export default app;
 
-regEndPoint();
+authRoute();
+regRoute();
 
 const PORT = 8081;
 app.listen(PORT, () => {

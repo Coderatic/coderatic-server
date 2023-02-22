@@ -11,7 +11,6 @@ interface IUser extends mongoose.Document {
   password: string;
   hashPassword: (plainText: string) => string;
   authenticate: (plainText: string) => Promise<boolean>;
-  virtual();
 }
 
 const UserSchema = new mongoose.Schema<IUser>(

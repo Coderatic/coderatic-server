@@ -48,9 +48,29 @@
 </template>
 
 <script lang="ts">
-export default{
-    name: "LoginComp",
-}
+import { AxiosError, AxiosResponse } from "axios";
+import authService from "../services/authService";
+export default {
+  name: "LoginComp",
+  data() {
+    return {
+      username: "",
+      password: "",
+    };
+  },
+  methods: {
+    loginUser() {
+      authService
+        .authorize(this.username, this.password)
+        .then((res: AxiosResponse<any, any>) => {
+          alert(res.data.message);
+        })
+        .catch((err: AxiosError<any>) => {
+          alert(err.response?.data.message);
+        });
+    },
+  },
+};
 </script>
 
 <style scoped>

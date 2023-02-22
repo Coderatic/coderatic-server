@@ -7,9 +7,8 @@
         <img src="../assets/logo2.png" class ="w-[200px] pb-8" alt="Logo">
         <p class="font-montserrat font-bold fonttext-md   ">Already A member? <a  class="text-purple-900 hover:text-purple-300" href=""> Log In</a> instead.</p>
       </div>
-
     </div>
-    <div class="w-[100%] lg:w-[50%] xl:w-[50%]   flex justify-center">
+    <div class="w-[100%] lg:w-[50%] xl:w-[50%] flex justify-center">
       <form
         id="register-form"
         class="bg-accent-darkblue border-2 border-accent-cream rounded-xl bg-accent-cream hide"
@@ -125,11 +124,9 @@ export default {
   mounted() {
     setTimeout(() => {
       $(".hide").addClass("fadeup");
-
     }, 100);
-      setTimeout(() => {
+    setTimeout(() => {
       $(".curve-none").addClass("curve");
-
     }, 500);
   },
   methods: {
@@ -196,7 +193,7 @@ export default {
 
   opacity: 1;
 }
-.curve-none{
+.curve-none {
   border-radius: 0;
   border-radius: 32% 68% 32% 68% / 61% 37% 63% 39% ;
   transition-duration: 1s;

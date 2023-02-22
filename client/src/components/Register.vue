@@ -148,6 +148,7 @@ export default {
         $("#reg-btn").removeClass("greyedout");
         return true;
       }
+      $("#reg-btn").addClass("greyedout");
       return false;
     },
   },

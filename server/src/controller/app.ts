@@ -1,7 +1,7 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import regEndPoint from "../routes/auth.js";
+import regEndPoint from "../routes/reg-route.js";
 
 const app = Express();
 app.use(cors());

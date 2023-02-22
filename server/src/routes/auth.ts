@@ -8,6 +8,8 @@ const regEndPoint = async () => {
       username: _username,
       email: _email,
       password: _password,
+      fname: _fname,
+      lname: _lname,
     } = req.body;
     try {
       if (await User.exists({ username: _username }))
@@ -16,6 +18,8 @@ const regEndPoint = async () => {
         throw new Error("This email is taken");
       
       await User.create({
+        first_name: _fname,
+        last_name: _lname,
         username: _username,
         email: _email,
         hashed_password: _password,

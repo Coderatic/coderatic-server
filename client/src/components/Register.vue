@@ -6,11 +6,13 @@
       <div
         class="h-[100%] w-[100%] collapse lg:visible xl:visible flex flex-col justify-center items-center bg-accent-s-yellow curve-none"
       >
-      <h1 class="font-montserrat text-black font-semibold text-5xl mb-[10rem]">
-        CODE<span class="font-montserrat text-purple-700 font-black"
-          >RATIC</span
+        <h1
+          class="font-montserrat text-black font-semibold text-5xl mb-[10rem]"
         >
-      </h1>
+          CODE<span class="font-montserrat text-purple-700 font-black"
+            >RATIC</span
+          >
+        </h1>
         <p class="font-montserrat font-bold fonttext-md">
           Already A member?
           <a class="text-purple-900 hover:text-purple-300" href=""> Log In</a>
@@ -160,11 +162,13 @@ export default {
   methods: {
     registerUser() {
       regService
-        .register({
-          username: this.username,
-          email: this.email,
-          password: this.password,
-        })
+        .register(
+          this.username,
+          this.email,
+          this.password,
+          this.fname,
+          this.lname
+        )
         .then((res: AxiosResponse<any, any>) => {
           console.log(res);
           alert(res.data.message);

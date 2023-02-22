@@ -32,7 +32,7 @@
           <div class="w-[100%] px-5">
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="text"
                 name="fname"
                 v-model="fname"
@@ -41,7 +41,7 @@
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="text"
                 name="lname"
                 v-model="lname"
@@ -50,7 +50,7 @@
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="text"
                 name="username"
                 v-model="username"
@@ -59,7 +59,7 @@
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="email"
                 name="email"
                 v-model="email"
@@ -68,7 +68,7 @@
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="password"
                 name="password"
                 v-model="password"
@@ -77,7 +77,7 @@
             </div>
             <div class="inner-input-container">
               <input
-                class="border-2 bg-white text-black border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
+                class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-mono font-bold"
                 type="password"
                 name="confirm-password"
                 v-model="confirm_password"
@@ -202,7 +202,12 @@ export default {
   border-radius: 0;
   transition-duration: 1s;
 }
+<<<<<<< HEAD
 .curve {
   border-radius: 67% 33% 55% 45% / 34% 19% 81% 66%;
+=======
+.curve{
+  border-radius: 83% 17% 82% 18% / 19% 80% 20% 81%   ;
+>>>>>>> f9ea7e91fc963f42c0baf05a56392738b9aadca8
 }
 </style>

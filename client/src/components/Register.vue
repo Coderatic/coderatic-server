@@ -202,10 +202,10 @@ export default {
   border-radius: 83% 17% 82% 18% / 19% 80% 20% 81%   ;
 }
 #reg-btn{
-  transition-duration: 0.2s;
+  transition-duration: 0.05s;
 }
 
 #reg-btn:hover{
-  transform: translateY(3px) scale(102%);
+  transform: translateY(-3px) scale(102%);
 }
 </style>

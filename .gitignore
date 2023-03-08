@@ -2,6 +2,7 @@
 .vscode
 !.vscode/extensions.json
 .idea
+coderatic-judge
 .DS_Store
 *.suo
 *.ntvs*

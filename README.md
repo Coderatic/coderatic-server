@@ -12,7 +12,7 @@ npm install
 cd server
 npm install
 ```
-To start either the client or server (make sure you are in the correct directory):
+To start either the client or server (in the respective directory):
 ```
 npm run dev
 ```

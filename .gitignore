@@ -8,5 +8,6 @@ coderatic-judge
 *.ntvs*
 *.njsproj
 *.sln
+*.env
 *.sw?
 node_modules

@@ -15,7 +15,7 @@ const regRoute = async () => {
       if (await User.exists({ username: _username }))
         throw new Error("This username is taken");
       if (await User.exists({ email: _email }))
-        throw new Error("This email is taken");
+        throw new Error("This email has already been used to register an account");
       
       await User.create({
         first_name: _fname,

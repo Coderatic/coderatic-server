@@ -6,7 +6,7 @@ const authRoute = async () => {
   app.post("/auth", async (req, res) => {
     const { username: _username, password: _password } = req.body;
     try {
-      const authUser = User.findOne({ username: _username });
+      const authUser = await User.findOne({ username: _username });
       if (!authUser) throw new Error("Username or Password incorrect");
       //Todo: Add password hashing auth
       res.status(200).json({

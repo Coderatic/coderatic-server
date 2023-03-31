@@ -1,13 +1,13 @@
 import express from "express";
 const router = express.Router();
-const {
-  preSignup,
+import {
+  preSignUp,
   signup,
   signin,
   signout,
   forgotPassword,
   resetPassword,
-} = require("../controllers/auth-controller");
+} from "../controller/auth-controller.js";
 
 // validators
 import runValidation from "../validators/index.js";
@@ -19,7 +19,7 @@ import {
 } from "../validators/auth-validator.js";
 
 // if validation is passed, execute the code in signup and signin controllers
-router.post("/pre-signup", userSignupValidator, runValidation, preSignup);
+router.post("/pre-signup", userSignupValidator, runValidation, preSignUp);
 router.post("/signup", signup);
 router.post("/signin", userSigninValidator, runValidation, signin);
 router.get("/signout", signout);
@@ -36,4 +36,4 @@ router.put(
   resetPassword
 );
 
-module.exports = router;
+export default router;

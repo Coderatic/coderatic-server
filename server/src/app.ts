@@ -1,20 +1,21 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
 // Routes
-const authRoutes = require("./routes/auth-routes");
+import authRoutes from "./routes/auth-routes.js";
 
 const app = Express();
-const http = require("http").createServer(app);
+import http from "http";
+http.createServer(app);
 
-// db connection
+import dotenv from "dotenv";
 dotenv.config();
 
+// db connection
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uname = encodeURIComponent(process.env.DB_USERNAME);
 const dbname = encodeURIComponent(process.env.DB_NAME);

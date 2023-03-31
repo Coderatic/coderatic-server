@@ -2,7 +2,9 @@ import User from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
-const expressJwt = require("express-jwt");
+import { expressjwt as expressJwt } from "express-jwt";
+import dotenv from "dotenv";
+dotenv.config();
 
 // sendgrid
 import sgMail from "@sendgrid/mail";
@@ -10,7 +12,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const preSignUp = async (req, res) => {
   try {
-    const { _username, _email, _password, _fname, _lname } = req.body;
+    const { username: _username, email: _email, password: _password, first_name: _fname, last_name: _lname } = req.body;
 
     const user = await User.findOne({
       $or: [{ username: _username }, { email: _email }],
@@ -105,6 +107,7 @@ const signout = (req, res) => {
 
 const requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
+  algorithms: ["HS256"],
 });
 
 const authMiddleWare = (req, res, next) => {

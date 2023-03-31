@@ -1,22 +1,23 @@
-const check = require("express-validator");
+import { body } from "express-validator";
 
 const userSignupValidator = [
-  check("name").not().isEmpty().withMessage("Name is required"),
-  check("email").isEmail().withMessage("Must be a valid email address"),
-  check("password")
+  body("username").isEmpty().withMessage("Username is required"),
+  body("email").not().isEmail().withMessage("Must be a valid email address"),
+  body("password")
+    .not()
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
 ];
 
 const userSigninValidator = [
-  check("email").isEmail().withMessage("Must be a valid email address"),
-  check("password")
+  body("email").isEmail().withMessage("Must be a valid email address"),
+  body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
 ];
 
 const forgotPasswordValidator = [
-  check("email")
+  body("email")
     .not()
     .isEmpty()
     .isEmail()
@@ -24,7 +25,7 @@ const forgotPasswordValidator = [
 ];
 
 const resetPasswordValidator = [
-  check("newPassword")
+  body("newPassword")
     .not()
     .isEmpty()
     .isLength({ min: 8 })

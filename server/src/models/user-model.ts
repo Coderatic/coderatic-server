@@ -8,13 +8,9 @@ interface IUser extends Document {
   email: string;
   hashed_password: string;
   profile: string;
-  salt?: string;
   resetCode?: string;
   role: number;
-  resetPasswordLink: {
-    data: string;
-    default: string;
-  };
+  resetPasswordLink?: string;
   authenticate: (plainText: string) => boolean;
   hashPassword: (password: string) => string;
 }
@@ -48,14 +44,16 @@ const UserSchema = new mongoose.Schema<IUser>(
       type: String,
       required: true,
     },
-    salt: String,
-    resetCode: "",
+    resetCode: {
+      type: String,
+      default: "",
+    },
     role: {
       type: Number,
       default: 0,
     },
     resetPasswordLink: {
-      data: String,
+      type: String,
       default: "",
     },
   },

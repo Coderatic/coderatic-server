@@ -117,7 +117,7 @@
               type="submit"
               value="Register"
               @click="registerUser"
-              :disabled="!passwordsMatch"
+              :disabled="shouldGrayButton"
             />
           </div>
         </div>
@@ -144,11 +144,25 @@ export default {
   },
   computed: {
     passwordsMatch() {
-      if (this.password === this.confirm_password) {
-        $("#reg-btn").removeClass("greyedout");
+      return this.password === this.confirm_password;
+    },
+    fieldsValid() {
+      return (
+        this.fname !== "" &&
+        this.lname !== "" &&
+        this.username !== "" &&
+        this.email !== "" &&
+        this.password !== "" &&
+        this.confirm_password !== "" &&
+        this.passwordsMatch
+      );
+    },
+    shouldGrayButton() {
+      if (!this.fieldsValid) {
+        $("#reg-btn").addClass("greyedout");
         return true;
       }
-      $("#reg-btn").addClass("greyedout");
+      $("#reg-btn").removeClass("greyedout");
       return false;
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 lg:h-[300px] lg:w-[350px] p-[01px] rounded-md background-animate"
+    class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 h-[300px] w-[350px]  sm:w-[95%]  p-[01px] rounded-md background-animate"
   >
     <div
       class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
@@ -12,6 +12,7 @@
             class="border-[2px] border-gray-900 bg-background-grey  focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
             type="text"
             name="fname"
+            placeholder="username"
           />
         </div>
       </div>

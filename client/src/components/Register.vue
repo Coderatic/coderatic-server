@@ -117,7 +117,8 @@
               type="submit"
               value="Register"
               @click="registerUser"
-              :disabled="!passwordsMatch"
+              v-bind:disabled="!passwordsMatch"
+              
             />
           </div>
         </div>

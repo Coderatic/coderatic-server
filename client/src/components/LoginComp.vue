@@ -1,7 +1,8 @@
 <template>
   <div
-    class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 h-[300px] w-[350px]  sm:w-[95%]  p-[01px] rounded-md background-animate"
+    class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 h-[300px] w-[350px] sm:w-[95%] p-[01px] rounded-md background-animate"
   >
+  <form name="login" class="w-[100%] h-[100%]">
     <div
       class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
     >
@@ -9,7 +10,7 @@
         <label for="fname" class="text-white pl-4 font-lato">Username</label>
         <div class="px-4 w-[100%]">
           <input
-            class="border-[2px] border-gray-900 bg-background-grey  focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+            class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
             type="text"
             name="fname"
             placeholder="username"
@@ -27,30 +28,37 @@
         </div>
         <div class="px-4 w-[100%]">
           <input
-            class="border-[2px] border-gray-900 bg-background-grey  focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+            class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
             type="password"
             name="password"
+            placeholder="password"
           />
         </div>
       </div>
       <div class="px-4 my-3 w-full">
-        <a href="www.google.com">
+        <div
+          class="bg-gradient-to-r from-purple-800 w-[100%] to-red-900 p-[01px] rounded"
+        >
           <div
-            class="bg-gradient-to-r from-purple-800 w-[100%] to-red-900 p-[01px] rounded"
+            class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded"
+            type="submit"
           >
-            <div
-              class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded"
-            >
-              Log In
-            </div>
+            Log In
           </div>
-        </a>
+        </div>
       </div>
     </div>
+  </form>
   </div>
 
   <div class="lg:w-[350px]">
-    <p class="text-gray-600 font-lato my-5 text-sm">Not a member? <a class="text-purple-500" href="/#/register"> <strong> Sign Up </strong></a> instead.</p>
+    <p class="text-gray-600 font-lato my-5 text-sm">
+      Not a member?
+      <a class="text-purple-500" href="/#/register">
+        <strong> Sign Up </strong></a
+      >
+      instead.
+    </p>
   </div>
 </template>
 

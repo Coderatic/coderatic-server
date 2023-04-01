@@ -1,106 +1,78 @@
 <template>
-  <div class="h-[50%]">
-    <form
-      id="register-form"
-      class="bg-accent-darkblue border-2 border-accent-cream rounded-md bg-accent-cream hide"
+  <div
+    class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 lg:h-[300px] lg:w-[350px] p-[01px] rounded-md background-animate"
+  >
+    <div
+      class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
     >
-      <div
-        class="flex flex-col justify-between items-center px-1 h-[100%] w-[100%]"
-      >
-        <h1
-          class="text-black text-4xl font-bold font-montserrat py-10"
-          id="title-register"
-        >
-          LOGIN
-        </h1>
-
-        <div class="w-[100%] px-5">
-          <div class="inner-input-container">
-            <input
-              class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat"
-              type="text"
-              name="username"
-              placeholder="Username"
-            />
-          </div>
-
-          <div class="inner-input-container">
-            <input
-              class="border-2 bg-black text-white border-black rounded w-[100%] my-2 px-1 py-1.5 font-montserrat"
-              type="password"
-              name="password"
-              placeholder="Password"
-            />
-          </div>
-        </div>
-
-        <div class="w-[100%] text-center">
+      <div class="relative my-2">
+        <label for="fname" class="text-white pl-4 font-lato">Username</label>
+        <div class="px-4 w-[100%]">
           <input
-            id="reg-btn"
-            class="text-black bg-accent-s-yellow border-none rounded-3xl shadow-lg my-8 px-4 py-1 greyedout hover:bg-accent-m-yellow w-[50%] font-montserrat"
-            type="submit"
-            value="Login"
+            class="border-[2px] border-gray-900 bg-background-grey  focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+            type="text"
+            name="fname"
           />
         </div>
       </div>
-    </form>
+      <div class="relative my-2">
+        <div class="flex justify-between mr-4">
+          <label for="password" class="text-white pl-4 font-lato inline"
+            >Password</label
+          >
+          <a href="www.google.com" class="inline text-purple-700"
+            >Forgot password?</a
+          >
+        </div>
+        <div class="px-4 w-[100%]">
+          <input
+            class="border-[2px] border-gray-900 bg-background-grey  focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+            type="password"
+            name="password"
+          />
+        </div>
+      </div>
+      <div class="px-4 my-3 w-full">
+        <a href="www.google.com">
+          <div
+            class="bg-gradient-to-r from-purple-800 w-[100%] to-red-900 p-[01px] rounded"
+          >
+            <div
+              class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded"
+            >
+              Log In
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="lg:w-[350px]">
+    <p class="text-gray-600 font-lato my-5 text-sm">Not a member? <a class="text-purple-500" href="/#/register"> <strong> Sign Up </strong></a> instead.</p>
   </div>
 </template>
 
 <script lang="ts">
-import { AxiosError, AxiosResponse } from "axios";
-import authService from "../services/authService";
 export default {
   name: "LoginComp",
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    loginUser() {
-      authService
-        .authorize(this.username, this.password)
-        .then((res: AxiosResponse<any, any>) => {
-          alert(res.data.message);
-        })
-        .catch((err: AxiosError<any>) => {
-          alert(err.response?.data.message);
-        });
-    },
-  },
 };
 </script>
+<style>
+.background-animate {
+  background-size: 400%;
 
-<style scoped>
-@media (max-width: 576px) {
-  #register-form {
-    padding: 0vh 0;
-    width: 329px;
-    height: fit-content;
-  }
+  -webkit-animation: gradientAnimate 7s ease infinite;
+  -moz-animation: gradientAnimate 7s ease infinite;
+  animation: gradientAnimate 7s ease infinite;
 }
-@media (min-width: 576px) and (max-width: 767.98px) {
-  #register-form {
-    padding: 0vh 0;
-    width: 329px;
-    height: fit-content;
+@keyframes gradientAnimate {
+  0%,
+  100% {
+    background-position: 0% 50%;
   }
-}
-@media (min-width: 768px) and (max-width: 991.98px) {
-  #register-form {
-    padding: 0vh 0;
-    width: 329px;
-    height: fit-content;
-  }
-}
-
-@media (min-width: 992px) {
-  #register-form {
-    padding: 0vh 0;
-    width: 422px;
-    height: fit-content;
+  50% {
+    background-position: 100% 50%;
   }
 }
 </style>

@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'montserrat': ['Montserrat', 'Sans-serif']
+        'montserrat': ['Montserrat', 'Sans-serif'],
+        'lato': ['Lato', 'Sans-serif']
+
       },
       colors:{
         'background': '#2f455c',
@@ -15,6 +17,7 @@ module.exports = {
         'accent-lightgreen':'#34f5c5',
         'accent-darkgreen': '#21d0b2',
         'background-grey':'#151515',
+        'background-grey-dark':'#060606',
         'background-night':'#0a0a0a',
         'accent-cream':'#fbfcd4',
         'accent-s-yellow':'#ffdd02',

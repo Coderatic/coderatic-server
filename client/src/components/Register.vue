@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-background-grey sm:h-fit w-screen h-screen">
+  <div class="bg-background-grey sm:h-fit  w-screen h-screen">
     <h1
       class="font-montserrat text-white font-semibold text-3xl pb-[5rem] pt-[5rem] text-center"
     >

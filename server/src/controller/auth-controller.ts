@@ -12,10 +12,10 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const preSignUp = async (req, res) => {
   try {
-    const { username: _username, email: _email, password: _password, first_name: _fname, last_name: _lname } = req.body;
+    const { username, email, password } = req.body;
 
     const user = await User.findOne({
-      $or: [{ username: _username }, { email: _email }],
+      $or: [{ username: username }, { email: email }],
     });
 
     // If user is found, return error
@@ -26,7 +26,7 @@ const preSignUp = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { _username, _email, _password },
+      { username, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
         expiresIn: "10m",
@@ -34,7 +34,7 @@ const preSignUp = async (req, res) => {
     );
 
     const emailData = {
-      to: _email,
+      to: email,
       from: process.env.EMAIL_FROM,
       subject: "Welcome to Coderatic! - Account Activation Link",
       html: `
@@ -46,8 +46,12 @@ const preSignUp = async (req, res) => {
 	  <a href="${process.env.PRODUCTION_URL}">https://coderatic.com</a>`,
     };
 
-    res.status(200).json({
-      message: `You have successfuly been registered`,
+    sgMail.send(emailData).then((sent) => {
+      return res.json({
+        message: `
+      Email has been sent to ${email}. 
+      Follow the instructions to activate your account.`,
+      });
     });
   } catch (err) {
     console.log(err);

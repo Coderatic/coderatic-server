@@ -15,7 +15,7 @@
           >
           <div class="px-4 w-[100%]">
             <input
-              class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              class="input-field"
               type="text"
               name="username"
               v-model="username"
@@ -27,7 +27,7 @@
           <label for="email" class="text-white pl-4 font-lato">Email</label>
           <div class="px-4 w-[100%]">
             <input
-              class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              class="input-field"
               type="text"
               name="email"
               v-model="email"
@@ -42,7 +42,7 @@
 
           <div class="px-4 w-[100%]">
             <input
-              class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              class="input-field"
               :class="highlightPasswordFields"
               type="password"
               name="password"
@@ -58,7 +58,7 @@
 
           <div class="px-4 w-[100%]">
             <input
-              class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              class="input-field"
               :class="highlightPasswordFields"
               type="password"
               name="confirm_password"
@@ -162,7 +162,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="postcss" scoped>
+.input-field {
+  @apply border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato;
+}
 .greyedout {
   background-color: red !important;
 }

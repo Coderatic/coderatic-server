@@ -30,7 +30,7 @@
               class="text-red-700 font-lato text-sm inline mr-4"
               :class="validateEmail"
             >
-              Inavlid Email!
+              Invalid email format
             </p>
           </div>
           <div class="px-4 w-[100%]">
@@ -71,7 +71,7 @@
               class="text-red-700 font-lato text-sm inline mr-4"
               :class="passwordPopup"
             >
-              Password Donot Match!
+              Passwords do not match
             </p>
           </div>
 
@@ -144,7 +144,8 @@ export default {
         this.email !== "" &&
         this.password !== "" &&
         this.confirm_password !== "" &&
-        this.passwordsMatch
+        this.passwordsMatch &&
+        this.password.length >= 8
       );
     },
     passwordPopup() {

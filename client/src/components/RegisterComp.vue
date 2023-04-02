@@ -63,7 +63,7 @@
               type="password"
               name="confirm_password"
               v-model="confirm_password"
-              placeholder="password"
+              placeholder="confirm password"
             />
           </div>
         </div>
@@ -163,9 +163,6 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.input-field {
-  @apply border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato;
-}
 .greyedout {
   background-color: red !important;
 }

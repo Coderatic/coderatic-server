@@ -31,7 +31,6 @@ mongoose
   });
 
 // middlewares
-
 app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -46,8 +45,6 @@ app.use(cookieParser());
 
 // routes middlewares
 app.use("/api", authRoutes);
-
-export default app;
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

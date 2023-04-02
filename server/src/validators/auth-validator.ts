@@ -1,10 +1,9 @@
 import { body } from "express-validator";
 
 const userSignupValidator = [
-  body("username").isEmpty().withMessage("Username is required"),
-  body("email").not().isEmail().withMessage("Must be a valid email address"),
+  body("username").not().isEmpty().withMessage("Username is required"),
+  body("email").isEmail().withMessage("Must be a valid email address"),
   body("password")
-    .not()
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),
 ];

@@ -6,11 +6,13 @@
       <div
         class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
       >
-      <!-- <div class="relative my-2">
+        <!-- <div class="relative my-2">
         <h1 class="text-center text-white font-montserrat text-2xl">Register</h1>
       </div> -->
         <div class="relative my-2">
-          <label for="username" class="text-white pl-4 font-lato">Username</label>
+          <label for="username" class="text-white pl-4 font-lato"
+            >Username</label
+          >
           <div class="px-4 w-[100%]">
             <input
               class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
@@ -70,19 +72,19 @@
         </div> -->
         <div class="px-4 my-3 w-full">
           <div
-          id="gradient-btn-bg"
-            class=" p-[01px] rounded"
-            :class="grayButton"
+            id="gradient-btn-bg"
+            class="p-[01px] rounded"
+            :class="disableButton"
           >
             <button
               class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded disabled:text-gray-500"
               type="submit"
               value="Register"
               @click="registerUser"
-              :disabled="shouldDisableButton"
+              :disabled="!fieldsValid"
             >
               Sign Up
-        </button>
+            </button>
           </div>
         </div>
       </div>
@@ -91,16 +93,14 @@
 
   <div class="lg:w-[350px]">
     <p class="text-gray-600 font-lato my-5 text-sm">
-      Already a member? 
-      <a class="text-purple-500" href="/#/login">
-        <strong>log in</strong></a
-      > instead.
+      Already a member?
+      <a class="text-purple-500" href="/#/login"> <strong>log in</strong></a>
+      instead.
     </p>
   </div>
 </template>
 
 <script lang="ts">
-import $ from "jquery";
 import { AxiosError, AxiosResponse } from "axios";
 import regService from "../services/regService";
 export default {
@@ -126,27 +126,18 @@ export default {
         this.passwordsMatch
       );
     },
-    shouldDisableButton() {
-      if (!this.fieldsValid) {
-        $("#reg-btn").addClass("greyedout");
-        return true;
-      }
-      $("#reg-btn").removeClass("greyedout");
-      return false;
-    },
     highlightPasswordFields() {
       if (this.passwordsMatch) {
         return "border-gray-900 focus:border-purple-900";
       }
       return "!border-red-500";
     },
-    grayButton(){
-      if (this.shouldDisableButton){
+    disableButton() {
+      if (!this.fieldsValid) {
         return "bg-gray-400";
-      }else {
-        return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
       }
-    }
+      return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
+    },
   },
   mounted() {
     setTimeout(() => {
@@ -172,8 +163,7 @@ export default {
 </script>
 
 <style scoped>
-
-.greyedout{
+.greyedout {
   background-color: red !important;
 }
 .background-animate {

@@ -74,7 +74,6 @@ const signup = (req, res) => {
         }
 
         const { username, email, password } = decoded;
-        console.log(username, email, password);
         const uid = shortId.generate();
         const profile = `${process.env.CLIENT_URL}/profile/${uid}`;
 

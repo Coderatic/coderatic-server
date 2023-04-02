@@ -24,11 +24,20 @@
           </div>
         </div>
         <div class="relative my-2">
+          <div class="flex justify-between">
           <label for="email" class="text-white pl-4 font-lato">Email</label>
+          <p
+              class="text-red-700 font-lato text-sm inline mr-4"
+              :class="validateEmail"
+            >
+              Inavlid Email!
+            </p>
+          </div>
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
               type="text"
+              required
               name="email"
               v-model="email"
               placeholder="email"
@@ -36,12 +45,10 @@
           </div>
         </div>
         <div class="relative my-2">
-          
-            <label for="password" class="text-white pl-4 font-lato inline"
-              >Password</label
-            >
-           
-          
+          <label for="password" class="text-white pl-4 font-lato inline"
+            >Password</label
+          >
+
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
@@ -55,12 +62,17 @@
         </div>
         <div class="relative my-2">
           <div class="flex justify-between">
-          <label for="confirm_password" class="text-white pl-4 font-lato inline"
-            >Confirm Password</label
-          >
-          <p class="text-red-700 font-lato text-sm inline mr-4"
-                :class="passwordPopup"
-            >Password Donot Match!</p>
+            <label
+              for="confirm_password"
+              class="text-white pl-4 font-lato inline"
+              >Confirm Password</label
+            >
+            <p
+              class="text-red-700 font-lato text-sm inline mr-4"
+              :class="passwordPopup"
+            >
+              Password Donot Match!
+            </p>
           </div>
 
           <div class="px-4 w-[100%]">
@@ -122,7 +134,9 @@ export default {
   },
   computed: {
     passwordsMatch() {
-      return (this.confirm_password === "") || (this.password === this.confirm_password);
+      return (
+        this.confirm_password === "" || this.password === this.confirm_password
+      );
     },
     fieldsValid() {
       return (
@@ -133,7 +147,7 @@ export default {
         this.passwordsMatch
       );
     },
-    passwordPopup(){
+    passwordPopup() {
       if (this.passwordsMatch) {
         return "invisible";
       }
@@ -150,6 +164,15 @@ export default {
         return "bg-gray-400";
       }
       return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
+    },
+    validateEmail() {
+      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+
+      if (this.email.match(validRegex) || this.email === "") {
+        return "invisible";
+      } else {
+        return "visible";
+      }
     },
   },
   mounted() {

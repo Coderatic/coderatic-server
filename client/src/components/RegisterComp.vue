@@ -91,11 +91,10 @@
 
   <div class="lg:w-[350px]">
     <p class="text-gray-600 font-lato my-5 text-sm">
-      Already a member?
+      Already a member? 
       <a class="text-purple-500" href="/#/login">
-        <strong> Log In </strong></a
-      >
-      instead.
+        <strong>log in</strong></a
+      > instead.
     </p>
   </div>
 </template>

@@ -41,6 +41,7 @@
           <div class="px-4 w-[100%]">
             <input
               class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              :class="highlightPasswordFields"
               type="password"
               name="password"
               v-model="password"
@@ -56,6 +57,7 @@
           <div class="px-4 w-[100%]">
             <input
               class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+              :class="highlightPasswordFields"
               type="password"
               name="confirm_password"
               v-model="confirm_password"
@@ -70,14 +72,14 @@
           <div
           id="gradient-btn-bg"
             class=" p-[01px] rounded"
-            :class="background"
+            :class="grayButton"
           >
             <button
               class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded disabled:text-gray-500"
               type="submit"
               value="Register"
               @click="registerUser"
-              :disabled="shouldGrayButton"
+              :disabled="shouldDisableButton"
             >
               Sign Up
         </button>
@@ -125,7 +127,7 @@ export default {
         this.passwordsMatch
       );
     },
-    shouldGrayButton() {
+    shouldDisableButton() {
       if (!this.fieldsValid) {
         $("#reg-btn").addClass("greyedout");
         return true;
@@ -133,8 +135,14 @@ export default {
       $("#reg-btn").removeClass("greyedout");
       return false;
     },
-    background(){
-      if (this.shouldGrayButton){
+    highlightPasswordFields() {
+      if (this.passwordsMatch) {
+        return "border-gray-900 focus:border-purple-900";
+      }
+      return "!border-red-500";
+    },
+    grayButton(){
+      if (this.shouldDisableButton){
         return "bg-gray-400";
       }else {
         return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";

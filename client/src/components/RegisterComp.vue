@@ -25,8 +25,8 @@
         </div>
         <div class="relative my-2">
           <div class="flex justify-between">
-          <label for="email" class="text-white pl-4 font-lato">Email</label>
-          <p
+            <label for="email" class="text-white pl-4 font-lato">Email</label>
+            <p
               class="text-red-700 font-lato text-sm inline mr-4"
               :class="validateEmail"
             >
@@ -166,13 +166,12 @@ export default {
       return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
     },
     validateEmail() {
-      var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+      var validRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
       if (this.email.match(validRegex) || this.email === "") {
         return "invisible";
-      } else {
-        return "visible";
       }
+      return "visible";
     },
   },
   mounted() {

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Register from "../components/Register.vue";
 import LoginPage from "../components/LoginPage.vue";
 import HomePage from "../components/HomePage.vue";
+import Competition from "../components/Competition.vue";
 
 
 const router = createRouter({
@@ -19,8 +20,13 @@ const router = createRouter({
     },
     {
       path: "/",
-      name: "Login Page",
+      name: "Home Page",
       component: HomePage,
+    },
+    {
+      path: "/competition",
+      name: "Competition",
+      component: Competition,
     },
 
   ],

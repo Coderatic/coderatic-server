@@ -19,6 +19,12 @@ export default {
   components: {
     RegisterComp,
   },
+  computed: {
+    currentRouteName() {
+		console.log( this.$route.name)
+        return this.$route.name;
+    }
+}
 };
 </script>
 

@@ -62,14 +62,17 @@ const UserSchema = new mongoose.Schema<IUser>(
 
 UserSchema.methods = {
   authenticate: function (plainText: string) {
-    return this.hashPassword(plainText) === this.hashed_password;
+    const salt = this.hashed_password.slice(0, 29); // Get the first 29 characters (the salt) from the hashed password
+    const hash = bcrypt.hashSync(plainText, salt); // Hash the plain text password using the salt
+    return hash === this.hashed_password;
   },
 
   hashPassword: function (password: string) {
     if (!password) return "";
     try {
-      const salt = bcrypt.genSaltSync(10); // Generate a salt
-      return bcrypt.hashSync(password, salt); // Generate a hashed password
+      const salt = bcrypt.genSaltSync(12); // Generate a salt
+      const hash = bcrypt.hashSync(password, salt); // Generate a hashed password
+      return hash;
     } catch (error) {
       console.error(error);
       return "";

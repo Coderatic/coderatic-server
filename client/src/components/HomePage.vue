@@ -1,7 +1,7 @@
 <template>
-  <div class="h-[200vh]">
+
     <NavBar></NavBar>
-  </div>
+
 </template>
 
 <script lang="ts">

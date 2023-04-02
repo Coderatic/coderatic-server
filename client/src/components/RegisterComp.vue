@@ -2,7 +2,7 @@
   <div
     class="bg-gradient-to-r from-purple-700 via-orange-500 to-red-900 h-[480px] w-[370px] sm:w-[95%] p-[01px] rounded-md background-animate"
   >
-    <form name="login" class="w-[100%] h-[100%]">
+    <form name="login" class="w-[100%] h-[100%]" onsubmit="return false">
       <div
         class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
       >

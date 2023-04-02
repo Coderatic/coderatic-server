@@ -22,7 +22,7 @@
           <label for="password" class="text-white pl-4 font-lato inline"
             >Password</label
           >
-          <a href="www.google.com" class="inline text-purple-700"
+          <a href="www.google.com" class="inline text-purple-500"
             >Forgot password?</a
           >
         </div>
@@ -67,7 +67,7 @@ export default {
   name: "LoginComp",
 };
 </script>
-<style>
+<style scoped>
 .background-animate {
   background-size: 400%;
 

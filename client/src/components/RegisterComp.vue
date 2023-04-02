@@ -28,7 +28,7 @@
             <label for="email" class="text-white pl-4 font-lato">Email</label>
             <p
               class="text-red-700 font-lato text-sm inline mr-4"
-              :class="validateEmail"
+              v-if="!validateEmail"
             >
               Invalid email format
             </p>
@@ -68,8 +68,8 @@
               >Confirm Password</label
             >
             <p
+              v-if="!passwordsMatch"
               class="text-red-700 font-lato text-sm inline mr-4"
-              :class="passwordPopup"
             >
               Passwords do not match
             </p>
@@ -142,17 +142,12 @@ export default {
       return (
         this.username !== "" &&
         this.email !== "" &&
+        this.validateEmail &&
         this.password !== "" &&
         this.confirm_password !== "" &&
         this.passwordsMatch &&
         this.password.length >= 8
       );
-    },
-    passwordPopup() {
-      if (this.passwordsMatch) {
-        return "invisible";
-      }
-      return "visible";
     },
     highlightPasswordFields() {
       if (this.passwordsMatch) {
@@ -167,12 +162,8 @@ export default {
       return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
     },
     validateEmail() {
-      var validRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-      if (this.email.match(validRegex) || this.email === "") {
-        return "invisible";
-      }
-      return "visible";
+      var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return this.email === "" || this.email.match(emailRegex);
     },
   },
   mounted() {

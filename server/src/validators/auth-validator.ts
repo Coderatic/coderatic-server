@@ -9,7 +9,7 @@ const userSignupValidator = [
 ];
 
 const userSigninValidator = [
-  body("email").isEmail().withMessage("Must be a valid email address"),
+  body("username").not().isEmpty().withMessage("Username is required"),
   body("password")
     .isLength({ min: 8 })
     .withMessage("Password must be at least 8 characters long"),

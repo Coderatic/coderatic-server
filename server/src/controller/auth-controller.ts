@@ -109,9 +109,9 @@ const signup = (req, res) => {
 
 const signin = (req, res) => {
   try {
-    const { _username, _password } = req.body;
+    const { username, password } = req.body;
     // check if user exist
-    User.findOne({ username: _username })
+    User.findOne({ username: username })
       .exec()
       .then((user) => {
         if (!user) {
@@ -121,7 +121,7 @@ const signin = (req, res) => {
         }
 
         // authenticate
-        if (!user.authenticate(_password)) {
+        if (!user.authenticate(password)) {
           return res.status(400).json({
             error: "Email and password do not match.",
           });

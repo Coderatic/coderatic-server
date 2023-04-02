@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import _ from "lodash";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import { expressjwt as expressJwt } from "express-jwt";
+import shortId from "shortid";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -29,7 +30,7 @@ const preSignUp = async (req, res) => {
       { username, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
-        expiresIn: "10m",
+        expiresIn: "24h",
       }
     );
 
@@ -39,7 +40,7 @@ const preSignUp = async (req, res) => {
       subject: "Welcome to Coderatic! - Account Activation Link",
       html: `
 	  <h4>Please use the following link to activate your account:</h4>
-	  <p>${process.env.PRODUCTION_URL}/auth/account/activate/${token}</p>
+	  <p>${process.env.PRODUCTION_URL}:${process.env.PORT}/api/signup?token=${token}</p>
 
 	  <hr/>
 	  <p>This email may contain sensitive information</p>
@@ -58,6 +59,52 @@ const preSignUp = async (req, res) => {
     res.status(500).json({
       message: "Internal Server Error",
     });
+  }
+};
+
+const signup = (req, res) => {
+  try {
+    const token = req.query.token;
+    if (token) {
+      jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
+        if (err) {
+          return res.status(401).json({
+            error: "Expired link. Signup again.",
+          });
+        }
+
+        const { username, email, password } = decoded;
+        console.log(username, email, password);
+        const uid = shortId.generate();
+        const profile = `${process.env.CLIENT_URL}/profile/${uid}`;
+
+        const user = new User({
+          username: username,
+          email: email,
+          password: password,
+          profile: profile,
+        });
+
+        user
+          .save()
+          .then(() => {
+            return res.json({
+              message: "Signup sucessful! Please sign in.",
+            });
+          })
+          .catch((err) => {
+            return res.status(401).json({
+              error: err,
+            });
+          });
+      });
+    } else {
+      return res.json({
+        message: "Something went wrong. Try again.",
+      });
+    }
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -215,54 +262,6 @@ const forgotPassword = async (req, res) => {
         }
       });
     });
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const signup = (req, res) => {
-  try {
-    const { token } = req.body;
-
-    if (token) {
-      jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
-        if (err) {
-          return res.status(401).json({
-            error: "Expired link. Signup again.",
-          });
-        }
-
-        const { _username, _email, _password } = jwt.decode(token) as any;
-
-        const shortId = require("shortid");
-        const username = shortId.generate();
-        const _profile = `${process.env.CLIENT_URL}/profile/${username}`;
-
-        const user = new User({
-          username: _username,
-          email: _email,
-          passwor: _password,
-          profile: _profile,
-        });
-
-        user
-          .save()
-          .then(() => {
-            return res.status(401).json({
-              error: err,
-            });
-          })
-          .catch((err) => {
-            return res.json({
-              message: "Signup sucessful! Please sign in.",
-            });
-          });
-      });
-    } else {
-      return res.json({
-        message: "Something went wrong. Try again.",
-      });
-    }
   } catch (err) {
     console.log(err);
   }

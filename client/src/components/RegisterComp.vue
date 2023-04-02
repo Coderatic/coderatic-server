@@ -36,10 +36,12 @@
           </div>
         </div>
         <div class="relative my-2">
-          <label for="password" class="text-white pl-4 font-lato inline"
-            >Password</label
-          >
-
+          
+            <label for="password" class="text-white pl-4 font-lato inline"
+              >Password</label
+            >
+           
+          
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
@@ -52,9 +54,14 @@
           </div>
         </div>
         <div class="relative my-2">
+          <div class="flex justify-between">
           <label for="confirm_password" class="text-white pl-4 font-lato inline"
             >Confirm Password</label
           >
+          <p class="text-red-700 font-lato text-sm inline mr-4"
+                :class="passwordPopup"
+            >Password Donot Match!</p>
+          </div>
 
           <div class="px-4 w-[100%]">
             <input
@@ -115,7 +122,7 @@ export default {
   },
   computed: {
     passwordsMatch() {
-      return this.password === this.confirm_password;
+      return (this.confirm_password === "") || (this.password === this.confirm_password);
     },
     fieldsValid() {
       return (
@@ -125,6 +132,12 @@ export default {
         this.confirm_password !== "" &&
         this.passwordsMatch
       );
+    },
+    passwordPopup(){
+      if (this.passwordsMatch) {
+        return "invisible";
+      }
+      return "visible";
     },
     highlightPasswordFields() {
       if (this.passwordsMatch) {

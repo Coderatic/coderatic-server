@@ -30,8 +30,6 @@ export default {
     };
   },
   mounted() {
-
-   
 	const authData = {
 		token: this.$route.params.token 
 	};

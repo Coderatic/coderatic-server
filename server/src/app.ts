@@ -31,7 +31,6 @@ mongoose
   });
 
 // middlewares
-app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(
@@ -42,6 +41,14 @@ app.use(
   })
 );
 app.use(cookieParser());
+
+// Set credentials to true
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 // routes middlewares
 app.use("/api", authRoutes);

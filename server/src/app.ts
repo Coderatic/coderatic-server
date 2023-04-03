@@ -19,16 +19,7 @@ dotenv.config();
 const password = encodeURIComponent(process.env.DB_PASSWORD);
 const uname = encodeURIComponent(process.env.DB_USERNAME);
 const dbname = encodeURIComponent(process.env.DB_NAME);
-const uri = `mongodb+srv://${uname}:${password}@${dbname}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
-
-mongoose
-  .connect(uri)
-  .then(() => {
-    console.log("Database connection successful");
-  })
-  .catch((err) => {
-    console.log(`Error connecting to database ${err}`);
-  });
+const db_url = `mongodb+srv://${uname}:${password}@${dbname}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
 
 // middlewares
 app.use(morgan("dev"));
@@ -57,3 +48,11 @@ const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT}.`);
 });
+
+try {
+  console.log("Connecting to database...");
+  await mongoose.connect(db_url);
+  console.log("Connection to database successful.");
+} catch (err) {
+  console.log("Error connecting to database:\n", err.message);
+}

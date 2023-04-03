@@ -1,5 +1,7 @@
 <template>
-  <div class="hamburgerMenu hidden sm:block md:block w-screen bg-black py-4 absolute translate-y-[-129px] transition-all">
+  <div
+    class="hamburgerMenu hidden sm:block md:block w-screen bg-black py-4 absolute translate-y-[-129px] transition-all"
+  >
     <ul class="flex flex-col gap-6 justify-center items-center">
       <li>
         <a
@@ -58,10 +60,10 @@
           <div class="flex justify-center items-center ml-4">
             <div class="h-[30px] w-[35px] rounded bg-purple-700 p-[1.5px]">
               <div
-			  v-on:click="translateBox"
+                v-on:click="translateBox"
                 class="bg-black h-[100%] w-[100%] rounded flex flex-col justify-around hover:bg-gray-700"
               >
-                <hr class="mx-2 mt-1 border-b-[1px] " />
+                <hr class="mx-2 mt-1 border-b-[1px]" />
                 <hr class="mx-2 border-b-[1px]" />
                 <hr class="mx-2 mb-1 border-b-[1px]" />
               </div>
@@ -143,7 +145,7 @@
             </h1>
           </div>
         </div>
-        <div class="mr-10 sm:mr-2 md:mr-2">
+        <div class="mr-10 sm:mr-2 md:mr-2" v-if="!isLoggedIn">
           <div
             class="h-[40px] bg-gradient-to-r from-purple-700 to-red-800 p-[1px] rounded"
           >
@@ -156,6 +158,9 @@
             </div>
           </div>
         </div>
+        <div class="mr-10 sm:mr-2 md:mr-2" v-if="isLoggedIn">
+          <div class="w-[50px] h-[50px] rounded-[50%] bg-white"></div>
+        </div>
       </div>
     </nav>
   </div>
@@ -167,17 +172,20 @@ export default {
   name: "NavBar",
   methods: {
     translateBox() {
-     const box = document.querySelector('.hamburgerMenu') as HTMLElement;
-	 if(!down){
-      box.style.transform = 'translateY(72px)';
-	  down = true;
-	 }else{
-		box.style.transform = 'translateY(-129px)';
-		down = false;
-	 }
-    }
+      const box = document.querySelector(".hamburgerMenu") as HTMLElement;
+      if (!down) {
+        box.style.transform = "translateY(72px)";
+        down = true;
+      } else {
+        box.style.transform = "translateY(-129px)";
+        down = false;
+      }
+    },
   },
   computed: {
+    isLoggedIn() {
+      return (this.$store.getters.isAuthenticated) as boolean;
+    },
     currentRouteName() {
       console.log(this.$route.name);
       return this.$route.name;

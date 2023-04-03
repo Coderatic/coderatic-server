@@ -121,7 +121,7 @@
 
 <script lang="ts">
 import { AxiosError, AxiosResponse } from "axios";
-import regService from "../services/regService";
+import { mapActions } from "vuex";
 export default {
   name: "RegisterComp",
   data() {
@@ -166,20 +166,17 @@ export default {
       return this.email === "" || this.email.match(emailRegex);
     },
   },
-  mounted() {
-    setTimeout(() => {
-      $(".hide").addClass("fadeup");
-    }, 100);
-    setTimeout(() => {
-      $(".curve-none").addClass("curve");
-    }, 500);
-  },
   methods: {
+    ...mapActions(["register"]),
     registerUser() {
-      regService
-        .register(this.username, this.email, this.password)
+      const userData ={
+        username: this.username,
+        email: this.email,
+        password: this.password
+      };
+        this.register(userData)
         .then((res: AxiosResponse<any, any>) => {
-          alert(res.data.message);
+          this.$router.push('/#/')
         })
         .catch((err: AxiosError<any>) => {
           alert(err.response?.data.message);

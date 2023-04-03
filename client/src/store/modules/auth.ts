@@ -14,8 +14,8 @@ const getters = {
 const actions = {
 	async register({commit}:any,userData:UserData) {
 		
-		console.log({username: userData.username, uemail: userData.email, password: userData.password});
-		await Api().post("register", {username: userData.username, email: userData.email, password: userData.password});
+		console.log({username: userData.username, email: userData.email, password: userData.password});
+		await Api().post("/api/pre-signup", {username: userData.username, email: userData.email, password: userData.password});
 		await commit('setUserData', userData.username)
 		console.log("SuccessFully Registered");
 

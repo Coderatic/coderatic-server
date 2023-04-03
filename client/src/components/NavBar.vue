@@ -139,7 +139,12 @@
 				</div>
 			</div> -->
             <h1
-              class="font-montserrat text-white font-semibold text-2xl text-center ml-[80px]"
+              class="font-montserrat text-white font-semibold text-2xl text-center"
+              :class="
+                  isLoggedIn
+                    ? 'ml-[10px]'
+                    : 'ml-[80px]'
+                "
             >
               C<span class="font-montserrat text-purple-700 font-black">R</span>
             </h1>

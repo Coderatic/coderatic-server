@@ -3,6 +3,7 @@ import Register from "../components/Register.vue";
 import LoginPage from "../components/LoginPage.vue";
 import HomePage from "../components/HomePage.vue";
 import Competition from "../components/Competition.vue";
+import store from '../store';
 
 
 const router = createRouter({
@@ -12,11 +13,13 @@ const router = createRouter({
       path: "/register",
       name: "Registeration Page",
       component: Register,
+      meta: { guest: true },
     },
     {
       path: "/login",
       name: "Login Page",
       component: LoginPage,
+      meta: { guest: true },
     },
     {
       path: "/",
@@ -31,5 +34,16 @@ const router = createRouter({
 
   ],
 });
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isAuthenticated) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
+})
 
 export default router;

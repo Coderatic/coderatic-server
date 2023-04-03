@@ -140,11 +140,7 @@
 			</div> -->
             <h1
               class="font-montserrat text-white font-semibold text-2xl text-center"
-              :class="
-                  isLoggedIn
-                    ? 'ml-[10px]'
-                    : 'ml-[80px]'
-                "
+              :class="isLoggedIn ? 'ml-[10px]' : 'ml-[80px]'"
             >
               C<span class="font-montserrat text-purple-700 font-black">R</span>
             </h1>
@@ -164,7 +160,39 @@
           </div>
         </div>
         <div class="mr-10 sm:mr-2 md:mr-2" v-if="isLoggedIn">
-          <div class="w-[50px] h-[50px] rounded-[50%] bg-white"></div>
+          <div
+            class="w-[50px] h-[50px] rounded-[50%] bg-white"
+            v-on:click="showProfileOptions"
+          ></div>
+        </div>
+        <div
+          class="absolute top-[65px] right-[40px] sm:right-[20px] md:right-[20px] bg-background-grey-dark border border-purple-800 w-[150px] rounded transition-all"
+          v-if="profileOpts"
+        >
+          <ul>
+            <li>
+              <div
+                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+                v-on:click="logOut"
+              >
+                Log Out
+              </div>
+            </li>
+            <li>
+              <div
+                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+              >
+                Profile
+              </div>
+            </li>
+            <li>
+              <div
+                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+              >
+                Dashboard
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -172,24 +200,44 @@
 </template>
 
 <script lang="ts">
-var down = false;
+import { mapActions } from "vuex";
+
 export default {
   name: "NavBar",
+  data() {
+    return {
+      profileOpts: false,
+      down : false
+    }
+  },
   methods: {
+    ...mapActions(["logout"]),
+    showProfileOptions() {
+      this.profileOpts = !this.profileOpts
+    },
     translateBox() {
       const box = document.querySelector(".hamburgerMenu") as HTMLElement;
-      if (!down) {
+      if (!this.down) {
         box.style.transform = "translateY(72px)";
-        down = true;
+        this.down = true;
       } else {
         box.style.transform = "translateY(-129px)";
-        down = false;
+        this.down = false;
       }
     },
+   async logOut(){
+    try{
+    await this.logout();
+    this.$router.push('login');
+    }
+    catch(error){
+      console.log("There was a problem trying to logout")
+    }
+   }
   },
   computed: {
     isLoggedIn() {
-      return (this.$store.getters.isAuthenticated);
+      return this.$store.getters.isAuthenticated;
     },
     currentRouteName() {
       console.log(this.$route.name);

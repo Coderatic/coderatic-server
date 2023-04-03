@@ -168,19 +168,18 @@ export default {
   },
   methods: {
     ...mapActions(["register"]),
-    registerUser() {
+    async registerUser() {
       const userData ={
         username: this.username,
         email: this.email,
         password: this.password
       };
-        this.register(userData)
-        .then((res: AxiosResponse<any, any>) => {
-          this.$router.push('/#/')
-        })
-        .catch((err: AxiosError<any>) => {
-          alert(err.response?.data.message);
-        });
+      try {
+        await this.register(userData)
+        this.$router.push('/#/')
+      } catch (error) {
+        console.log(error)
+      }
     },
   },
 };

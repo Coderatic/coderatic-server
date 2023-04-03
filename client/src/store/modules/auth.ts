@@ -13,15 +13,12 @@ const getters = {
 };
 const actions = {
 	async register({commit}:any,userData:UserData) {
-		try{
+		
 		console.log({username: userData.username, uemail: userData.email, password: userData.password});
-		const response = await Api().post("register", {username: userData.username, email: userData.email, password: userData.password});
-		commit('setUserData', userData.username)
-		return response;
-		}
-		catch(err){
-		return err;
-		}
+		await Api().post("register", {username: userData.username, email: userData.email, password: userData.password});
+		await commit('setUserData', userData.username)
+		console.log("SuccessFully Registered");
+
 	}
 
 };

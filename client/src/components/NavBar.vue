@@ -184,7 +184,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return (this.$store.getters.isAuthenticated) as boolean;
+      return this.$store.getters.isAuthenticated as boolean;
     },
     currentRouteName() {
       console.log(this.$route.name);

@@ -99,7 +99,7 @@ const signup = (req, res) => {
           });
       });
     } else {
-      return res.json({
+      return res.status(401).json({
         message: "Something went wrong. Try again.",
       });
     }

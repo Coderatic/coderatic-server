@@ -161,18 +161,18 @@
         </div>
         <div class="mr-10 sm:mr-2 md:mr-2" v-if="isLoggedIn">
           <div
-            class="w-[50px] h-[50px] rounded-[50%] bg-white"
+            class="w-[50px] h-[50px] rounded-[50%] bg-[url('assets/harambe.jpg')] "
             v-on:click="showProfileOptions"
           ></div>
         </div>
         <div
-          class="absolute top-[65px] right-[40px] sm:right-[20px] md:right-[20px] bg-background-grey-dark border border-purple-800 w-[150px] rounded transition-all"
+          class="absolute top-[65px] right-[40px] sm:right-[20px] md:right-[20px] bg-white border w-[150px] rounded transition-all"
           v-if="profileOpts"
         >
           <ul>
             <li>
               <div
-                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
                 v-on:click="logOut"
               >
                 Log Out
@@ -180,14 +180,14 @@
             </li>
             <li>
               <div
-                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
               >
                 Profile
               </div>
             </li>
             <li>
               <div
-                class="text-white font-lato text-sm text-start hover:bg-gray-700 pl-3 py-2"
+                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
               >
                 Dashboard
               </div>
@@ -247,4 +247,5 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>

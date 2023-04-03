@@ -176,7 +176,7 @@ export default {
       };
       try {
         await this.register(userData)
-        this.$router.push('/#/')
+        this.$router.push('/')
       } catch (error) {
         console.log(error)
       }

@@ -16,7 +16,7 @@ const actions = {
 		
 		console.log({username: userData.username, email: userData.email, password: userData.password});
 		await Api().post("/api/pre-signup", {username: userData.username, email: userData.email, password: userData.password});
-		await commit('setUserData', userData.username)
+		await commit('setUser', userData.username)
 		console.log("SuccessFully Registered");
 
 	},
@@ -28,7 +28,7 @@ const actions = {
 
 };
 const mutations = {
-	setUserdata(state:any, username:string){
+	setUser(state:any, username:string){
 		state.user = username;
 	},
 	LogOut(state:any){

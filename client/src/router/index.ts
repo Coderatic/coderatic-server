@@ -3,6 +3,7 @@ import Register from "../components/Register.vue";
 import LoginPage from "../components/LoginPage.vue";
 import HomePage from "../components/HomePage.vue";
 import Competition from "../components/Competition.vue";
+import ActivateAccount from "../components/ActivateAccount.vue";
 import store from '../store';
 
 
@@ -30,6 +31,12 @@ const router = createRouter({
       path: "/competition",
       name: "Competition",
       component: Competition,
+    },
+    {
+      path: '/auth/account/activate/:token',
+      name: 'ActivateAccount',
+      component: ActivateAccount,
+      meta: { guest: true },
     },
 
   ],

@@ -40,7 +40,7 @@ const preSignUp = async (req, res) => {
       subject: "Welcome to Coderatic! - Account Activation Link",
       html: `
 	  <h4>Please use the following link to activate your account:</h4>
-	  <p>${process.env.PRODUCTION_URL}:${process.env.PORT}/api/signup?token=${token}</p>
+	  <p>http://localhost:5173/#/auth/account/activate/${token}</p>
 
 	  <hr/>
 	  <p>This email may contain sensitive information</p>
@@ -64,7 +64,8 @@ const preSignUp = async (req, res) => {
 
 const signup = (req, res) => {
   try {
-    const token = req.query.token;
+    const token = req.body.token;
+    console.log(req);
     if (token) {
       jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
         if (err) {

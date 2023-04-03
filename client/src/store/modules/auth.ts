@@ -2,8 +2,8 @@ import Api from "../../services/Api";
 import { AxiosError, AxiosResponse } from "axios";
 interface UserData{
 	username:string;
-	 email:string;
-	  password:string
+	email:string;
+	password:string
 }
 const state = {
 	user:null
@@ -19,12 +19,20 @@ const actions = {
 		await commit('setUserData', userData.username)
 		console.log("SuccessFully Registered");
 
+	},
+
+	async logout({commit}:any){
+		let temp = null;
+		await commit('LogOut', temp)
 	}
 
 };
 const mutations = {
 	setUserdata(state:any, username:string){
 		state.user = username;
+	},
+	LogOut(state:any){
+		state.user = null;
 	}
 };
 export default {

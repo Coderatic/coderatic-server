@@ -1,7 +1,7 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
@@ -16,10 +16,22 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // db connection
-const password = encodeURIComponent(process.env.DB_PASSWORD);
-const uname = encodeURIComponent(process.env.DB_USERNAME);
-const dbname = encodeURIComponent(process.env.DB_NAME);
-const db_url = `mongodb+srv://${uname}:${password}@${dbname}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_NAME}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
+
+async function connectToDB() {
+  try {
+    console.log("Connecting to DB...");
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    } as ConnectOptions);
+    console.log("DB Connected");
+  } catch (err) {
+    console.log("DB Connection Error: ", err);
+  }
+}
+
+connectToDB();
 
 // middlewares
 app.use(morgan("dev"));

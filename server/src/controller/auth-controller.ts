@@ -133,7 +133,7 @@ const signin = (req, res) => {
           expiresIn: "1d",
         });
 
-        res.cookie("token", token, { expiresIn: "1d" });
+        res.cookie("token", token, { expiresIn: "1d", httpOnly: true });
         const { _id, username, first_name, last_name, email, role } = user;
         return res.json({
           token,

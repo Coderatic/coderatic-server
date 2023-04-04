@@ -38,7 +38,7 @@ export default {
         .then(() => {
 			this.message = "Account Activated Successfully"
 			this.message2="Redirecting"
-         	this.$router.push('/');
+         	this.$router.push('/login');
         })
         .catch((error) => {
           console.error(error);

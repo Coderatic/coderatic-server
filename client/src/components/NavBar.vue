@@ -1,11 +1,11 @@
 <template>
   <div
-    class="hamburgerMenu hidden sm:block md:block w-screen bg-black py-4 absolute translate-y-[-129px] transition-all"
+    class="hamburgerMenu hidden sm:block md:block w-screen bg-background-grey-dark py-4 absolute translate-y-[-129px] transition-all"
   >
     <ul class="flex flex-col gap-6 justify-center items-center">
       <li>
         <a
-          class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Home Page'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -17,7 +17,7 @@
       </li>
       <li>
         <a
-          class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Competition'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -29,7 +29,7 @@
       </li>
       <li>
         <a
-          class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Practice'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -41,7 +41,7 @@
       </li>
       <li>
         <a
-          class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Profile Page'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -80,10 +80,10 @@
           </h1>
         </div>
         <div class="grow sm:hidden md:hidden">
-          <ul class="flex gap-10 mr-20 justify-end">
+          <ul class="flex gap-10 mr-12 justify-end">
             <li>
               <a
-                class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Home Page'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -95,7 +95,7 @@
             </li>
             <li>
               <a
-                class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Competition'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -107,7 +107,7 @@
             </li>
             <li>
               <a
-                class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Practice'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -119,7 +119,7 @@
             </li>
             <li>
               <a
-                class="text-white font-montserrat text-[15px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Profile Page'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -146,14 +146,14 @@
             </h1>
           </div>
         </div>
-        <div class="mr-10 sm:mr-2 md:mr-2" v-if="!isLoggedIn">
+        <div class="mr-5 sm:mr-2 md:mr-2" v-if="!isLoggedIn">
           <div
-            class="h-[40px] bg-gradient-to-r from-purple-700 to-red-800 p-[1px] rounded"
+            class="h-[40px] bg-gray-700 p-[1px] rounded hover:bg-purple-700"
           >
             <div
-              class="bg-black w-full h-full rounded sm:text-sm md:text-sm px-2 sm:px-1 md:px-1 flex items-center"
+              class="bg-black w-full h-full rounded hover:bg-gray-900 sm:text-sm md:text-sm px-2 sm:px-1 md:px-1 flex items-center"
             >
-              <a class="text-white font-montserrat" href="/#/login"
+              <a class="text-white font-Lato text-sm" href="/#/login"
                 >Sign Up / Log In</a
               >
             </div>

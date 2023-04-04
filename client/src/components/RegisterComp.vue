@@ -177,7 +177,7 @@ export default {
       try {
         await this.register(userData)
         //add a popup div here
-        this.$router.push('/')
+        
       } catch (error) {
         console.log(error)
       }

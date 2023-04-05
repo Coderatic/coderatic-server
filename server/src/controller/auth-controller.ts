@@ -163,10 +163,10 @@ const verifyToken = (req, res) => {
       return res.status(401).json({
         error: "Expired link. Login again.",
       });
-    }
-    return res.json({
-      message: "Token is valid",
-    });
+    } else
+      return res.status(200).json({
+        message: "Token is valid",
+      });
   });
 };
 

@@ -54,7 +54,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // routes middlewares
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

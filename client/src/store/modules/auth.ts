@@ -15,7 +15,7 @@ const actions = {
 	async register({},authData:AuthData) {
 		
 		console.log({username: authData.username, email: authData.email, password: authData.password});
-		await Api().post("/api/pre-signup", {username: authData.username, email: authData.email, password: authData.password});
+		await Api().post("/api/auth/pre-signup", {username: authData.username, email: authData.email, password: authData.password});
 		console.log("SuccessFully Registered");
 
 	},
@@ -27,7 +27,7 @@ const actions = {
 	async login({commit}:any,authData:AuthData) {
 		
 		console.log({username: authData.username, password: authData.password});
-		const response = await Api().post("/api/signin", {username: authData.username, password: authData.password});
+		const response = await Api().post("/api/auth/signin", {username: authData.username, password: authData.password});
 		const userInfo = response.data.user;
 		await commit('LogIn', userInfo);
 		console.log("SuccessFully Logged In");

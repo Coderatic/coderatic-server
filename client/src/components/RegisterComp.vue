@@ -169,17 +169,19 @@ export default {
   methods: {
     ...mapActions(["register"]),
     async registerUser() {
-      const userData ={
+      const userData = {
         username: this.username,
         email: this.email,
-        password: this.password
+        password: this.password,
       };
       try {
-        await this.register(userData)
+        await this.register(userData);
+        this.$emit('registeration_successful');
         //add a popup div here
-        
       } catch (error) {
-        console.log(error)
+        console.log(error);
+        this.$emit('registeration_unsuccessful');
+
       }
     },
   },

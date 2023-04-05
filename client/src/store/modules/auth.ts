@@ -6,7 +6,7 @@ interface AuthData{
 	password:string
 }
 const state = {
-	user:"ooga"
+	user:null
 };
 const getters = {
 	isAuthenticated: (state:any) => !!state.user

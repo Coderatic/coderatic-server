@@ -156,6 +156,20 @@ const signout = (req, res) => {
   }
 };
 
+const verifyToken = (req, res) => {
+  const token = req.body.token;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        error: "Expired link. Login again.",
+      });
+    }
+    return res.json({
+      message: "Token is valid",
+    });
+  });
+};
+
 const requireSignin = expressJwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
@@ -325,6 +339,7 @@ export {
   preSignUp,
   signup,
   signin,
+  verifyToken,
   signout,
   requireSignin,
   authMiddleWare,

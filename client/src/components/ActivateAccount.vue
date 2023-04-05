@@ -34,7 +34,7 @@ export default {
 		token: this.$route.params.token 
 	};
     if (authData.token) {
-      Api().post('/api/signup',authData)
+      Api().post('/api/auth/signup',authData)
         .then(() => {
 			this.message = "Account Activated Successfully"
 			this.message2="Redirecting"

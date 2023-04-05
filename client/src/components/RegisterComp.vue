@@ -124,6 +124,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { mapActions } from "vuex";
 export default {
   name: "RegisterComp",
+  emits: ['regFailure', 'regSuccess'],
   data() {
     return {
       username: "",
@@ -176,11 +177,11 @@ export default {
       };
       try {
         await this.register(userData);
-        this.$emit('registeration_successful');
+        this.$emit('regSuccess');
         //add a popup div here
       } catch (error) {
         console.log(error);
-        this.$emit('registeration_unsuccessful');
+        this.$emit('regFailure');
 
       }
     },

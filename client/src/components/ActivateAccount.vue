@@ -20,7 +20,7 @@
   </div>
 </template>
 <script lang="ts">
-import Api from '../services/Api';
+import Api from "../services/Api";
 export default {
   name: "ActivateAccount",
   data() {
@@ -30,24 +30,25 @@ export default {
     };
   },
   mounted() {
-	const authData = {
-		token: this.$route.params.token 
-	};
+    const authData = {
+      token: this.$route.params.token,
+    };
     if (authData.token) {
       Api().post('/api/auth/signup',authData)
         .then(() => {
-			this.message = "Account Activated Successfully"
-			this.message2="Redirecting"
-         	this.$router.push('/login');
+          this.message = "Account Activated Successfully";
+          this.message2 = "Redirecting";
+          this.$router.push("/login");
         })
         .catch((error) => {
           console.error(error);
-          this.message="Unfortunately there was a problem activating your account."
-		  this.message2="Please try again."
+          this.message =
+            "Unfortunately there was a problem activating your account.";
+          this.message2 = "Please try again.";
         });
     } else {
-      this.message="Invalid activation link provided."
-	  this.message2="Please try aagin with correct Link."
+      this.message = "Invalid activation link provided.";
+      this.message2 = "Please try aagin with correct Link.";
     }
   },
 };
@@ -60,14 +61,5 @@ export default {
   -webkit-animation: gradientAnimate 7s ease infinite;
   -moz-animation: gradientAnimate 7s ease infinite;
   animation: gradientAnimate 7s ease infinite;
-}
-@keyframes gradientAnimate {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 </style>

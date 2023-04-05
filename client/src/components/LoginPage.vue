@@ -14,14 +14,14 @@
             class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
           >
             <div class="relative my-2">
-              <label for="fname" class="text-white pl-4 font-lato"
+              <label for="name" class="text-white pl-4 font-lato"
                 >Username</label
               >
               <div class="px-4 w-[100%]">
                 <input
                   class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
                   type="text"
-                  name="fname"
+                  name="name"
                   placeholder="username"
                 />
               </div>
@@ -73,8 +73,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 .background-animate {
@@ -83,14 +82,5 @@
   -webkit-animation: gradientAnimate 7s ease infinite;
   -moz-animation: gradientAnimate 7s ease infinite;
   animation: gradientAnimate 7s ease infinite;
-}
-@keyframes gradientAnimate {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
 }
 </style>

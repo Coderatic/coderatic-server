@@ -170,6 +170,7 @@ export default {
   methods: {
     ...mapActions(["register"]),
     async registerUser() {
+      window.scrollTo(0,0);
       const userData = {
         username: this.username,
         email: this.email,

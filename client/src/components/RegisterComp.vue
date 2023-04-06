@@ -124,7 +124,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { mapActions } from "vuex";
 export default {
   name: "RegisterComp",
-  emits: ['regFailure', 'regSuccess'],
+  emits: ["regFailure", "regSuccess"],
   data() {
     return {
       username: "",
@@ -157,10 +157,9 @@ export default {
       return "!border-red-500";
     },
     disableButton() {
-      if (!this.fieldsValid) {
-        return "bg-gray-400";
-      }
-      return "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
+      return !this.fieldsValid
+        ? "bg-gray-400"
+        : "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
     },
     validateEmail() {
       var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -170,7 +169,7 @@ export default {
   methods: {
     ...mapActions(["register"]),
     async registerUser() {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
       const userData = {
         username: this.username,
         email: this.email,
@@ -178,19 +177,18 @@ export default {
       };
       try {
         await this.register(userData);
-        this.$emit('regSuccess');
+        this.$emit("regSuccess");
         //add a popup div here
       } catch (error) {
         console.log(error);
-        this.$emit('regFailure');
-
+        this.$emit("regFailure");
       }
     },
   },
 };
 </script>
 
-<style lang="postcss" scoped>
+<style scoped>
 .greyedout {
   background-color: red !important;
 }

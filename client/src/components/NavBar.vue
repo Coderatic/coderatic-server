@@ -147,9 +147,7 @@
           </div>
         </div>
         <div class="mr-5 sm:mr-2 md:mr-2" v-if="!isLoggedIn">
-          <div
-            class="h-[40px] bg-gray-700 p-[1px] rounded hover:bg-purple-700"
-          >
+          <div class="h-[40px] bg-gray-700 p-[1px] rounded hover:bg-purple-700">
             <div
               class="bg-black w-full h-full rounded hover:bg-gray-900 sm:text-sm md:text-sm px-2 sm:px-1 md:px-1 flex items-center"
             >
@@ -161,7 +159,7 @@
         </div>
         <div class="mr-10 sm:mr-2 md:mr-2" v-if="isLoggedIn">
           <div
-            class="w-[50px] h-[50px] rounded-[50%] bg-[url('assets/harambe.jpg')] "
+            class="w-[50px] h-[50px] rounded-[50%] bg-[url('assets/harambe.jpg')]"
             v-on:click="showProfileOptions"
           ></div>
         </div>
@@ -207,13 +205,13 @@ export default {
   data() {
     return {
       profileOpts: false,
-      down : false
-    }
+      down: false,
+    };
   },
   methods: {
     ...mapActions(["logout"]),
     showProfileOptions() {
-      this.profileOpts = !this.profileOpts
+      this.profileOpts = !this.profileOpts;
     },
     translateBox() {
       const box = document.querySelector(".hamburgerMenu") as HTMLElement;
@@ -225,15 +223,14 @@ export default {
         this.down = false;
       }
     },
-   async logOut(){
-    try{
-    await this.logout();
-    this.$router.push('login');
-    }
-    catch(error){
-      console.log("There was a problem trying to logout")
-    }
-   }
+    async logOut() {
+      try {
+        await this.logout();
+        this.$router.push("login");
+      } catch (error) {
+        console.log("There was a problem trying to logout");
+      }
+    },
   },
   computed: {
     isLoggedIn() {
@@ -247,5 +244,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

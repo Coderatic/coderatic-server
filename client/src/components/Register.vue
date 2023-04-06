@@ -70,9 +70,9 @@ export default {
 
 <style scoped>
 .popup-animate {
-  -webkit-animation: rotateAnimate 0.5s ease initial;
-  -moz-animation: rotateAnimate 0.5s ease initial;
-  animation: rotateAnimate 0.5s ease initial;
+  -webkit-animation: rotateAnimate 4s ease initial;
+  -moz-animation: rotateAnimate 4s ease initial;
+  animation: rotateAnimate 4s ease initial;
 }
 @keyframes rotateAnimate {
   0% {

@@ -48,12 +48,13 @@
               <div
                 class="bg-gradient-to-r from-purple-800 w-[100%] to-red-900 p-[01px] rounded"
               >
-                <div
+                <button
                   class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded"
+                  @click="loginUser"
                   type="submit"
                 >
                   Log In
-                </div>
+                </button>
               </div>
             </div>
           </div>
@@ -73,7 +74,36 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { mapActions } from "vuex";
+import { defineAsyncComponent } from "vue";
+import { useStore } from "vuex";
+
+const store = useStore();
+
+const username = ref("");
+const password = ref("");
+
+const login = mapActions(["login"]);
+const emits = defineEmits(["loginSuccess", "loginFailure"]);
+
+async function loginUser() {
+  window.scrollTo(0, 0);
+  const userData = {
+    username: username,
+    password: password,
+  };
+  try {
+    await store.dispatch("login", userData);
+    emits("loginSuccess");
+    //add a popup div here
+  } catch (error) {
+    emits("loginFailure");
+    console.log(error);
+  }
+}
+</script>
 
 <style scoped>
 .background-animate {

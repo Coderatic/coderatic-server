@@ -22,6 +22,7 @@
                   class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
                   type="text"
                   name="name"
+                  v-model="username"
                   placeholder="username"
                 />
               </div>
@@ -40,6 +41,7 @@
                   class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
                   type="password"
                   name="password"
+                  v-model="password"
                   placeholder="password"
                 />
               </div>
@@ -76,30 +78,25 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { mapActions } from "vuex";
 import { defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
-
+import router from "../router";
 const store = useStore();
 
 const username = ref("");
 const password = ref("");
 
-const login = mapActions(["login"]);
 const emits = defineEmits(["loginSuccess", "loginFailure"]);
-
 async function loginUser() {
   window.scrollTo(0, 0);
   const userData = {
-    username: username,
-    password: password,
+    username: username.value,
+    password: password.value,
   };
   try {
     await store.dispatch("login", userData);
-    emits("loginSuccess");
-    //add a popup div here
+    router.push('/');
   } catch (error) {
-    emits("loginFailure");
     console.log(error);
   }
 }

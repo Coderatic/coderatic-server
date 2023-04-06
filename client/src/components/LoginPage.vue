@@ -73,6 +73,7 @@
         </p>
       </div>
     </div>
+    <PopUp :message="error_message"></PopUp>
   </div>
 </template>
 
@@ -81,10 +82,16 @@ import { ref } from "vue";
 import { defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import router from "../router";
+
+import PopUp from "./PopUp.vue";
+import { AxiosError } from "axios";
+
 const store = useStore();
 
 const username = ref("");
 const password = ref("");
+
+const error_message = ref("");
 
 const emits = defineEmits(["loginSuccess", "loginFailure"]);
 async function loginUser() {
@@ -95,9 +102,9 @@ async function loginUser() {
   };
   try {
     await store.dispatch("login", userData);
-    router.push('/');
-  } catch (error) {
-    console.log(error);
+    router.push("/");
+  } catch (error: any) {
+    error_message.value = error.response.data.error;
   }
 }
 </script>

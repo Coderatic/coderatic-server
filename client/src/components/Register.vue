@@ -52,10 +52,8 @@ export default {
     showSuccess() {
       const box = document.querySelector(".successPopup") as HTMLElement;
       box.style.transform = "translateX(0px)";
-      box.classList.add("popup-animate");
       setTimeout(() => {
         box.style.transform = "translateX(210px)";
-        box.classList.remove("popup-animate");
       }, 3000);
     },
   },

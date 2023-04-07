@@ -3,14 +3,16 @@
     class="absolute top-[20px] right-[10px] py-[20px] flex justify-center items-center bg-black rounded-[50px] translate-x-[120%] transition-all duration-[500ms]"
     id="popup"
   >
-    <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-white" />
-    <p class="px-6 font-lato text-sm text-white">{{ message }}</p>
+    <font-awesome-icon
+      icon="fa-solid fa-circle-xmark"
+      class="text-white mx-3"
+    />
+    <p class="pr-6 font-lato text-sm text-white">{{ message }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { defineProps } from "vue";
 
 const props = defineProps({ message: String });
 
@@ -22,14 +24,7 @@ const showMessage = () => {
   }, 3000);
 };
 
-watch(
-  () => props.message,
-  (newVal) => {
-    if (newVal) {
-      showMessage();
-    }
-  }
-);
+defineExpose({ showMessage });
 </script>
 
 <style></style>

@@ -51,7 +51,7 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-  } else if(to.meta.guest === false) {
+  } else if (to.meta.guest === false) {
     if (store.getters.isAuthenticated) {
       next();
       return;
@@ -59,9 +59,9 @@ router.beforeEach((to, from, next) => {
       next("/login");
       return;
     }
-  }else if(to.meta.auth === false){
+  } else if (to.meta.auth === false) {
     next();
-    return
+    return;
   }
 
   next();

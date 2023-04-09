@@ -22,8 +22,10 @@ const actions = {
   },
 
   async logout({ commit }: any) {
+    if(state.user != null){
     let temp = null;
     await commit("LogOut", temp);
+  }
   },
   async login({ commit }: any, authData: AuthData) {
     const response = await Api().post("/api/auth/signin", {

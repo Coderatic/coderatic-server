@@ -28,7 +28,7 @@
             <label for="email" class="text-white pl-4 font-lato">Email</label>
             <p
               class="text-red-700 font-lato text-sm inline mr-4"
-              v-if="!validateEmail"
+              v-if="!validateEmail()"
             >
               Invalid email format
             </p>
@@ -68,7 +68,7 @@
               >Confirm Password</label
             >
             <p
-              v-if="!passwordsMatch"
+              v-if="!passwordsMatch()"
               class="text-red-700 font-lato text-sm inline mr-4"
             >
               Passwords do not match
@@ -93,14 +93,14 @@
           <div
             id="gradient-btn-bg"
             class="p-[01px] rounded"
-            :class="disableButton"
+            :class="disableButton()"
           >
             <button
               class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded disabled:text-gray-500"
               type="submit"
               value="Register"
               @click="registerUser"
-              :disabled="!fieldsValid"
+              :disabled="!fieldsValid()"
             >
               Sign Up
             </button>
@@ -117,9 +117,10 @@
       instead.
     </p>
   </div>
+  <PopUp ref="popUpRef" :message="message" :is_error="is_error"></PopUp>
 </template>
 
-<script lang="ts">
+<!-- <script lang="ts">
 import { AxiosError, AxiosResponse } from "axios";
 import { mapActions } from "vuex";
 export default {
@@ -186,6 +187,80 @@ export default {
     },
   },
 };
+</script> -->
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { useStore } from "vuex";
+
+import RegisterComp from "./RegisterComp.vue";
+import PopUp from "./PopUp.vue";
+import { Axios, AxiosError, AxiosResponse } from "axios";
+
+const store = useStore();
+
+const username = ref("");
+const email = ref("");
+const password = ref("");
+const confirm_password = ref("");
+
+function passwordsMatch(): boolean {
+  return (
+    confirm_password.value === "" || password.value === confirm_password.value
+  );
+}
+
+function validateEmail() {
+  var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return email.value === "" || email.value.match(emailRegex);
+}
+
+function fieldsValid() {
+  return (
+    username.value !== "" &&
+    email.value !== "" &&
+    validateEmail() &&
+    password.value !== "" &&
+    confirm_password.value !== "" &&
+    passwordsMatch() &&
+    password.value.length >= 8
+  );
+}
+
+function highlightPasswordFields() {
+  if (passwordsMatch()) {
+    return "border-gray-900 focus:border-purple-900";
+  }
+  return "!border-red-500";
+}
+
+function disableButton() {
+  return !fieldsValid()
+    ? "bg-gray-400"
+    : "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
+}
+
+const message = ref("");
+const is_error = ref(false);
+const popUpRef = ref();
+
+async function registerUser() {
+  window.scrollTo(0, 0);
+  const userData = {
+    username: username.value,
+    password: password.value,
+    email: email.value,
+  };
+  try {
+    const response: AxiosResponse = await store.dispatch("register", userData);
+    is_error.value = false;
+    message.value = response.data.message;
+  } catch (error: any) {
+    message.value = error.response.data.error;
+    is_error.value = true;
+  }
+  popUpRef.value.showMessage();
+}
 </script>
 
 <style scoped>

@@ -82,7 +82,7 @@
         <div class="grow sm:hidden md:hidden">
           <div class="flex justify-center" v-if="problemPage">
             <div
-              class="px-5 py-[8px] border-b-purple-700 border-r-purple-700 rounded-l-3xl rounded-r-3xl border-b-4 border-b-4 bg-background-grey-dark  flex flex-col justify-center translate-y-[30%]"
+              class="px-5 py-[8px] border-b-purple-700 border-r-purple-700 rounded-l-3xl rounded-r-3xl border-b-4 bg-background-grey-dark  flex flex-col justify-center translate-y-[30%]"
             >
               <p class="font-lato text-xl text-white">2:53:34</p>
             </div>

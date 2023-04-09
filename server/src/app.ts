@@ -1,7 +1,7 @@
 import Express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import mongoose from "mongoose";
+import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 
@@ -16,13 +16,24 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // db connection
-const password = encodeURIComponent(process.env.DB_PASSWORD);
-const uname = encodeURIComponent(process.env.DB_USERNAME);
-const dbname = encodeURIComponent(process.env.DB_NAME);
-const db_url = `mongodb+srv://${uname}:${password}@${dbname}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_NAME}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
+
+async function connectToDB() {
+  try {
+    console.log("Connecting to DB...");
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    } as ConnectOptions);
+    console.log("DB Connected");
+  } catch (err) {
+    console.log("DB Connection Error: ", err);
+  }
+}
+
+connectToDB();
 
 // middlewares
-app.use(cors());
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(
@@ -34,18 +45,18 @@ app.use(
 );
 app.use(cookieParser());
 
+// Set credentials to true
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 // routes middlewares
-app.use("/api", authRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is up and running at http://localhost:${PORT}.`);
 });
-
-try {
-  console.log("Connecting to database...");
-  await mongoose.connect(db_url);
-  console.log("Connection to database successful.");
-} catch (err) {
-  console.log("Error connecting to database:\n", err.message);
-}

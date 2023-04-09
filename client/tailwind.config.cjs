@@ -17,13 +17,11 @@ module.exports = {
         'accent-lightgreen':'#34f5c5',
         'accent-darkgreen': '#21d0b2',
         'background-grey':'#151515',
-        'background-grey-dark':'#060606',
+        'background-grey-dark':'#090909',
         'background-night':'#0a0a0a',
         'accent-cream':'#fbfcd4',
         'accent-s-yellow':'#ffdd02',
         'accent-m-yellow':'#fac402'
-        
-  
       }
     },
     screens: {

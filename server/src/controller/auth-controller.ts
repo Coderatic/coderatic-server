@@ -40,7 +40,7 @@ const preSignUp = async (req, res) => {
       subject: "Welcome to Coderatic! - Account Activation Link",
       html: `
 	  <h4>Please use the following link to activate your account:</h4>
-	  <p>${process.env.PRODUCTION_URL}:${process.env.PORT}/api/signup?token=${token}</p>
+	  <p>http://localhost:5173/#/auth/account/activate/${token}</p>
 
 	  <hr/>
 	  <p>This email may contain sensitive information</p>
@@ -64,7 +64,8 @@ const preSignUp = async (req, res) => {
 
 const signup = (req, res) => {
   try {
-    const token = req.query.token;
+    const token = req.body.token;
+    console.log(req);
     if (token) {
       jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
         if (err) {
@@ -98,7 +99,7 @@ const signup = (req, res) => {
           });
       });
     } else {
-      return res.json({
+      return res.status(401).json({
         message: "Something went wrong. Try again.",
       });
     }
@@ -116,14 +117,14 @@ const signin = (req, res) => {
       .then((user) => {
         if (!user) {
           return res.status(400).json({
-            error: "User with that email does not exist. Please signup.",
+            error: "This username does not exist. Please signup.",
           });
         }
 
         // authenticate
         if (!user.authenticate(password)) {
           return res.status(400).json({
-            error: "Email and password do not match.",
+            error: "Username and password do not match.",
           });
         }
 
@@ -132,7 +133,7 @@ const signin = (req, res) => {
           expiresIn: "1d",
         });
 
-        res.cookie("token", token, { expiresIn: "1d" });
+        res.cookie("token", token, { expiresIn: "1d", httpOnly: true });
         const { _id, username, first_name, last_name, email, role } = user;
         return res.json({
           token,
@@ -153,6 +154,20 @@ const signout = (req, res) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+const verifyToken = (req, res) => {
+  const token = req.body.token;
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({
+        error: "Expired link. Login again.",
+      });
+    } else
+      return res.status(200).json({
+        message: "Token is valid",
+      });
+  });
 };
 
 const requireSignin = expressJwt({
@@ -324,6 +339,7 @@ export {
   preSignUp,
   signup,
   signin,
+  verifyToken,
   signout,
   requireSignin,
   authMiddleWare,

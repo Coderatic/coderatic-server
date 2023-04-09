@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Register from "../components/Register.vue";
+import RegisterPage from "../components/RegisterPage.vue";
 import LoginPage from "../components/LoginPage.vue";
 import HomePage from "../components/HomePage.vue";
 import Competition from "../components/Competition.vue";
@@ -12,7 +12,7 @@ const router = createRouter({
     {
       path: "/register",
       name: "Registeration Page",
-      component: Register,
+      component: RegisterPage,
       meta: { guest: true },
     },
     {

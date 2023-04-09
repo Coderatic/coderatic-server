@@ -6,10 +6,7 @@
       CODE<span class="font-montserrat text-purple-700 font-black">RATIC</span>
     </h1>
     <div class="flex flex-col justify-center items-center">
-      <RegisterComp
-        @regSuccess="showSuccess"
-        @regFailure="showFailure"
-      ></RegisterComp>
+      <RegisterComp></RegisterComp>
     </div>
     <div
       class="successPopup w-[210px] translate-x-[210px] transition-all h-[60px] bg-green-500 absolute top-[10px] right-0 flex justify-center items-center rounded-tl rounded-bl"

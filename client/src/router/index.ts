@@ -5,6 +5,7 @@ import HomePage from "../components/HomePage.vue";
 import Competition from "../components/Competition.vue";
 import ActivateAccount from "../components/ActivateAccount.vue";
 import store from "../store";
+import ProblemPage from "../components/ProblemPage.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -38,6 +39,11 @@ const router = createRouter({
       name: "ActivateAccount",
       component: ActivateAccount,
       meta: { guest: true },
+    },
+    {
+      path: "/problem",
+      name: "Problem",
+      component: ProblemPage,
     },
   ],
 });

@@ -80,7 +80,14 @@
           </h1>
         </div>
         <div class="grow sm:hidden md:hidden">
-          <ul class="flex gap-10 mr-8 justify-end">
+          <div class="flex justify-center" v-if="problemPage">
+            <div
+              class="px-5 py-[8px] border-b-purple-700 border-r-purple-700 rounded-l-3xl rounded-r-3xl border-b-4 bg-background-grey-dark  flex flex-col justify-center translate-y-[30%]"
+            >
+              <p class="font-lato text-xl text-white">2:53:34</p>
+            </div>
+          </div>
+          <ul class="flex gap-10 mr-8 justify-end" v-if="!problemPage">
             <li>
               <a
                 class="text-white font-lato text-[13px] hover:bg-gray-700 py-2 px-1"
@@ -151,9 +158,7 @@
             <div
               class="bg-black w-full h-full rounded hover:bg-gray-700 text-sm px-3 flex items-center"
             >
-              <a class="text-white font-Lato text-sm" href="/#/login"
-                >Log In</a
-              >
+              <a class="text-white font-Lato text-sm" href="/#/login">Log In</a>
             </div>
           </div>
         </div>
@@ -202,6 +207,12 @@ import { mapActions } from "vuex";
 
 export default {
   name: "NavBar",
+  props: {
+    problemPage: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       profileOpts: false,

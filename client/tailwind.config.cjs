@@ -22,8 +22,6 @@ module.exports = {
         'accent-cream':'#fbfcd4',
         'accent-s-yellow':'#ffdd02',
         'accent-m-yellow':'#fac402'
-        
-  
       }
     },
     screens: {

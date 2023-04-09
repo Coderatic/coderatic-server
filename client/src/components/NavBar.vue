@@ -141,12 +141,19 @@
           </ul>
         </div>
         <div class="grow hidden sm:block md:block">
-          <div class="flex justify-center items-center">
-            <!-- <div class="h-[40px] w-[40px] rounded bg-purple-700 p-[1px]">
-				<div class="bg-black h-[100%] w-[100%] rounded">
-
-				</div>
-			</div> -->
+          
+            <div class="flex justify-center" v-if="problemPage">
+            <div class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"> 
+            <div
+              class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl  bg-background-grey-dark flex flex-col justify-center"
+            >
+              <p class="font-lato text-xl text-white">2:53:34</p>
+            </div>
+            </div>
+          
+          </div>
+          <div class="flex justify-center items-center" v-if="!problemPage">
+           
             <h1
               class="font-montserrat text-white font-semibold text-2xl text-center"
               :class="isLoggedIn ? 'ml-[10px]' : 'ml-[25px]'"

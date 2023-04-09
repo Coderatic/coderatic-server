@@ -20,7 +20,7 @@
   </div>
 </template>
 <script lang="ts">
-import Api from "../services/Api";
+import Api from "../../services/Api";
 export default {
   name: "ActivateAccount",
   data() {
@@ -48,7 +48,7 @@ export default {
         });
     } else {
       this.message = "Invalid activation link provided.";
-      this.message2 = "Please try aagin with correct Link.";
+      this.message2 = "Please try again with correct Link.";
     }
   },
 };

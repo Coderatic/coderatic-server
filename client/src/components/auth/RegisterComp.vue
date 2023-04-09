@@ -194,7 +194,7 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 
 import RegisterComp from "./RegisterComp.vue";
-import PopUp from "./PopUp.vue";
+import PopUp from "../global/PopUp.vue";
 import { Axios, AxiosError, AxiosResponse } from "axios";
 
 const store = useStore();

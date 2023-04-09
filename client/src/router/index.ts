@@ -1,11 +1,11 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import RegisterPage from "../components/RegisterPage.vue";
-import LoginPage from "../components/LoginPage.vue";
-import HomePage from "../components/HomePage.vue";
-import Competition from "../components/Competition.vue";
-import ActivateAccount from "../components/ActivateAccount.vue";
+import RegisterPage from "../components/auth/RegisterPage.vue";
+import LoginPage from "../components/auth/LoginPage.vue";
+import HomePage from "../components/core/HomePage.vue";
+import Competition from "../components/core/Competition.vue";
+import ActivateAccount from "../components/auth/ActivateAccount.vue";
 import store from "../store";
-import ProblemPage from "../components/ProblemPage.vue";
+import ProblemPage from "../components/core/ProblemPage.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),

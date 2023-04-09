@@ -80,9 +80,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useStore } from "vuex";
-import router from "../router";
+import router from "../../router";
 
-import PopUp from "./PopUp.vue";
+import PopUp from "../global/PopUp.vue";
 import { AxiosResponse } from "axios";
 
 const store = useStore();

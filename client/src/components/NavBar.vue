@@ -81,11 +81,13 @@
         </div>
         <div class="grow sm:hidden md:hidden">
           <div class="flex justify-center" v-if="problemPage">
+            <div class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"> 
             <div
-              class="px-5 py-[8px] border-b-purple-700 border-r-purple-700 rounded-l-3xl rounded-r-3xl border-b-4 bg-background-grey-dark  flex flex-col justify-center translate-y-[30%]"
+              class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl  bg-background-grey-dark flex flex-col justify-center"
             >
               <p class="font-lato text-xl text-white">2:53:34</p>
             </div>
+          </div>
           </div>
           <ul class="flex gap-10 mr-8 justify-end" v-if="!problemPage">
             <li>

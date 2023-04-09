@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import Register from "./components/Register.vue";
+import RegisterPage from "./components/RegisterPage.vue";
 </script>
 
 <style scoped>

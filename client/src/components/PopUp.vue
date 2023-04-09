@@ -1,6 +1,7 @@
 <template>
   <div
-    class="absolute top-[20px] right-[10px] py-[20px] flex justify-center items-center bg-black rounded-[50px] translate-x-[120%] transition-all duration-[500ms]"
+    class="absolute top-[20px] right-[10px] py-[20px] flex justify-center items-center rounded-[50px] translate-x-[120%] transition-all duration-[500ms]"
+    :class="is_error ? 'bg-red-500' : 'bg-green-500'"
     id="popup"
   >
     <font-awesome-icon
@@ -14,7 +15,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-const props = defineProps({ message: String });
+const props = defineProps({ message: String, is_error: Boolean });
 
 const showMessage = () => {
   const box = document.querySelector("#popup") as HTMLElement;

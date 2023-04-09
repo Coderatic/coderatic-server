@@ -14,7 +14,7 @@ const getters = {
 };
 const actions = {
   async register({}, authData: AuthData) {
-    await Api().post("/api/auth/pre-signup", {
+    return await Api().post("/api/auth/pre-signup", {
       username: authData.username,
       email: authData.email,
       password: authData.password,
@@ -32,6 +32,7 @@ const actions = {
     });
     const userInfo = response.data.user;
     await commit("LogIn", userInfo);
+    return response;
   },
 };
 const mutations = {

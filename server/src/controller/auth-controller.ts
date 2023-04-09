@@ -117,14 +117,14 @@ const signin = (req, res) => {
       .then((user) => {
         if (!user) {
           return res.status(400).json({
-            error: "User with that email does not exist. Please signup.",
+            error: "This username does not exist. Please signup.",
           });
         }
 
         // authenticate
         if (!user.authenticate(password)) {
           return res.status(400).json({
-            error: "Email and password do not match.",
+            error: "Username and password do not match.",
           });
         }
 

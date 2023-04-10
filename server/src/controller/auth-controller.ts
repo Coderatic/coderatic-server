@@ -1,7 +1,6 @@
 import User from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
-import { hashPassword, comparePassword } from "../helpers/auth.js";
 import { expressjwt as expressJwt } from "express-jwt";
 import shortId from "shortid";
 import dotenv from "dotenv";

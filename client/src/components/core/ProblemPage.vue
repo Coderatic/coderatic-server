@@ -46,15 +46,7 @@
 
 <script lang="ts">
 import NavBar from "../global/NavBar.vue";
-import { marked } from "marked";
-marked.use({
-  pedantic: true,
-  gfm: true,
-  breaks: true,
-  sanitize: true,
-  smartypants: true,
-  xhtml: true
-});
+import {marked}  from "marked";
 export default {
   name: "ProblemPage",
   data() {
@@ -73,12 +65,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 pre{
-	  width: 50vw;
+    margin: 30px 0;
 	  padding: 5px;
 	  color:rgb(215, 214, 214);
-	  background-color: rgb(71, 71, 71);
+	  background-color: rgb(39, 39, 39);
 	  border-radius: 5px;
 	}
 </style>

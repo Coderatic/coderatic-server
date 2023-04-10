@@ -27,9 +27,8 @@
       </div>
       <hr class="border-b-1 mx-2 border-background-grey my-2" />
       <textarea v-model="message" cols="30" rows="10"></textarea>
-      <div  
-
-        class="text-white mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
+      <div
+        class="problem-container text-white mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
         v-html="markdownHtml"
       ></div>
     </div>
@@ -46,7 +45,7 @@
 
 <script lang="ts">
 import NavBar from "../global/NavBar.vue";
-import {marked}  from "marked";
+import { marked } from "marked";
 export default {
   name: "ProblemPage",
   data() {
@@ -66,11 +65,45 @@ export default {
 </script>
 
 <style>
-pre{
-    margin: 30px 0;
-	  padding: 5px;
-	  color:rgb(215, 214, 214);
-	  background-color: rgb(39, 39, 39);
-	  border-radius: 5px;
-	}
+p{
+  padding: 20px;
+  
+}
+p > code {
+  padding: 5px;
+  color: #ff6666;
+  background-color: rgb(53, 53, 53);
+  border-radius: 5px;
+}
+pre {
+  margin: 30px 0;
+  padding: 5px;
+  color: rgb(228, 228, 228);
+  background-color: rgb(53, 53, 53);
+  border-radius: 5px;
+}
+.problem-container > h1{
+  font-size: 2em ;
+  font-weight: bold;
+}
+.problem-container > h2{
+  font-size: 1.5em ;
+  font-weight: bold;
+}
+.problem-container > h3{
+  font-size: 1.17em ;
+  font-weight: bold;
+}
+.problem-container > h4{
+  font-size: 1em ;
+  font-weight: bold;
+}
+.problem-container > h5{
+  font-size: 0.83em ;
+  font-weight: bold;
+}
+.problem-container > h6{
+  font-size: 0.67em ;
+  font-weight: bold;
+}
 </style>

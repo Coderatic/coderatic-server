@@ -10,7 +10,7 @@
         <h1 class="text-center text-white font-montserrat text-2xl">Register</h1>
       </div> -->
         <div class="relative my-2">
-          <label for="username" class="text-white pl-4 font-lato"
+          <label for="username" class="text-white pl-4 font-robotomono"
             >Username</label
           >
           <div class="px-4 w-[100%]">
@@ -25,9 +25,9 @@
         </div>
         <div class="relative my-2">
           <div class="flex justify-between">
-            <label for="email" class="text-white pl-4 font-lato">Email</label>
+            <label for="email" class="text-white pl-4 font-robotomono">Email</label>
             <p
-              class="text-red-700 font-lato text-sm inline mr-4"
+              class="text-red-700 font-robotomono text-sm inline mr-4"
               v-if="!validateEmail()"
             >
               Invalid email format
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="relative my-2">
-          <label for="password" class="text-white pl-4 font-lato inline"
+          <label for="password" class="text-white pl-4 font-robotomono inline"
             >Password</label
           >
 
@@ -64,12 +64,12 @@
           <div class="flex justify-between">
             <label
               for="confirm_password"
-              class="text-white pl-4 font-lato inline"
+              class="text-white pl-4 font-robotomono inline"
               >Confirm Password</label
             >
             <p
               v-if="!passwordsMatch()"
-              class="text-red-700 font-lato text-sm inline mr-4"
+              class="text-red-700 font-robotomono text-sm inline mr-4"
             >
               Passwords do not match
             </p>
@@ -87,7 +87,7 @@
           </div>
         </div>
         <!-- <div class="relative my-2">
-          <input type="checkbox" class="inline ml-[16px] outline-none "/><p class="text-white inline ml-[5px] font-lato text-sm">By Registering You agree with the terms and conditions.</p>
+          <input type="checkbox" class="inline ml-[16px] outline-none "/><p class="text-white inline ml-[5px] font-robotomono text-sm">By Registering You agree with the terms and conditions.</p>
         </div> -->
         <div class="px-4 my-3 w-full">
           <div
@@ -96,7 +96,7 @@
             :class="disableButton()"
           >
             <button
-              class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded disabled:text-gray-500"
+              class="w-[100%] h-[100%] py-1 bg-black text-white font-robotomono text-center rounded disabled:text-gray-500"
               type="submit"
               value="Register"
               @click="registerUser"
@@ -111,7 +111,7 @@
   </div>
 
   <div class="lg:w-[350px]">
-    <p class="text-gray-600 font-lato my-5 text-sm">
+    <p class="text-gray-600 font-robotomono my-5 text-sm">
       Already a member?
       <a class="text-purple-500" href="/#/login"> <strong>log in</strong></a>
       instead.

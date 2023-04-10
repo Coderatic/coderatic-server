@@ -12,8 +12,8 @@
         <div
           class="flex flex-col justify-center items-center w-full h-full bg-background-grey-dark text-gray-500 font-montserrat text-sm rounded-[5px] text-center"
         >
-          <h1 class="text-gray-500 font-lato">{{ message }}</h1>
-          <h1 class="text-gray-500 font-lato">{{ message2 }}</h1>
+          <h1 class="text-gray-500 font-robotomono">{{ message }}</h1>
+          <h1 class="text-gray-500 font-robotomono">{{ message2 }}</h1>
         </div>
       </div>
     </div>

@@ -14,12 +14,12 @@
             class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
           >
             <div class="relative my-2">
-              <label for="name" class="text-white pl-4 font-lato"
+              <label for="name" class="text-white pl-4 font-robotomono"
                 >Username</label
               >
               <div class="px-4 w-[100%]">
                 <input
-                  class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+                  class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-robotomono"
                   type="text"
                   name="name"
                   v-model="username"
@@ -29,7 +29,7 @@
             </div>
             <div class="relative my-2">
               <div class="flex justify-between mr-4">
-                <label for="password" class="text-white pl-4 font-lato inline"
+                <label for="password" class="text-white pl-4 font-robotomono inline"
                   >Password</label
                 >
                 <a href="www.google.com" class="inline text-purple-500"
@@ -38,7 +38,7 @@
               </div>
               <div class="px-4 w-[100%]">
                 <input
-                  class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-lato"
+                  class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[100%] my-3 font-robotomono"
                   type="password"
                   name="password"
                   v-model="password"
@@ -51,7 +51,7 @@
                 class="bg-gradient-to-r from-purple-800 w-[100%] to-red-900 p-[01px] rounded"
               >
                 <button
-                  class="w-[100%] h-[100%] py-1 bg-black text-white font-lato text-center rounded"
+                  class="w-[100%] h-[100%] py-1 bg-black text-white font-robotomono text-center rounded"
                   @click="loginUser"
                   type="submit"
                 >
@@ -64,7 +64,7 @@
       </div>
 
       <div class="lg:w-[350px]">
-        <p class="text-gray-600 font-lato my-5 text-sm">
+        <p class="text-gray-600 font-robotomono my-5 text-sm">
           Not a member?
           <a class="text-purple-500" href="/#/register">
             <strong> Sign Up </strong></a

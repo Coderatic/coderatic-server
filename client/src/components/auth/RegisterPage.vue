@@ -13,7 +13,7 @@
     >
       <font-awesome-icon icon="fa-solid fa-check" class="text-white" />
       <p class="h-[50%] p-[1px] mx-[10px] bg-white"></p>
-      <h1 class="text-white font-lato text-sm mr-[4px]">
+      <h1 class="text-white font-robotomono text-sm mr-[4px]">
         Registered Successfully
       </h1>
     </div>
@@ -22,7 +22,7 @@
     >
       <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-white" />
       <p class="h-[50%] p-[1px] mx-[10px] bg-white"></p>
-      <h1 class="text-white font-lato text-sm mr-[4px]">
+      <h1 class="text-white font-robotomono text-sm mr-[4px]">
         Could not register user
       </h1>
     </div>

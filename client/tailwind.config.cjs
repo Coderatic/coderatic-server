@@ -8,7 +8,9 @@ module.exports = {
     extend: {
       fontFamily: {
         'montserrat': ['Montserrat', 'Sans-serif'],
-        'lato': ['Lato', 'Sans-serif']
+        'lato': ['Lato', 'Sans-serif'],
+        'robotomono': ['Roboto Mono', 'monospace'],
+        
 
       },
       colors:{
@@ -16,8 +18,8 @@ module.exports = {
         'accent-blue':'#1dcdfe',
         'accent-lightgreen':'#34f5c5',
         'accent-darkgreen': '#21d0b2',
-        'background-grey':'#151515',
-        'background-grey-dark':'#090909',
+        'background-grey':'#282828',
+        'background-grey-dark':'#1a1a1a',
         'background-night':'#0a0a0a',
         'accent-cream':'#fbfcd4',
         'accent-s-yellow':'#ffdd02',

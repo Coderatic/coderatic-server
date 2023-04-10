@@ -5,7 +5,7 @@
     <ul class="flex flex-col gap-6 justify-center items-center">
       <li>
         <a
-          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-robotomono text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Home Page'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -17,7 +17,7 @@
       </li>
       <li>
         <a
-          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-robotomono text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Competition'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -29,7 +29,7 @@
       </li>
       <li>
         <a
-          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-robotomono text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Practice'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -41,7 +41,7 @@
       </li>
       <li>
         <a
-          class="text-white font-lato text-[15px] hover:bg-gray-700 py-2 px-1"
+          class="text-white font-robotomono text-[15px] hover:bg-gray-700 py-2 px-1"
           :class="
             currentRouteName === 'Profile Page'
               ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -81,18 +81,20 @@
         </div>
         <div class="grow sm:hidden md:hidden">
           <div class="flex justify-center" v-if="problemPage">
-            <div class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"> 
             <div
-              class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl  bg-background-grey-dark flex flex-col justify-center"
+              class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%] mr-[90px]"
             >
-              <p class="font-lato text-xl text-white">2:53:34</p>
+              <div
+                class="px-10 py-[8px] rounded-l-3xl rounded-r-3xl bg-background-grey flex flex-col justify-center"
+              >
+                <p class="font-romotomono text-xl text-white">2:53:34</p>
+              </div>
             </div>
-          </div>
           </div>
           <ul class="flex gap-10 mr-8 justify-end" v-if="!problemPage">
             <li>
               <a
-                class="text-white font-lato text-[13px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-robotomono text-[13px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Home Page'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -104,7 +106,7 @@
             </li>
             <li>
               <a
-                class="text-white font-lato text-[13px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-robotomono text-[13px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Competition'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -116,7 +118,7 @@
             </li>
             <li>
               <a
-                class="text-white font-lato text-[13px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-robotomono text-[13px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Practice'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -128,7 +130,7 @@
             </li>
             <li>
               <a
-                class="text-white font-lato text-[13px] hover:bg-gray-700 py-2 px-1"
+                class="text-white font-robotomono text-[13px] hover:bg-gray-700 py-2 px-1"
                 :class="
                   currentRouteName === 'Profile Page'
                     ? 'border-b-[3px] border-purple-700 hover:rounded'
@@ -141,19 +143,18 @@
           </ul>
         </div>
         <div class="grow hidden sm:block md:block">
-          
-            <div class="flex justify-center" v-if="problemPage">
-            <div class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"> 
+          <div class="flex justify-center" v-if="problemPage">
             <div
-              class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl  bg-background-grey-dark flex flex-col justify-center"
+              class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"
             >
-              <p class="font-lato text-xl text-white">2:53:34</p>
+              <div
+                class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl bg-background-grey-dark flex flex-col justify-center"
+              >
+                <p class="font-robotomono text-xl text-white">2:53:34</p>
+              </div>
             </div>
-            </div>
-          
           </div>
           <div class="flex justify-center items-center" v-if="!problemPage">
-           
             <h1
               class="font-montserrat text-white font-semibold text-2xl text-center"
               :class="isLoggedIn ? 'ml-[10px]' : 'ml-[25px]'"
@@ -167,13 +168,13 @@
             <div
               class="bg-black w-full h-full rounded hover:bg-gray-700 text-sm px-3 flex items-center"
             >
-              <a class="text-white font-Lato text-sm" href="/#/login">Log In</a>
+              <a class="text-white font-robotomono text-sm" href="/#/login">Log In</a>
             </div>
           </div>
         </div>
-        <div class="mr-10 sm:mr-2 md:mr-2" v-if="isLoggedIn">
+        <div class="mr-6 sm:mr-2 md:mr-2" v-if="isLoggedIn">
           <div
-            class="w-[35px] h-[35px] rounded-[50%] bg-yellow-500"
+            class="w-[32px] h-[32px] rounded-[50%] bg-yellow-500"
             v-on:click="showProfileOptions"
           ></div>
         </div>
@@ -184,7 +185,7 @@
           <ul>
             <li>
               <div
-                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
+                class="text-black font-robotomono text-sm text-start hover:bg-gray-300 pl-3 py-2"
                 v-on:click="logOut"
               >
                 Log Out
@@ -192,14 +193,14 @@
             </li>
             <li>
               <div
-                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
+                class="text-black font-robotomono text-sm text-start hover:bg-gray-300 pl-3 py-2"
               >
                 Profile
               </div>
             </li>
             <li>
               <div
-                class="text-black font-lato text-sm text-start hover:bg-gray-300 pl-3 py-2"
+                class="text-black font-robotomono text-sm text-start hover:bg-gray-300 pl-3 py-2"
               >
                 Dashboard
               </div>

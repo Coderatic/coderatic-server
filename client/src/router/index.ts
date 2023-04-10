@@ -35,7 +35,7 @@ const router = createRouter({
       meta: { guest: false },
     },
     {
-      path: "/auth/account/activate/:token",
+      path: "/auth/account/activate/:token",  
       name: "ActivateAccount",
       component: ActivateAccount,
       meta: { guest: true },
@@ -45,6 +45,8 @@ const router = createRouter({
       name: "Problem",
       component: ProblemPage,
     },
+
+    
   ],
 });
 router.beforeEach((to, from, next) => {

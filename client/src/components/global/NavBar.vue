@@ -82,12 +82,12 @@
         <div class="grow sm:hidden md:hidden">
           <div class="flex justify-center" v-if="problemPage">
             <div
-              class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%] mr-[90px]"
+              class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%] mr-[110px]"
             >
               <div
                 class="px-10 py-[8px] rounded-l-3xl rounded-r-3xl bg-background-grey flex flex-col justify-center"
               >
-                <p class="font-romotomono text-xl text-white">2:53:34</p>
+                <p class="font-robotomono text-lg text-white">2:53:34</p>
               </div>
             </div>
           </div>
@@ -145,7 +145,7 @@
         <div class="grow hidden sm:block md:block">
           <div class="flex justify-center" v-if="problemPage">
             <div
-              class="rounded-l-3xl rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"
+              class="rounded-l-3xl  rounded-r-3xl bg-purple-700 p-[2px] translate-y-[30%]"
             >
               <div
                 class="px-5 py-[8px] rounded-l-3xl rounded-r-3xl bg-background-grey-dark flex flex-col justify-center"

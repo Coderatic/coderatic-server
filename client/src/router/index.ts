@@ -41,7 +41,7 @@ const router = createRouter({
       meta: { guest: true },
     },
     {
-      path: "/problem",
+      path: "/problem/:problem_id",
       name: "Problem",
       component: ProblemPage,
     },

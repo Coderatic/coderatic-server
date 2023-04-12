@@ -4,13 +4,15 @@ interface AuthData {
   username: string;
   email?: string;
   password: string;
-}
+};
+
 
 const state = {
   user: null,
 };
 const getters = {
   isAuthenticated: (state: any) => !!state.user,
+  giveUserId: (state:any)=>{return state.user.user_id}
 };
 const actions = {
   async register({}, authData: AuthData) {

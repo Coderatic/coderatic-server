@@ -53,7 +53,7 @@
       </li>
     </ul>
   </div>
-  <div class="bg-gradient-to-r from-purple-700 to-red-900 pb-[2px] relative">
+  <div class="z-[2] bg-gradient-to-r from-purple-700 to-red-900 pb-[2px] relative">
     <nav class="h-[45px] bg-background-grey-dark w-[100%] sticky">
       <div class="flex justify-between items-center h-[100%]">
         <div class="hidden sm:block md:block">
@@ -179,7 +179,7 @@
           ></div>
         </div>
         <div
-          class="absolute top-[65px] right-[40px] sm:right-[20px] md:right-[20px] bg-white border w-[150px] rounded transition-all"
+          class="z-10 absolute top-[50px] right-[25px] sm:right-[20px] md:right-[20px] bg-white border w-[150px] rounded transition-all"
           v-if="profileOpts"
         >
           <ul>

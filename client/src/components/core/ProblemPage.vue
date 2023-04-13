@@ -5,9 +5,10 @@
       class="problemDiv min-w-[350px] w-[calc(100%-45%-7px)] h-[calc(100vh-47px)] bg-background-grey-dark"
     >
       <div class="w-full h-[50px] mt-3 flex flex-col justify-center">
-        <h1 class="text-gray-200 font-robotomono text-2xl ml-2">
-          1. Center A Div Without Googling
-        </h1>
+        <h1
+          class="text-gray-200 font-robotomono text-2xl ml-2"
+          v-html="problemTitle"
+        ></h1>
       </div>
       <hr class="border-b-1 mx-2 border-background-grey my-2" />
       <div class="w-full h-[40px] flex justify-around items-center px-2">
@@ -172,7 +173,7 @@
         class="w-full h-60px flex flex-col justify-center items-end my-3 px-2"
       >
         <div
-          class="px-8 py-2  rounded-2xl hover:bg-gray-700 cursor-pointer bg-background-grey text-gray-100 font-robotomono"
+          class="px-8 py-2 rounded-2xl hover:bg-gray-700 cursor-pointer bg-background-grey text-gray-100 font-robotomono"
           v-on:click="submission"
         >
           Submit
@@ -184,13 +185,14 @@
 </template>
 
 <script lang="ts">
+import getProblem from "../../services/GetProblem";
 import submitCode from "../../services/Submit";
 import NavBar from "../global/NavBar.vue";
 import SubmissionResult from "../utility/SubmissionResult.vue";
 import { marked } from "marked";
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
-import {cpp} from "@codemirror/lang-cpp"
+import { cpp } from "@codemirror/lang-cpp";
 import { oneDark } from "@codemirror/theme-one-dark";
 import store from "../../store";
 export default {
@@ -198,7 +200,8 @@ export default {
   data() {
     return {
       code: "",
-      message: "",
+      problemStatement: "",
+      problemTitle: "",
       langSelect: false,
       currentLang: "cpp",
       extensions: [cpp(), oneDark] as any[],
@@ -206,6 +209,7 @@ export default {
       submissionTabVisible: true,
       leaderboardTabVisible: true,
       submissionsList: [] as string[][],
+      problem_id: this.$route.params.problem_id as string,
     };
   },
 
@@ -216,13 +220,22 @@ export default {
   },
   computed: {
     reversedList() {
-					return this.submissionsList.slice().reverse();
-				},
+      return this.submissionsList.slice().reverse();
+    },
     markdownHtml() {
-      return marked(this.message);
+      return marked(this.problemStatement);
     },
   },
   mounted() {
+    const response = getProblem(this.problem_id)
+      .then((res) => {
+        this.problemStatement = res.data.problem.description;
+        this.problemTitle = res.data.problem.name;
+      })
+      .catch((err) => {
+        alert("Not found");
+      });
+
     let resizer = document.querySelector(".resizer"),
       problemDiv = document.querySelector(".problemDiv"),
       codeeditor = document.querySelector(".codeEditor");

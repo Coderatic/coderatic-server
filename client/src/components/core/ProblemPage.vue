@@ -71,7 +71,7 @@
         <hr class="h-[2px] border-background-grey my-1" />
 
         <SubmissionResult
-          v-for="submission in submissionsList"
+          v-for="submission in reversedList"
           :verdicts="submission"
         ></SubmissionResult>
       </div>
@@ -127,16 +127,16 @@
             <ul>
               <li
                 class="py-2 pl-4 text-gray-100 font-lato hover:bg-gray-600"
-                @click="(currentLang = 'JavaScript'), (langSelect = false)"
+                @click="(currentLang = 'rust'), (langSelect = false)"
               >
-                JavaScript
+                Rust
               </li>
               <hr class="w-full border-b-1 border-gray-600" />
               <li
                 class="py-2 pl-4 text-gray-100 font-lato hover:bg-gray-600"
-                @click="(currentLang = 'TypeScript'), (langSelect = false)"
+                @click="(currentLang = 'py3'), (langSelect = false)"
               >
-                TypeScript
+                Python3
               </li>
               <hr class="w-full border-b-1 border-gray-600" />
 
@@ -150,7 +150,7 @@
 
               <li
                 class="py-2 pl-4 text-gray-100 font-lato hover:bg-gray-600"
-                @click="(currentLang = 'g++ 14'), (langSelect = false)"
+                @click="(currentLang = 'cpp'), (langSelect = false)"
               >
                 g++ 14
               </li>
@@ -200,16 +200,12 @@ export default {
       code: "",
       message: "",
       langSelect: false,
-      currentLang: "C++ 17",
+      currentLang: "cpp",
       extensions: [cpp(), oneDark],
       problemTabVisible: true,
       submissionTabVisible: true,
       leaderboardTabVisible: true,
-      submissionsList: [
-        ["CE", "P", "TLE"],
-        ["P", "CE"],
-        ["P", "CE", "P", "P"],
-      ],
+      submissionsList: []
     };
   },
 
@@ -219,6 +215,9 @@ export default {
     SubmissionResult,
   },
   computed: {
+    reversedList() {
+					return this.submissionsList.slice().reverse();
+				},
     markdownHtml() {
       return marked(this.message);
     },

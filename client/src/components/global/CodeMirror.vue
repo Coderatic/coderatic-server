@@ -1,6 +1,5 @@
 <template>
 	<codemirror
-	  
 	  v-model="code"
 	  :style="{ height: '100%', zIndex:0 }"
 	  :autofocus="true"
@@ -42,8 +41,7 @@
 		  const cursor = ranges[0].anchor
 		  const length = state.doc.length
 		  const lines = state.doc.lines
-		  // more state info ...
-		  // return ...
+
 		}
   
 		return {

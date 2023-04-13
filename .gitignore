@@ -10,5 +10,6 @@ coderatic-judge
 *.sln
 *.env
 *.sw?
-#judge
+server/src/microservices/judge/cache/processed/*/*
+server/src/microservices/judge/cache/src/*/*
 node_modules

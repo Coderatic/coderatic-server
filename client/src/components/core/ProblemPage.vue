@@ -201,11 +201,11 @@ export default {
       message: "",
       langSelect: false,
       currentLang: "cpp",
-      extensions: [cpp(), oneDark],
+      extensions: [cpp(), oneDark] as any[],
       problemTabVisible: true,
       submissionTabVisible: true,
       leaderboardTabVisible: true,
-      submissionsList: []
+      submissionsList: [] as string[][],
     };
   },
 

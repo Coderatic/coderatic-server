@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 const submissionValidator = [
   body("problem_id").not().isEmpty().withMessage("Problem ID is required"),
-  body("user_id").not().isEmpty().withMessage("User ID is required"),
+  //body("user_id").not().isEmpty().withMessage("User ID is required"),
   body("source_code").not().isEmpty().withMessage("Code is required"),
   body("lang").not().isEmpty().withMessage("Language is required"),
   body("lang.name").not().isEmpty().withMessage("Language is required"),

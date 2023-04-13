@@ -23,8 +23,8 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   submission.submission_time = new Date().valueOf();
 
   //Get the user for the submission
-  const user = await User.findOne({ short_id: submission.user_id });
-  if (!user) return res.status(404).json({ message: "User not found" });
+  //const user = await User.findOne({ short_id: submission.user_id });
+  //if (!user) return res.status(404).json({ message: "User not found" });
 
   //Get the problem for the submission
   const problem = await Problem.findOne({ short_id: submission.problem_id });

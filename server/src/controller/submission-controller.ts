@@ -72,4 +72,14 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   });
 };
 
-export { submitProblem };
+const getProblemData = async (req, res): Promise<Express.Response> => {
+  const problem_id = req.params.problem_id;
+  const problem = await Problem.findOne({ short_id: problem_id });
+  if (problem) {
+    return res.status(200).json({
+      problem: problem,
+    });
+  } else return res.status(404).json({ message: "Problem not found" });
+};
+
+export { submitProblem, getProblemData };

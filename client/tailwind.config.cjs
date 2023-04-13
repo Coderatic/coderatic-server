@@ -6,7 +6,7 @@ module.exports = {
       fontFamily: {
         montserrat: ["Montserrat", "Sans-serif"],
         lato: ["Lato", "Sans-serif"],
-        robotomono: ["Roboto Mono", "monospace"],
+        robotomono: ["Roboto", "monospace"],
       },
       colors: {
         background: "#2f455c",

@@ -236,7 +236,7 @@ export default {
         this.problemTitle = res.data.problem.name;
       })
       .catch((err) => {
-        alert("Not found");
+        alert(err.response.data.message);
       });
 
     let resizer = document.querySelector(".resizer"),

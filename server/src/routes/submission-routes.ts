@@ -8,6 +8,6 @@ import { submissionValidator } from "../validators/submission-validator.js";
 
 // if validation is passed, call the submitProblem controller
 router.post("/submit-code", submissionValidator, runValidation, submitProblem);
-router.post("/get-problem-data", getProblemData);
+router.get("/get-problem-data", getProblemData);
 
 export default router;

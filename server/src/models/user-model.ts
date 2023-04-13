@@ -1,7 +1,9 @@
 import mongoose, { Document } from "mongoose";
+import shortId from "shortid";
 import bcrypt from "bcrypt";
 
 interface IUser extends Document {
+  short_id: string;
   first_name?: string;
   last_name?: string;
   username: string;
@@ -17,6 +19,11 @@ interface IUser extends Document {
 
 const UserSchema = new mongoose.Schema<IUser>(
   {
+    short_id: {
+      type: String,
+      unique: true,
+      default: shortId.generate,
+    },
     first_name: String,
     last_name: String,
     username: {
@@ -57,7 +64,7 @@ const UserSchema = new mongoose.Schema<IUser>(
       default: "",
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "users" }
 );
 
 UserSchema.methods = {

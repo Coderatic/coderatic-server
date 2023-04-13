@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 // Routes
 import authRoutes from "./routes/auth-routes.js";
+import submissionRoutes from "./routes/submission-routes.js";
 
 const app = Express();
 import http from "http";
@@ -55,6 +56,7 @@ app.use(cors(corsOptions));
 
 // routes middlewares
 app.use("/api/auth", authRoutes);
+app.use("/api/judge", submissionRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

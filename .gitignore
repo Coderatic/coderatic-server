@@ -10,4 +10,5 @@ coderatic-judge
 *.sln
 *.env
 *.sw?
+#judge
 node_modules

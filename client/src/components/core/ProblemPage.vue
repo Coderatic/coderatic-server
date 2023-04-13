@@ -14,22 +14,26 @@
         <div
           class="grow h-full hover:bg-background-grey-dark cursor-pointer bg-background-grey flex flex-col justify-center items-center"
           v-on:click="showProblemTab"
-          >
-          <h1 class="font-robotomono text-gray-500 select-none cursor-pointer" >
+        >
+          <h1 class="font-robotomono text-gray-500 select-none cursor-pointer">
             Problem
           </h1>
         </div>
         <div
           class="grow h-full hover:bg-background-grey-dark bg-background-grey cursor-pointer flex flex-col justify-center items-center"
           v-on:click="showSubmissionTab"
-          >
-          <h1 class="font-robotomono text-gray-500 cursor-pointer select-none" >Submissions</h1>
+        >
+          <h1 class="font-robotomono text-gray-500 cursor-pointer select-none">
+            Submissions
+          </h1>
         </div>
         <div
           class="grow h-full hover:bg-background-grey-dark cursor-pointer bg-background-grey flex flex-col justify-center items-center"
           v-on:click="showLeaderboardTab"
-          >
-          <h1 class="font-robotomono text-gray-500 cursor-pointer select-none" >LeaderBoard</h1>
+        >
+          <h1 class="font-robotomono text-gray-500 cursor-pointer select-none">
+            LeaderBoard
+          </h1>
         </div>
       </div>
       <hr class="border-b-1 mx-2 border-background-grey my-2" />
@@ -37,23 +41,39 @@
         class="problem-container text-white mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
         v-if="problemTabVisible"
         v-html="markdownHtml"
-      >
-        
-      </div>
+      ></div>
       <div
         class="text-white mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
         v-if="submissionTabVisible"
       >
-      <div class="w-full flex h-10 my-2 bg-background-grey">
-	      <div class="w-12 font-robotomono text-sm mx-2 flex flex-col justify-center">Result</div>
-	      <div class="ml-5 grow font-robotomono text-sm flex flex-col justify-center">Submission Name</div>
-	      <div class="w-10 font-robotomono text-sm flex flex-col justify-center items-center">  T1 </div>
-	      <div class="w-10 font-robotomono text-sm flex flex-col justify-center items-center">  T2 </div>
-      </div>
-      <hr class="h-[2px] border-background-grey my-1" />
+        <div class="w-full flex h-10 my-2 bg-background-grey">
+          <div
+            class="w-12 font-robotomono text-sm mx-2 flex flex-col justify-center"
+          >
+            Result
+          </div>
+          <div
+            class="ml-5 grow font-robotomono text-sm flex flex-col justify-center"
+          >
+            Submission Name
+          </div>
+          <div
+            class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
+          >
+            T1
+          </div>
+          <div
+            class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
+          >
+            T2
+          </div>
+        </div>
+        <hr class="h-[2px] border-background-grey my-1" />
 
-        <SubmissionResult v-for="submission in submissionsList" :verdicts="submission"></SubmissionResult>
-
+        <SubmissionResult
+          v-for="submission in submissionsList"
+          :verdicts="submission"
+        ></SubmissionResult>
       </div>
       <div
         class="text-white mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
@@ -139,13 +159,20 @@
         </div>
       </div>
       <div class="w-full h-[calc(100vh-180px)]">
-        <CodeMirror></CodeMirror>
+        <codemirror
+          v-model="code"
+          :style="{ height: '100%', zIndex: 0 }"
+          :autofocus="true"
+          :indent-with-tab="true"
+          :tab-size="8"
+          :extensions="extensions"
+        />
       </div>
       <div
         class="w-full h-60px flex flex-col justify-center items-end my-3 px-2"
       >
         <div
-          class="px-8 py-2 rounded-2xl bg-background-grey text-gray-100 font-robotomono"
+          class="px-8 py-2  rounded-2xl hover:bg-gray-700 cursor-pointer bg-background-grey text-gray-100 font-robotomono"
           v-on:click="submission"
         >
           Submit
@@ -154,36 +181,42 @@
     </div>
     <Popup></Popup>
   </div>
-
 </template>
 
 <script lang="ts">
-
-import submitCode from "../../services/Submit"
+import submitCode from "../../services/Submit";
 import NavBar from "../global/NavBar.vue";
-import SubmissionResult from "../utility/SubmissionResult.vue"
+import SubmissionResult from "../utility/SubmissionResult.vue";
 import { marked } from "marked";
-import CodeMirror from "../global/CodeMirror.vue";
+import { Codemirror } from "vue-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import {cpp} from "@codemirror/lang-cpp"
+import { oneDark } from "@codemirror/theme-one-dark";
 import store from "../../store";
 export default {
   name: "ProblemPage",
   data() {
     return {
-      code:"",
+      code: "",
       message: "",
       langSelect: false,
-      currentLang: "g++ 11",
+      currentLang: "C++ 17",
+      extensions: [cpp(), oneDark],
       problemTabVisible: true,
       submissionTabVisible: true,
       leaderboardTabVisible: true,
-      submissionsList:[['CE','P','TLE'],['P','CE'],['P','CE','P','P']]
+      submissionsList: [
+        ["CE", "P", "TLE"],
+        ["P", "CE"],
+        ["P", "CE", "P", "P"],
+      ],
     };
   },
 
   components: {
     NavBar,
-    CodeMirror,
-    SubmissionResult
+    Codemirror,
+    SubmissionResult,
   },
   computed: {
     markdownHtml() {
@@ -233,17 +266,17 @@ export default {
     initResizerFn(resizer, problemDiv, codeeditor);
   },
   methods: {
-    async submission(){
+    async submission() {
       const lang = {
-        name: this.currentLang
-      }
+        name: this.currentLang,
+      };
       const user_id = store.getters.giveUserId;
-      // const problem_id = (this.$route.params.problem_id)[0];
-      const problem_id = "saadIsADumbFuckWhoWillShitOnHisHeadIfHesToldToByASweatyPedoNerdOnline";
-      try{
-        const response = await submitCode(problem_id,user_id,this.code,lang);
+      const problem_id = this.$route.params.problem_id as string;
+      //const problem_id = "saadIsADumbFuckWhoWillShitOnHisHeadIfHesToldToByASweatyPedoNerdOnline";
+      try {
+        const response = await submitCode(problem_id, user_id, this.code, lang);
         this.submissionsList.push(response.data.verdicts);
-      }catch(e:any){
+      } catch (e: any) {
         console.log(e.response.data.message);
       }
     },
@@ -262,21 +295,21 @@ export default {
       this.langSelect = !this.langSelect;
     },
     showProblemTab() {
-      this.submissionTabVisible= false;
-      this.leaderboardTabVisible=false;
+      this.submissionTabVisible = false;
+      this.leaderboardTabVisible = false;
       this.problemTabVisible = true;
     },
     showSubmissionTab() {
       this.problemTabVisible = false;
-      this.leaderboardTabVisible=false;
-      this.submissionTabVisible=true;
+      this.leaderboardTabVisible = false;
+      this.submissionTabVisible = true;
     },
     showLeaderboardTab() {
-      this.submissionTabVisible=false;
-      this.problemTabVisible =false;
-      this.leaderboardTabVisible=true;
+      this.submissionTabVisible = false;
+      this.problemTabVisible = false;
+      this.leaderboardTabVisible = true;
     },
-  }
+  },
 };
 </script>
 

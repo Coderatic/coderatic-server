@@ -14,7 +14,6 @@
       <div class="w-full h-[40px] flex justify-around items-center px-2">
         <div
           class="grow h-full hover:bg-background-grey-dark cursor-pointer bg-background-grey flex flex-col justify-center items-center"
-          v-if="problemTabVisible"
           v-on:click="showProblemTab"
         >
           <h1 class="font-robotomono text-gray-500 select-none cursor-pointer">
@@ -23,7 +22,6 @@
         </div>
         <div
           class="grow h-full hover:bg-background-grey-dark bg-background-grey cursor-pointer flex flex-col justify-center items-center"
-          v-if="submissionTabVisible"
           v-on:click="showSubmissionTab"
         >
           <h1 class="font-robotomono text-gray-500 cursor-pointer select-none">
@@ -32,7 +30,6 @@
         </div>
         <div
           class="grow h-full hover:bg-background-grey-dark cursor-pointer bg-background-grey flex flex-col justify-center items-center"
-          v-if="showLeaderboardTab"
           v-on:click="showLeaderboardTab"
         >
           <h1 class="font-robotomono text-gray-500 cursor-pointer select-none">
@@ -209,8 +206,8 @@ export default {
       currentLang: "cpp",
       extensions: [cpp(), oneDark] as any[],
       problemTabVisible: true,
-      submissionTabVisible: true,
-      leaderboardTabVisible: true,
+      submissionTabVisible: false,
+      leaderboardTabVisible: false,
       submissionsList: [] as string[][],
       problem_id: this.$route.params.problem_id as string,
     };
@@ -236,7 +233,7 @@ export default {
         this.problemTitle = res.data.problem.name;
       })
       .catch((err) => {
-        alert(err.response.data.message);
+        alert("Not found");
       });
 
     let resizer = document.querySelector(".resizer"),

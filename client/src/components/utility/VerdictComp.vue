@@ -16,7 +16,7 @@ export default{
 	},
 	methods: {
 		pass(){
-			if(this.verdict === "CE" || this.verdict === "TLE"){
+			if(this.verdict === "CE" || this.verdict === "TLE" || this.verdict === "WA"){
 				return false;
 			}else{
 				return true;

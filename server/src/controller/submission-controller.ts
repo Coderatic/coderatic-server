@@ -1,7 +1,6 @@
-import mongoose, { Query } from "mongoose";
 import Problem from "../models/problem-model.js";
 import TestSet from "../models/test-set-model.js";
-import User from "../models/user-model.js";
+import SampleSet from "../models/sample-set-model.js";
 import shortId from "shortid";
 
 import JudgeQueue, { JudgeJob } from "../microservices/judge/judge-queue.js";
@@ -37,9 +36,26 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   const lang_ext = {
     c: "c",
     cpp: "cpp",
+    csharp: "cs",
+    dart: "dart",
+    golang: "go",
+    haskell: "hs",
     java: "java",
-    rust: "rs",
+    javascript: "js",
+    julia: "jl",
+    kotlin: "kt",
+    lisp: "el",
+    lua: "lua",
+    octave: "m",
+    perl: "pl",
+    php: "php",
     py3: "py",
+    python: "py",
+    R: "r",
+    ruby: "rb",
+    rust: "rs",
+    scala: "scala",
+    typescript: "ts",
   };
   submission.lang.extension = lang_ext[lang];
 
@@ -72,18 +88,4 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   });
 };
 
-const getProblemData = async (req, res): Promise<Express.Response> => {
-  const problem_id = req.query.problem_id;
-  if (!problem_id)
-    return res.status(400).json({ message: "Problem ID not provided" });
-  else
-    console.log(problem_id);
-  const problem = await Problem.findOne({ short_id: problem_id });
-  if (problem) {
-    return res.status(200).json({
-      problem: problem,
-    });
-  } else return res.status(404).json({ message: "Problem not found" });
-};
-
-export { submitProblem, getProblemData };
+export { submitProblem };

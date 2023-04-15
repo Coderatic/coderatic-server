@@ -34,19 +34,20 @@ export default {
       outputs: [] as string[],
     };
   },
-  watch: {
-    sample: function (newVal, oldVal) {
-      let sliceIndex = 0;
-      for (let i = 0; i < newVal.length; i++) {
-        if (newVal[i] == "InputEnd") {
-          sliceIndex = i;
-          break;
+  mounted() {
+
+      
+        let sliceIndex = 0;
+        for (let i = 0; i < this.sample!.length; i++) {
+          if (this.sample![i] == "InputEnd") {
+            sliceIndex = i;
+            break;
+          }
         }
-      }
-      this.inputs = newVal.slice(0, sliceIndex);
-      this.outputs = newVal.slice(sliceIndex + 1, newVal.length);
+        this.inputs = this.sample!.slice(0, sliceIndex);
+        this.outputs = this.sample!.slice(sliceIndex + 1, this.sample!.length);
+      
     },
-  },
 };
 </script>
 <!-- <script setup lang="ts">

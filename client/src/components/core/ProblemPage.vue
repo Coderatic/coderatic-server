@@ -9,7 +9,7 @@
         <h1
           class="text-light-text-on-primary dark:text-dark-text-on-primary font-robotomono text-2xl ml-2"
         >
-          <Skeleton :count="1" :duration="3" width="50%" height="30px" >{{ problemTitle }}</Skeleton>
+          <Skeleton :count="1" width="50%" height="30px" >{{ problemTitle }}</Skeleton>
         </h1>
       </div>
       <hr

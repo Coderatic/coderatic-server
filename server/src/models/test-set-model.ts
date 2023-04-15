@@ -1,11 +1,12 @@
 import mongoose, { Document } from "mongoose";
 import shortId from "shortid";
-import Problem, { IProblem } from "./problem-model.js";
+import { IProblem } from "./problem-model.js";
 
 interface ITestSet extends Document {
   problem_id: mongoose.Schema.Types.ObjectId;
   input_file: string;
   output_file: string;
+  constraints: string;
   time_lim: number;
   mem_lim: number;
 }
@@ -25,6 +26,11 @@ const TestSetSchema = new mongoose.Schema<ITestSet>(
       type: String,
       default: shortId.generate + ".txt",
     },
+    constraints: {
+      type: String,
+      trim: true,
+      required: true,
+    },
     time_lim: {
       type: Number,
       required: true,
@@ -34,7 +40,7 @@ const TestSetSchema = new mongoose.Schema<ITestSet>(
       required: true,
     },
   },
-  { collection: "test sets" }
+  { collection: "testSet" }
 );
 
 export default mongoose.model<ITestSet>("TestSet", TestSetSchema);

@@ -20,34 +20,34 @@
       </div>
     </div>
   </div>
+  <div class="w-full my-3 text-light-paragraph-text dark:text-dark-paragraph-text" v-html="markedDesc"></div>
 </template>
 
 <script lang="ts">
+import { marked } from "marked";
+
 export default {
   name: "SampleSet",
   props: {
-    sample: Array<string>,
+    sample: Object,
   },
   data() {
     return {
       inputs: [] as string[],
       outputs: [] as string[],
+      description: "" as string,
     };
   },
   mounted() {
-
-      
-        let sliceIndex = 0;
-        for (let i = 0; i < this.sample!.length; i++) {
-          if (this.sample![i] == "InputEnd") {
-            sliceIndex = i;
-            break;
-          }
-        }
-        this.inputs = this.sample!.slice(0, sliceIndex);
-        this.outputs = this.sample!.slice(sliceIndex + 1, this.sample!.length);
-      
-    },
+    this.inputs = this.sample!.Input;
+    this.outputs = this.sample!.Output;
+    this.description = this.sample!.Description;
+  },
+  computed:{
+	markedDesc(){
+		return marked(this.sample!.Description);
+	}
+  }
 };
 </script>
 <!-- <script setup lang="ts">

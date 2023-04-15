@@ -1,232 +1,262 @@
 <template>
   <NavBar :problemPage="true"></NavBar>
   <SkeletonTheme color="#222222" highlight="#252525">
-  <div class="relative w-screen flex justify-between z-[1]">
-    <div
-      class="problemDiv min-w-[350px] w-[calc(100%-45%-7px)] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
-    >
-      <div class="w-full h-[50px] mt-3 flex flex-col justify-center">
-        <h1
-          class="text-light-text-on-primary dark:text-dark-text-on-primary font-robotomono text-2xl ml-2"
-        >
-          <Skeleton :count="1" width="50%" height="30px" >{{ problemTitle }}</Skeleton>
-        </h1>
-      </div>
-      <hr
-        class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
-      />
-      <div class="w-full h-[40px] flex justify-around items-center px-2">
-        <div
-          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          v-on:click="
-            showProblemTab();
-            currentTab = 'problem';
-          "
-        >
-          <h1
-            :class="
-              currentTab === 'problem'
-                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
-                : ''
-            "
-          >
-            Problem
-          </h1>
-        </div>
-        <div
-          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          v-on:click="
-            showSubmissionTab();
-            currentTab = 'submissions';
-          "
-        >
-          <h1
-            :class="
-              currentTab === 'submissions'
-                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
-                : ''
-            "
-          >
-            Submissions
-          </h1>
-        </div>
-        <div
-          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          @click="
-            showLeaderboardTab();
-            currentTab = 'leaderboard';
-          "
-        >
-          <h1
-            :class="
-              currentTab === 'leaderboard'
-                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
-                : ''
-            "
-          >
-            Leaderboard
-          </h1>
-        </div>
-      </div>
-      <hr
-        class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
-      />
+    <div class="relative w-screen flex justify-between z-[1]">
       <div
-        class="problem-container mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
-        v-if="problemTabVisible"
+        class="problemDiv min-w-[350px] w-[calc(100%-45%-7px)] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
       >
-        <div
-          class="problem-div text-light-text-on-primary dark:text-dark-text-on-primary"
-          v-html="markdownHtml"
-        ></div>
-        <SampleSet v-for="sample in samples" :sample="sample"></SampleSet>
-      </div>
-      <div
-        class="text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
-        v-if="submissionTabVisible"
-      >
-        <div
-          class="w-full flex h-10 my-2 bg-light-secondary dark:bg-dark-secondary"
-        >
-          <div
-            class="w-12 font-robotomono text-sm mx-2 flex flex-col justify-center"
+        <div class="w-full h-[50px] mt-3 flex flex-col justify-center">
+          <h1
+            class="text-light-text-on-primary dark:text-dark-text-on-primary font-robotomono text-2xl ml-2"
           >
-            Result
+            <Skeleton :count="1" width="50%" height="30px">{{
+              problemTitle
+            }}</Skeleton>
+          </h1>
+        </div>
+        <hr
+          class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
+        />
+        <div class="w-full h-[40px] flex justify-around items-center px-2">
+          <div
+            class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+            v-on:click="
+              showProblemTab();
+              currentTab = 'problem';
+            "
+          >
+            <h1
+              :class="
+                currentTab === 'problem'
+                  ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                  : ''
+              "
+            >
+              Problem
+            </h1>
           </div>
           <div
-            class="ml-5 grow font-robotomono text-sm flex flex-col justify-center"
+            class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+            v-on:click="
+              showSubmissionTab();
+              currentTab = 'submissions';
+            "
           >
-            Submission Name
+            <h1
+              :class="
+                currentTab === 'submissions'
+                  ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                  : ''
+              "
+            >
+              Submissions
+            </h1>
           </div>
           <div
-            class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
+            class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+            @click="
+              showLeaderboardTab();
+              currentTab = 'leaderboard';
+            "
           >
-            T1
-          </div>
-          <div
-            class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
-          >
-            T2
+            <h1
+              :class="
+                currentTab === 'leaderboard'
+                  ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                  : ''
+              "
+            >
+              Leaderboard
+            </h1>
           </div>
         </div>
         <hr
-          class="h-[2px] dark:border-dark-secondary border-light-secondary my-1"
+          class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
         />
-
-        <SubmissionResult
-          v-for="submission in reversedList"
-          :verdicts="submission"
-        ></SubmissionResult>
-      </div>
-      <div
-        class="text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
-        v-if="leaderboardTabVisible"
-      >
-        Leaderboard
-      </div>
-    </div>
-    <div
-      class="w-[7px] max-w-[7px] cursor-w-resize flex felx-col justify-center items-center"
-    >
-      <div
-        class="resizer h-[40px] w-full bg-light-highlight dark:bg-dark-highlight"
-      ></div>
-    </div>
-    <div
-      class="codeEditor min-w-[300px] w-[45%] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
-    >
-      <div
-        class="w-full h-[50px] mt-3 flex flex-col justify-center px-2 relative"
-      >
-        <div class="flex justify-end gap-3">
+        <div
+          class="problem-container mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
+          v-if="problemTabVisible"
+        >
           <div
-            class="h-[40px] font-robotomono rounded-xl bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color flex justify-between items-center px-4"
-          >
-            Upload File
+            class="problem-div text-light-text-on-primary dark:text-dark-text-on-primary"
+            v-if="problemStatement != ''"
+            v-html="markdownHtml"
+          ></div>
+          <div v-else>
+            <div class="mb-3">
+              <div class="mb-1">
+                <Skeleton width="250px" height="35px"></Skeleton>
+              </div>
+              <Skeleton :count="2" width="90%" height="25px"></Skeleton>
+              <Skeleton :count="1" width="50%" height="25px"></Skeleton>
+            </div>
+            <Skeleton :count="1" width="90%" height="25px"></Skeleton>
+            <Skeleton :count="1" width="75%" height="25px"></Skeleton>
+            <Skeleton :count="1" width="90%" height="25px"></Skeleton>
+            <div class="my-3 w-full">
+              <Skeleton class="pr-2" width="40%" height="250px"></Skeleton>
+              <Skeleton class="pl-5" width="40%" height="250px"></Skeleton>
+            </div>
+            <div class="mb-1">
+              <Skeleton width="350px" height="35px"></Skeleton>
+            </div>
+            <Skeleton :count="2" width="90%" height="25px"></Skeleton>
+            <Skeleton :count="1" width="50%" height="25px"></Skeleton>
+            <Skeleton :count="1" width="75%" height="25px"></Skeleton>
           </div>
+          <SampleSet
+            v-if="samples"
+            v-for="sample in samples"
+            :sample="sample"
+          ></SampleSet>
+        </div>
+
+        <div
+          class="text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
+          v-if="submissionTabVisible"
+        >
           <div
-            v-on:click="selectLanguage"
-            class="font-robotomono h-[40px] rounded-xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color flex justify-between items-center px-4"
+            class="w-full flex h-10 my-2 bg-light-secondary dark:bg-dark-secondary"
           >
-            <p v-html="currentLang"></p>
-            <svg
-              class="w-4 h-4 ml-2"
-              aria-hidden="true"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <div
+              class="w-12 font-robotomono text-sm mx-2 flex flex-col justify-center"
             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
+              Result
+            </div>
+            <div
+              class="ml-5 grow font-robotomono text-sm flex flex-col justify-center"
+            >
+              Submission Name
+            </div>
+            <div
+              class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
+            >
+              T1
+            </div>
+            <div
+              class="w-10 font-robotomono text-sm flex flex-col justify-center items-center"
+            >
+              T2
+            </div>
           </div>
-          <div
-            class="w-[200px] z-[1] rounded-md absolute top-0 translate-y-[50px] bg-light-secondary dark:bg-dark-secondary"
-            :class="langSelect ? 'isnline' : 'hidden'"
-          >
-            <ul>
-              <li
-                class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
-                @click="(currentLang = 'rust'), (langSelect = false)"
-              >
-                Rust
-              </li>
-              <hr class="w-full border-b-1 border-light-primary" />
-              <li
-                class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
-                @click="(currentLang = 'py3'), (langSelect = false)"
-              >
-                Python3
-              </li>
-              <hr class="w-full border-b-1 border-light-primary" />
+          <hr
+            class="h-[2px] dark:border-dark-secondary border-light-secondary my-1"
+          />
 
-              <li
-                class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
-                @click="(currentLang = 'cpp'), (langSelect = false)"
-              >
-                C++ 17
-              </li>
-              <hr class="w-full border-b-1 border-light-primary" />
-
-              <li
-                class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
-                @click="(currentLang = 'cpp'), (langSelect = false)"
-              >
-                g++ 14
-              </li>
-            </ul>
-          </div>
+          <SubmissionResult
+            v-for="submission in reversedList"
+            :verdicts="submission"
+          ></SubmissionResult>
+        </div>
+        <div
+          class="text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
+          v-if="leaderboardTabVisible"
+        >
+          Leaderboard
         </div>
       </div>
-      <div class="w-full h-[calc(100vh-180px)]">
-        <codemirror
-          v-model="code"
-          :style="{ height: '100%', zIndex: 0 }"
-          :autofocus="true"
-          :indent-with-tab="true"
-          :tab-size="8"
-          :extensions="extensions"
-        />
-      </div>
       <div
-        class="w-full h-60px flex flex-col justify-center items-end my-3 px-2"
+        class="w-[7px] max-w-[7px] cursor-w-resize flex felx-col justify-center items-center"
       >
         <div
-          class="px-8 py-2 rounded-2xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color font-robotomono"
-          v-on:click="submission"
+          class="resizer h-[40px] w-full bg-light-highlight dark:bg-dark-highlight"
+        ></div>
+      </div>
+      <div
+        class="codeEditor min-w-[300px] w-[45%] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
+      >
+        <div
+          class="w-full h-[50px] mt-3 flex flex-col justify-center px-2 relative"
         >
-          Submit
+          <div class="flex justify-end gap-3">
+            <div
+              class="h-[40px] font-robotomono rounded-xl bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color flex justify-between items-center px-4"
+            >
+              Upload File
+            </div>
+            <div
+              v-on:click="selectLanguage"
+              class="font-robotomono h-[40px] rounded-xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color flex justify-between items-center px-4"
+            >
+              <p v-html="currentLang"></p>
+              <svg
+                class="w-4 h-4 ml-2"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </div>
+            <div
+              class="w-[200px] z-[1] rounded-md absolute top-0 translate-y-[50px] bg-light-secondary dark:bg-dark-secondary"
+              :class="langSelect ? 'isnline' : 'hidden'"
+            >
+              <ul>
+                <li
+                  class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
+                  @click="(currentLang = 'rust'), (langSelect = false)"
+                >
+                  Rust
+                </li>
+                <hr class="w-full border-b-1 border-light-primary" />
+                <li
+                  class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
+                  @click="(currentLang = 'py3'), (langSelect = false)"
+                >
+                  Python3
+                </li>
+                <hr class="w-full border-b-1 border-light-primary" />
+
+                <li
+                  class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
+                  @click="(currentLang = 'cpp'), (langSelect = false)"
+                >
+                  C++ 17
+                </li>
+                <hr class="w-full border-b-1 border-light-primary" />
+
+                <li
+                  class="py-2 pl-4 text-light-paragraph-text dark:text-dark-paragraph-text font-lato hover:bg-light-text-hover-color dark:hover:bg-dark-text-hover-color"
+                  @click="(currentLang = 'cpp'), (langSelect = false)"
+                >
+                  g++ 14
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="w-full h-[calc(100vh-180px)]">
+          <codemirror
+            v-model="code"
+            :style="{ height: '100%', zIndex: 0 }"
+            :autofocus="true"
+            :indent-with-tab="true"
+            :tab-size="8"
+            :extensions="extensions"
+          />
+        </div>
+        <div
+          class="w-full h-60px flex flex-col justify-center items-end my-3 px-2"
+        >
+          <div
+            class="px-8 py-2 rounded-2xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color font-robotomono"
+            v-on:click="submission"
+          >
+            Submit
+          </div>
         </div>
       </div>
+      <Popup></Popup>
     </div>
-    <Popup></Popup>
-  </div>
-</SkeletonTheme>
+  </SkeletonTheme>
 </template>
 
 <script lang="ts">
@@ -258,18 +288,7 @@ export default {
       submissionTabVisible: false,
       leaderboardTabVisible: false,
       submissionsList: [["WA"], ["P"]] as string[][],
-      samples: [
-        [
-          "5",
-          "5",
-          "1 -2 3 -hasgdjhasgdjhagshdgasdgasjhsdgajhsdgjhasgdjsaghdgasjhdgajhdgsajhdgagsdj2 3 4",
-          "3",
-          "1 0 3",
-          "InputEnd",
-          "Case#1: 14",
-          "Case#2: 12",
-        ],
-      ] as string[][],
+      samples: [] as object[],
       problem_id: this.$route.params.problem_id as string,
       currentTab: "problem",
     };
@@ -298,7 +317,7 @@ export default {
         this.problemTitle = res.data.problem.name;
       })
       .catch((err) => {
-        alert("Not found");
+        console.log(err);
       });
 
     let resizer = document.querySelector(".resizer"),
@@ -357,17 +376,7 @@ export default {
         console.log(e.response.data.message);
       }
     },
-    markdown() {
-      document.addEventListener("DOMContentLoaded", function () {
-        const codeElement = document.querySelector("p code") as HTMLElement;
-        if (codeElement != null) {
-          const divElement = document.createElement("div") as HTMLElement;
-          divElement.classList.add("scroll-inline-code");
-          codeElement.parentNode!.insertBefore(divElement, codeElement);
-          divElement.appendChild(codeElement);
-        }
-      });
-    },
+
     selectLanguage() {
       this.langSelect = !this.langSelect;
     },
@@ -402,7 +411,7 @@ export default {
 p > div > code,
 p > code {
   padding: 5px;
-  color: #ff6666;
+  color: #ff7777;
   background-color: rgb(53, 53, 53);
   border-radius: 5px;
 }

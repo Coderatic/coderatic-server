@@ -6,10 +6,10 @@ interface IProblem extends Document {
   name: string;
   short_id: string;
   description: string;
-  inputFormat: string;
-  outputFormat: string;
-  constraints: string;
-  test_sets: ITestSet["_id"];
+  input_format: string;
+  output_format: string;
+  sample_test_sets: ITestSet["_id"];
+  hidden_test_sets: ITestSet["_id"];
 }
 
 const ProblemSchema = new mongoose.Schema<IProblem>(
@@ -29,29 +29,30 @@ const ProblemSchema = new mongoose.Schema<IProblem>(
       trim: true,
       required: true,
     },
-    inputFormat: {
+    input_format: {
       type: String,
       trim: true,
       required: true,
     },
-    outputFormat: {
+    output_format: {
       type: String,
       trim: true,
       required: true,
     },
-    constraints: {
-      type: String,
-      trim: true,
-      required: true,
-    },
-    test_sets: [
+    sample_test_sets: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "TestSet",
+      } as ITestSet["_id"],
+    ],
+    hidden_test_sets: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "TestSet",
       } as ITestSet["_id"],
     ],
   },
-  { collection: "problems", timestamps: true }
+  { collection: "problem", timestamps: true }
 );
 
 export default mongoose.model<IProblem>("Problem", ProblemSchema);

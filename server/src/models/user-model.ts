@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema<IUser>(
       default: "",
     },
   },
-  { timestamps: true, collection: "users" }
+  { timestamps: true, collection: "user" }
 );
 
 UserSchema.methods = {

@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 // Routes
 import authRoutes from "./routes/auth-routes.js";
 import submissionRoutes from "./routes/submission-routes.js";
+import problemRoutes from "./routes/problem-routes.js";
 
 const app = Express();
 import http from "http";
@@ -18,6 +19,7 @@ dotenv.config();
 
 // db connection
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_NAME}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
+//const uri = `mongodb://127.0.0.1:27017/coderatic`;
 
 async function connectToDB() {
   try {
@@ -56,7 +58,8 @@ app.use(cors(corsOptions));
 
 // routes middlewares
 app.use("/api/auth", authRoutes);
-app.use("/api/judge", submissionRoutes);
+app.use("/api/problem", problemRoutes);
+app.use("/api/submission", submissionRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

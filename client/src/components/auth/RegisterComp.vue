@@ -4,13 +4,13 @@
   >
     <form name="login" class="w-[100%] h-[100%]" onsubmit="return false">
       <div
-        class="w-[100%] h-[100%] bg-background-grey-dark rounded-md flex flex-col justify-start py-5"
+        class="w-[100%] h-[100%] bg-light-secondary dark:bg-dark-secondary rounded-md flex flex-col justify-start py-5"
       >
         <!-- <div class="relative my-2">
         <h1 class="text-center text-white font-montserrat text-2xl">Register</h1>
       </div> -->
         <div class="relative my-2">
-          <label for="username" class="text-white pl-4 font-robotomono"
+          <label for="username" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono"
             >Username</label
           >
           <div class="px-4 w-[100%]">
@@ -25,7 +25,7 @@
         </div>
         <div class="relative my-2">
           <div class="flex justify-between">
-            <label for="email" class="text-white pl-4 font-robotomono">Email</label>
+            <label for="email" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono">Email</label>
             <p
               class="text-red-700 font-robotomono text-sm inline mr-4"
               v-if="!validateEmail()"
@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="relative my-2">
-          <label for="password" class="text-white pl-4 font-robotomono inline"
+          <label for="password" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono inline"
             >Password</label
           >
 
@@ -64,7 +64,7 @@
           <div class="flex justify-between">
             <label
               for="confirm_password"
-              class="text-white pl-4 font-robotomono inline"
+              class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono inline"
               >Confirm Password</label
             >
             <p
@@ -96,7 +96,7 @@
             :class="disableButton()"
           >
             <button
-              class="w-[100%] h-[100%] py-1 bg-black text-white font-robotomono text-center rounded disabled:text-gray-500"
+              class="w-[100%] h-[100%] py-1 bg-light-secondary text-white font-robotomono text-center rounded disabled:text-dark-paragraph-text"
               type="submit"
               value="Register"
               @click="registerUser"

@@ -1,5 +1,6 @@
 <template>
   <NavBar :problemPage="true"></NavBar>
+  <SkeletonTheme color="#222222" highlight="#252525">
   <div class="relative w-screen flex justify-between z-[1]">
     <div
       class="problemDiv min-w-[350px] w-[calc(100%-45%-7px)] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
@@ -7,48 +8,86 @@
       <div class="w-full h-[50px] mt-3 flex flex-col justify-center">
         <h1
           class="text-light-text-on-primary dark:text-dark-text-on-primary font-robotomono text-2xl ml-2"
-          v-html="problemTitle"
-        ></h1>
+        >
+          <Skeleton :count="1" :duration="3" width="50%" height="30px" >{{ problemTitle }}</Skeleton>
+        </h1>
       </div>
-      <hr class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2" />
+      <hr
+        class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
+      />
       <div class="w-full h-[40px] flex justify-around items-center px-2">
         <div
-          class=" font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          v-on:click="showProblemTab(); currentTab ='problem'"
-        
+          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+          v-on:click="
+            showProblemTab();
+            currentTab = 'problem';
+          "
         >
-          
-        <h1 :class="currentTab === 'problem'?'border-b-2 border-light-highlight dark:border-dark-highlight':''" >Problem</h1>
-
-          
+          <h1
+            :class="
+              currentTab === 'problem'
+                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                : ''
+            "
+          >
+            Problem
+          </h1>
         </div>
         <div
-          class=" font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          v-on:click="showSubmissionTab(); currentTab ='submissions'"
+          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+          v-on:click="
+            showSubmissionTab();
+            currentTab = 'submissions';
+          "
         >
-          <h1 :class="currentTab === 'submissions'?'border-b-2 border-light-highlight dark:border-dark-highlight':''" >Submissions</h1>
-            
-          
+          <h1
+            :class="
+              currentTab === 'submissions'
+                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                : ''
+            "
+          >
+            Submissions
+          </h1>
         </div>
         <div
-          class=" font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
-          @click="showLeaderboardTab(); currentTab ='leaderboard'"
+          class="font-robotomono text-light-button-text-color dark:text-dark-button-text-color select-none grow h-full hover:bg-light-primary hover:text-light-text-on-primary dark:hover:text-dark-text-on-primary dark:hover:bg-dark-primary cursor-pointer bg-light-button-color flex flex-col justify-center items-center"
+          @click="
+            showLeaderboardTab();
+            currentTab = 'leaderboard';
+          "
         >
-        <h1 :class="currentTab === 'leaderboard'?'border-b-2 border-light-highlight dark:border-dark-highlight':''" >Leaderboard</h1>
-          
+          <h1
+            :class="
+              currentTab === 'leaderboard'
+                ? 'border-b-2 border-light-highlight dark:border-dark-highlight'
+                : ''
+            "
+          >
+            Leaderboard
+          </h1>
         </div>
       </div>
-      <hr class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2" />
+      <hr
+        class="border-b-1 mx-2 border-light-secondary dark:border-dark-secondary my-2"
+      />
       <div
-        class="problem-container text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
+        class="problem-container mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
         v-if="problemTabVisible"
-        v-html="markdownHtml"
-      ></div>
+      >
+        <div
+          class="problem-div text-light-text-on-primary dark:text-dark-text-on-primary"
+          v-html="markdownHtml"
+        ></div>
+        <SampleSet v-for="sample in samples" :sample="sample"></SampleSet>
+      </div>
       <div
         class="text-light-text-on-primary dark:text-dark-text-on-primary mt-8 mb-[8px] px-4 w-full overflow-y-auto h-[calc(100%-168px)]"
         v-if="submissionTabVisible"
       >
-        <div class="w-full flex h-10 my-2 bg-light-secondary dark:bg-dark-secondary">
+        <div
+          class="w-full flex h-10 my-2 bg-light-secondary dark:bg-dark-secondary"
+        >
           <div
             class="w-12 font-robotomono text-sm mx-2 flex flex-col justify-center"
           >
@@ -70,7 +109,9 @@
             T2
           </div>
         </div>
-        <hr class="h-[2px] dark:border-dark-secondary border-light-secondary my-1" />
+        <hr
+          class="h-[2px] dark:border-dark-secondary border-light-secondary my-1"
+        />
 
         <SubmissionResult
           v-for="submission in reversedList"
@@ -85,9 +126,11 @@
       </div>
     </div>
     <div
-      class="w-[7px] max-w-[7px] cursor-w-resize  flex felx-col justify-center items-center"
+      class="w-[7px] max-w-[7px] cursor-w-resize flex felx-col justify-center items-center"
     >
-      <div class="resizer h-[40px] w-full bg-light-highlight dark:bg-dark-highlight"></div>
+      <div
+        class="resizer h-[40px] w-full bg-light-highlight dark:bg-dark-highlight"
+      ></div>
     </div>
     <div
       class="codeEditor min-w-[300px] w-[45%] h-[calc(100vh-47px)] bg-light-primary dark:bg-dark-primary"
@@ -183,19 +226,24 @@
     </div>
     <Popup></Popup>
   </div>
+</SkeletonTheme>
 </template>
 
 <script lang="ts">
 import getProblem from "../../services/GetProblem";
 import submitCode from "../../services/Submit";
 import NavBar from "../global/NavBar.vue";
-import SubmissionResult from "../utility/SubmissionResult.vue";
+import SubmissionResult from "../utility/submission page utility/SubmissionResult.vue";
 import { marked } from "marked";
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { cpp } from "@codemirror/lang-cpp";
 import { oneDark } from "@codemirror/theme-one-dark";
 import store from "../../store";
+import SampleSet from "../utility/submission page utility/SampleSet.vue";
+import { Skeleton } from "vue-loading-skeleton";
+import { SkeletonTheme } from "vue-loading-skeleton";
+import "vue-loading-skeleton/dist/style.css";
 export default {
   name: "ProblemPage",
   data() {
@@ -209,9 +257,21 @@ export default {
       problemTabVisible: true,
       submissionTabVisible: false,
       leaderboardTabVisible: false,
-      submissionsList: [["WA"],["P"]] as string[][],
+      submissionsList: [["WA"], ["P"]] as string[][],
+      samples: [
+        [
+          "5",
+          "5",
+          "1 -2 3 -hasgdjhasgdjhagshdgasdgasjhsdgajhsdgjhasgdjsaghdgasjhdgajhdgsajhdgagsdj2 3 4",
+          "3",
+          "1 0 3",
+          "InputEnd",
+          "Case#1: 14",
+          "Case#2: 12",
+        ],
+      ] as string[][],
       problem_id: this.$route.params.problem_id as string,
-      currentTab:"problem"
+      currentTab: "problem",
     };
   },
 
@@ -219,6 +279,9 @@ export default {
     NavBar,
     Codemirror,
     SubmissionResult,
+    SampleSet,
+    Skeleton,
+    SkeletonTheme,
   },
   computed: {
     reversedList() {
@@ -350,27 +413,27 @@ pre {
   background-color: rgb(53, 53, 53);
   border-radius: 5px;
 }
-.problem-container > h1 {
+.problem-div > h1 {
   font-size: 2em;
   font-weight: bold;
 }
-.problem-container > h2 {
+.problem-div > h2 {
   font-size: 1.5em;
   font-weight: bold;
 }
-.problem-container > h3 {
+.problem-div > h3 {
   font-size: 1.17em;
   font-weight: bold;
 }
-.problem-container > h4 {
+.problem-div > h4 {
   font-size: 1em;
   font-weight: bold;
 }
-.problem-container > h5 {
+.problem-div > h5 {
   font-size: 0.83em;
   font-weight: bold;
 }
-.problem-container > h6 {
+.problem-div > h6 {
   font-size: 0.67em;
   font-weight: bold;
 }

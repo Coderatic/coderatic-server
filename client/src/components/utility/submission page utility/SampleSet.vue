@@ -4,23 +4,26 @@
       class="max-w-[45%] flex-1 rounded flex flex-col bg-background-grey p-1"
     >
       <h1 class="font-lato text-white text-lg my-1 mx-1">Sample Input</h1>
-      <div class="grow w-full bg-black rounded overflow-x-auto">
-        <p class="text-white px-2 pt-1" v-for="input in inputs">{{ input }}</p>
-      </div>
+      <div
+        class="grow w-full text-white bg-black rounded overflow-x-auto"
+        v-html="showInputs"
+      ></div>
     </div>
 
     <div
       class="max-w-[45%] flex-1 rounded flex flex-col bg-background-grey p-1"
     >
       <h1 class="font-lato text-white text-lg my-1 mx-1">Sample Output</h1>
-      <div class="grow w-full bg-black rounded overflow-x-auto">
-        <p class="text-white px-2 pt-1" v-for="output in outputs">
-          {{ output }}
-        </p>
-      </div>
+      <div
+        class="grow w-full text-white bg-black rounded overflow-x-auto"
+        v-html="showOutputs"
+      ></div>
     </div>
   </div>
-  <div class="w-full my-3 text-light-paragraph-text dark:text-dark-paragraph-text" v-html="markedDesc"></div>
+  <div
+    class="w-full my-3 text-light-paragraph-text dark:text-dark-paragraph-text"
+    v-html="markedDesc"
+  ></div>
 </template>
 
 <script lang="ts">
@@ -33,21 +36,34 @@ export default {
   },
   data() {
     return {
-      inputs: [] as string[],
-      outputs: [] as string[],
+      inputs: "" as string,
+      outputs: "" as string,
       description: "" as string,
     };
   },
-  mounted() {
-    this.inputs = this.sample!.input;
-    this.outputs = this.sample!.output;
-    this.description = this.sample!.description;
+  computed: {
+    showInputs() {
+      if(this.sample != undefined){
+        return this.sample.input
+      }else{
+        return "";
+      }
+    },
+    showOutputs() {
+      if(this.sample != undefined){
+        return this.sample.output
+      }else{
+        return "";
+      }
+    },
+    markedDesc() {
+      if(this.sample != undefined){
+        return this.sample.description
+      }else{
+        return "";
+      }
+    },
   },
-  computed:{
-	markedDesc(){
-		return marked(this.sample!.Description);
-	}
-  }
 };
 </script>
 <!-- <script setup lang="ts">

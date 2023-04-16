@@ -79,7 +79,7 @@
         >
           <div
             class="problem-div text-light-text-on-primary dark:text-dark-text-on-primary"
-            v-if="problemStatement != ''"
+            v-if="problemStatement != 'a'"
             v-html="markdownHtml"
           ></div>
           <div v-else>
@@ -279,7 +279,7 @@ export default {
   data() {
     return {
       code: "",
-      problemStatement: "",
+      problemStatement: "a",
       problemTitle: "",
       langSelect: false,
       currentLang: "cpp",
@@ -291,6 +291,7 @@ export default {
       samples: [] as object[],
       problem_id: this.$route.params.problem_id as string,
       currentTab: "problem",
+      show: false,
     };
   },
 
@@ -313,9 +314,10 @@ export default {
   mounted() {
     const response = getProblem(this.problem_id)
       .then((res) => {
-        this.problemStatement = res.data.problem_data.description;
         this.problemTitle = res.data.problem_data.name;
-        this.samples = res.data.problem_data.sample_sets
+        this.problemStatement = res.data.problem_data.description;
+        this.samples = res.data.problem_data.sample_sets;
+        this.show = true;
       })
       .catch((err) => {
         console.log(err);

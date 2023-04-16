@@ -313,8 +313,8 @@ export default {
   mounted() {
     const response = getProblem(this.problem_id)
       .then((res) => {
-        this.problemStatement = res.data.problem.description;
-        this.problemTitle = res.data.problem.name;
+        this.problemStatement = res.data.problem_data.description;
+        this.problemTitle = res.data.problem_data.name;
       })
       .catch((err) => {
         console.log(err);

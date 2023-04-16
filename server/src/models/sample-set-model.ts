@@ -28,7 +28,7 @@ const SampleSetSchema = new mongoose.Schema<ISampleSet>(
       type: String,
     },
   },
-  { collection: "sampleSet" }
+  { collection: "sample_set" }
 );
 
 export default mongoose.model<ISampleSet>("SampleSet", SampleSetSchema);

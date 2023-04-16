@@ -315,6 +315,7 @@ export default {
       .then((res) => {
         this.problemStatement = res.data.problem_data.description;
         this.problemTitle = res.data.problem_data.name;
+        this.samples = res.data.problem_data.sample_sets
       })
       .catch((err) => {
         console.log(err);

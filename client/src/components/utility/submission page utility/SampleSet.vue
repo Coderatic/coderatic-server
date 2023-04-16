@@ -39,9 +39,9 @@ export default {
     };
   },
   mounted() {
-    this.inputs = this.sample!.Input;
-    this.outputs = this.sample!.Output;
-    this.description = this.sample!.Description;
+    this.inputs = this.sample!.input;
+    this.outputs = this.sample!.output;
+    this.description = this.sample!.description;
   },
   computed:{
 	markedDesc(){

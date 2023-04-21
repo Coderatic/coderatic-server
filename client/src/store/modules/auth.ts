@@ -4,15 +4,16 @@ interface AuthData {
   username: string;
   email?: string;
   password: string;
-};
-
+}
 
 const state = {
   user: null,
 };
 const getters = {
-  isAuthenticated: (state: any) => !!state.user,
-  giveUserId: (state:any)=>{return state.user.user_id}
+  isAuthenticated: (state: any) => state.user,
+  giveUserId: (state: any) => {
+    return state.user ? state.user.user_id : null;
+  },
 };
 const actions = {
   async register({}, authData: AuthData) {
@@ -24,8 +25,8 @@ const actions = {
   },
 
   async logout({ commit }: any) {
-      let temp = null;
-      await commit("LogOut", temp);
+    let temp = null;
+    await commit("LogOut", temp);
   },
   async login({ commit }: any, authData: AuthData) {
     const response = await Api().post("/api/auth/signin", {

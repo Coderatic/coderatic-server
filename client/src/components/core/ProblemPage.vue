@@ -236,22 +236,27 @@
         <div class="w-full h-[calc(100vh-180px)]">
           <codemirror
             v-model="code"
-            :style="{ height: '100%', zIndex: 0 }"
+            :style="{
+              height: '100%',
+              zIndex: 0,
+              fontSize: '1rem',
+            }"
             :autofocus="true"
             :indent-with-tab="true"
-            :tab-size="8"
+            :tab-size="4"
             :extensions="extensions"
           />
         </div>
         <div
           class="w-full h-60px flex flex-col justify-center items-end my-3 px-2"
         >
-          <div
-            class="px-8 py-2 rounded-2xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color font-robotomono"
-            v-on:click="submission"
+          <button
+            class="px-8 py-2 rounded-2xl cursor-pointer bg-light-button-color dark:bg-dark-button-color text-light-button-text-color dark:text-dark-button-text-color hover:bg-light-button-hover-color dark:hover:bg-dark-button-hover-color font-robotomono disabled:bg-gray-400"
+            @click="submission"
+            :disabled="!code"
           >
             Submit
-          </div>
+          </button>
         </div>
       </div>
       <Popup></Popup>
@@ -279,7 +284,7 @@ export default {
   data() {
     return {
       code: "",
-      problemStatement: "a",
+      problemStatement: "",
       problemTitle: "",
       langSelect: false,
       currentLang: "cpp",
@@ -287,7 +292,7 @@ export default {
       problemTabVisible: true,
       submissionTabVisible: false,
       leaderboardTabVisible: false,
-      submissionsList: [["WA"], ["P"]] as string[][],
+      submissionsList: [] as string[][],
       samples: [] as object[],
       problem_id: this.$route.params.problem_id as string,
       currentTab: "problem",
@@ -371,8 +376,9 @@ export default {
       };
       const user_id = store.getters.giveUserId;
       const problem_id = this.$route.params.problem_id as string;
-      //const problem_id = "saadIsADumbFuckWhoWillShitOnHisHeadIfHesToldToByASweatyPedoNerdOnline";
       try {
+        this.showSubmissionTab();
+        this.currentTab = "submission";
         const response = await submitCode(problem_id, user_id, this.code, lang);
         this.submissionsList.push(response.data.verdicts);
       } catch (e: any) {
@@ -403,6 +409,10 @@ export default {
 </script>
 
 <style>
+.ͼ1 .cm-scroller {
+  font-family: hack;
+}
+
 .scroll-inline-code {
   outline: 2px;
   max-width: 100%;

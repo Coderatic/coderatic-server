@@ -5,13 +5,13 @@
 int main(int argc, char* argv[]) {
     if (argc != 2) {
         //std::cerr << "Usage: " << argv[0] << " <input-file>" << std::endl;
-        return 4;
+        return 5;
     }
 
     std::ifstream input_file(argv[1]);
     if (!input_file) {
         //std::cerr << "Error: could not open input file " << argv[1] << std::endl;
-        return 4;
+        return 5;
     }
 
     std::string line;
@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
     while (std::getline(input_file, line)) {
         if(std::cin.eof()) {
             //std::cerr << "Wrong answer: user output has less lines than input file" << std::endl;
-            return 1;
+            return 2;
         }
         std::string user_output;
         std::getline(std::cin, user_output);
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
 
         if (line != user_output) {
             //std::cerr << "Wrong answer on line " << line_number << std::endl;
-            return 1;
+            return 2;
         }
 
         ++line_number;
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
     if (!end_of_input) {
         //std::cerr << "Wrong answer: user output has more lines than input file" << std::endl;
-        return 1;
+        return 2;
     }
 
     return 0;

@@ -2,7 +2,7 @@ import Queue from "bull";
 import fs from "fs";
 import path from "path";
 import shortId from "shortid";
-import exec from "child_process";
+import { exec } from "child_process";
 import dotenv from "dotenv";
 
 import { fileURLToPath } from "url";
@@ -37,27 +37,34 @@ function handle_exit_code(exit_code: string): string {
     case 0:
       return "AC";
     case 1:
-      return "WA";
+      return "CE";
     case 2:
+      return "WA";
+    case 124:
       return "TLE";
-    case 3:
+    case 137:
       return "MLE";
-    case 4:
+    case 5:
       return "IE";
     default:
+      console.log("Unknown exit code: ", exit_code);
       return "RE";
   }
 }
 
 function runCommand(command, workingDir): Promise<any> {
   return new Promise((resolve, reject) => {
-    exec.exec(command, { cwd: workingDir }, (error, stdout, stderr) => {
-      if (stderr) {
-        reject(stderr);
-      } else {
-        resolve({ stdout, stderr });
+    const process = exec(
+      command,
+      { cwd: workingDir },
+      (error, stdout, stderr) => {
+        if (error || stderr) {
+          reject(process);
+        } else {
+          resolve({ process, stdout, stderr });
+        }
       }
-    });
+    );
   });
 }
 
@@ -96,16 +103,18 @@ JudgeQueue.process(async (job): Promise<string[]> => {
   try {
     result = await runCommand(compile_script, workingDir);
   } catch (err) {
-    console.log(err);
-    if (result !== undefined && result.stderr) return ["CE"];
+    if (err.exitCode === 1) {
+      return ["CE"];
+    }
     return ["IE"];
   }
 
   //Judge for each test case
-  const verdicts = [];
+  const verdicts: string[] = [];
   for (let i = 0; i < test_set.length; i++) {
-    const test_case = test_set[i];
-    const judge_script = `./judge.sh ${problem_id} ${file_name} ${lang.extension}  ${test_case.input_file} ${test_case.output_file}`;
+    const tc = test_set[i];
+    const judge_script = `./judge.sh ${problem_id} ${file_name} ${lang.extension} ${tc.input_file} ${tc.output_file} ${tc.mem_lim} ${tc.time_lim}`;
+
     let result: { stdout: string; stderr: string };
     try {
       result = await runCommand(judge_script, workingDir);
@@ -113,13 +122,15 @@ JudgeQueue.process(async (job): Promise<string[]> => {
       console.log("Verdict: ", verdict);
       verdicts.push(verdict);
     } catch (err) {
-      console.log(err);
-      if (result !== undefined && result.stdout) {
-        verdicts.push(handle_exit_code(result.stdout));
-        console.log("Verdict: ", handle_exit_code(result.stdout));
+      if (err.exitCode !== undefined) {
+        verdicts.push(handle_exit_code(err.exitCode));
+        console.log("Verdict: ", handle_exit_code(err.exitCode));
       } else verdicts.push("IE");
     }
   }
+  fs.unlink(file_path, (err) => {
+    if (err) console.log(err);
+  });
   return verdicts;
 });
 

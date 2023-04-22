@@ -58,7 +58,7 @@ function runCommand(command, workingDir): Promise<any> {
       command,
       { cwd: workingDir },
       (error, stdout, stderr) => {
-        if (error || stderr) {
+        if (error) {
           reject(process);
         } else {
           resolve({ process, stdout, stderr });
@@ -68,15 +68,32 @@ function runCommand(command, workingDir): Promise<any> {
   });
 }
 
+async function cleanup(file_path: string, exec_path: string) {
+  fs.unlink(file_path, (err) => {
+    if (err) console.log(err);
+  });
+  fs.unlink(exec_path, (err) => {
+    if (err) console.log(err);
+  });
+}
+
 JudgeQueue.process(async (job): Promise<string[]> => {
   const { problem_id, source_code, lang, test_set, file_name } = job.data;
   const src_type = lang.is_compiled ? "compiled" : "interpreted";
+  const exec_type = lang.is_compiled ? "bins" : "scripts";
+
   const file_path = path.join(
     __dirname,
     `cache/src/${src_type}/${file_name}.${lang.extension}`
   );
+  const exec_path = path.join(
+    __dirname,
+    `cache/processed/${exec_type}/${file_name}`,
+    lang.is_compiled ? "" : `.${lang.extension}`
+  );
+
   const workingDir = path.join(__dirname, "controller-scripts");
-  //Save source code to file
+
   //Escape \n, \t, \ and \r
   const escaped_source_code = source_code.replace(/[\\n\\t\\r\\]/g, (match) => {
     switch (match) {
@@ -94,15 +111,17 @@ JudgeQueue.process(async (job): Promise<string[]> => {
         return match;
     }
   });
+
+  //Save source code to file
   fs.writeFileSync(file_path, escaped_source_code, { flag: "w" });
 
   //Compile the program
   const compile_script = `./compile.sh ${lang.name} ${file_name}`;
-  let result: { stdout: string; stderr: string };
 
   try {
-    result = await runCommand(compile_script, workingDir);
+    await runCommand(compile_script, workingDir);
   } catch (err) {
+    cleanup(file_path, exec_path);
     if (err.exitCode === 1) {
       return ["CE"];
     }
@@ -119,7 +138,7 @@ JudgeQueue.process(async (job): Promise<string[]> => {
     try {
       result = await runCommand(judge_script, workingDir);
       const verdict: string = handle_exit_code(result.stdout);
-      console.log("Verdict: ", verdict);
+      console.log("Verdict: ", verdict); //TODO: Remove this line
       verdicts.push(verdict);
     } catch (err) {
       if (err.exitCode !== undefined) {
@@ -128,9 +147,9 @@ JudgeQueue.process(async (job): Promise<string[]> => {
       } else verdicts.push("IE");
     }
   }
-  fs.unlink(file_path, (err) => {
-    if (err) console.log(err);
-  });
+
+  cleanup(file_path, exec_path);
+
   return verdicts;
 });
 

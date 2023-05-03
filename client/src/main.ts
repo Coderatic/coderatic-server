@@ -7,11 +7,13 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import PrimeVue from 'primevue/config';
 
 library.add(faCheck, faCircleXmark);
 
 createApp(App)
   .use(store)
   .use(Router)
+  .use(PrimeVue)
   .component("font-awesome-icon", FontAwesomeIcon)
   .mount("#app");

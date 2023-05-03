@@ -4,20 +4,18 @@
       class="max-w-[45%] flex-1 rounded flex flex-col bg-background-grey p-1"
     >
       <h1 class="font-lato text-white text-lg my-1 mx-1">Sample Input</h1>
-      <div
-        class="grow w-full text-white bg-black rounded overflow-x-auto"
-        v-html="showInputs"
-      ></div>
+      <div class="grow w-full text-white bg-black rounded overflow-x-auto">
+        <p class="text-white" v-for="input in showInputs"></p>
+      </div>
     </div>
 
     <div
       class="max-w-[45%] flex-1 rounded flex flex-col bg-background-grey p-1"
     >
       <h1 class="font-lato text-white text-lg my-1 mx-1">Sample Output</h1>
-      <div
-        class="grow w-full text-white bg-black rounded overflow-x-auto"
-        v-html="showOutputs"
-      ></div>
+      <div class="grow w-full text-white bg-black rounded overflow-x-auto">
+        <p class="text-white" v-for="output in showOutputs"></p>
+      </div>
     </div>
   </div>
   <div
@@ -36,30 +34,32 @@ export default {
   },
   data() {
     return {
-      inputs: "" as string,
-      outputs: "" as string,
+      inputs: [] as string[],
+      outputs: [] as string[],
       description: "" as string,
     };
   },
   computed: {
     showInputs() {
-      if(this.sample != undefined){
-        return this.sample.input
-      }else{
+      if (this.sample != undefined) {
+        const inputs = this.sample.input.split("\n");
+        return inputs;
+      } else {
         return "";
       }
     },
     showOutputs() {
-      if(this.sample != undefined){
-        return this.sample.output
-      }else{
+      if (this.sample != undefined) {
+        const outputs = this.sample.output.split("\n");
+        return outputs;
+      } else {
         return "";
       }
     },
     markedDesc() {
-      if(this.sample != undefined){
-        return this.sample.description
-      }else{
+      if (this.sample != undefined) {
+        return this.sample.description;
+      } else {
         return "";
       }
     },

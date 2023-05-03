@@ -7,6 +7,7 @@ import ActivateAccount from "../components/auth/ActivateAccount.vue";
 import store from "../store";
 import ProblemPage from "../components/core/ProblemPage.vue";
 import Error404 from "../components/global/Error404.vue";
+import CreateComp from "../components/core/CreateComp.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -50,6 +51,12 @@ const router = createRouter({
       path: "/error",
       name: "Error404",
       component: Error404,
+    },
+
+    {
+      path: "/create",
+      name: "CreateCompetition",
+      component: CreateComp,
     },
     
   ],

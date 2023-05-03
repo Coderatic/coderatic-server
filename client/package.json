@@ -23,6 +23,7 @@
     "codemirror": "^6.0.1",
     "marked": "^4.3.0",
     "moment": "^2.29.4",
+    "primevue": "^3.28.0",
     "vue": "^3.2.45",
     "vue-codemirror": "^6.1.1",
     "vue-loading-skeleton": "^2.0.0-beta.1",

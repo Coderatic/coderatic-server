@@ -1,5 +1,8 @@
 <template>
   <NavBar></NavBar>
+  <div class="bg-[url('/src/assets/homepage.webp')] h-[250vh] w-[100vw] ">
+
+  </div>
 </template>
 
 <script lang="ts">

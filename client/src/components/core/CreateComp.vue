@@ -103,48 +103,7 @@
             Please provide the challenges you want to add in your competition here.
           </p>
           <div class="w-full flex flex-col justify-center items-start" v-if="addchallenge">
-            <div class="flex justify-center gap-20">
-            <div class="flex flex-col justify-around gap-10">
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                Competition Name
-              </h1>
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                Start Time
-              </h1>
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                End Time
-              </h1>
-            </div>
-            <div class="flex flex-col justify-center gap-10">
-              <input
-                class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                type="text"
-                name=""
-                id=""
-              />
-              <div class="flex justify-center items-center gap-5" >
-                <Calendar v-model="start_date" dateFormat="dd/mm/yy" showIcon /> 
-                <p class="px-2">at</p> 
-                <input 
-                class="border-[2px]  bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                :class="startTimeCheck ? 'border-gray-900':'border-red-500'"
-                v-model="start_time"
-                type="text" placeholder="HH:MM:SS am|pm">
-                PKT
-              </div>
-              <div class="flex justify-center items-center gap-5" >
-                <Calendar v-model="end_date" dateFormat="dd/mm/yy" showIcon /> 
-                <p class="px-2">at</p> 
-                <input 
-                class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                :class="endTimeCheck ? 'border-gray-900':'border-red-500'"
-                v-model="end_time"
-                type="text" placeholder="HH:MM:SS am|pm"> 
-                PKT
-              </div>
-              
-            </div>
-          </div>
+            
           </div>
           <div class="border-[0.5px] select-none cursor-pointer rounded hover:bg-gray-800 px-2 py-2"
           v-on:click="addchallenge = !addchallenge"
@@ -174,14 +133,6 @@ export default {
       addchallenge:false
       
     };
-  },
-  mounted() {
-    this.$primevue.changeTheme(
-      "md-dark-indigo",
-      "md-light-indigo",
-      "theme-link",
-      () => {}
-    );
   },
   computed:{
     startTimeCheck(){

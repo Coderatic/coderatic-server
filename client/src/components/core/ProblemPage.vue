@@ -145,7 +145,8 @@
 
           <SubmissionResult
             v-for="submission in reversedList"
-            :verdicts="submission"
+            :verdicts="submission.verdicts"
+            :submission_time="submission.submission_time"
           ></SubmissionResult>
         </div>
         <div
@@ -292,7 +293,7 @@ export default {
       problemTabVisible: true,
       submissionTabVisible: false,
       leaderboardTabVisible: false,
-      submissionsList: [] as string[][],
+      submissionsList: [] as { verdicts: string[]; submission_time: Date }[],
       samples: [] as object[],
       problem_id: this.$route.params.problem_id as string,
       currentTab: "problem",
@@ -380,7 +381,10 @@ export default {
         this.showSubmissionTab();
         this.currentTab = "submission";
         const response = await submitCode(problem_id, user_id, this.code, lang);
-        this.submissionsList.push(response.data.verdicts);
+        this.submissionsList.push({
+          verdicts: response.data.verdicts,
+          submission_time: response.data.submission_time,
+        });
       } catch (e: any) {
         console.log(e.response.data.message);
       }

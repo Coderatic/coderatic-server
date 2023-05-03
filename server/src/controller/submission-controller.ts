@@ -8,7 +8,7 @@ import JudgeQueue, { JudgeJob } from "../microservices/judge/judge-queue.js";
 type Submission = {
   problem_id: string;
   user_id: string;
-  submission_time?: number;
+  submission_time?: Date;
   source_code: string;
   lang: {
     name: string;
@@ -19,7 +19,7 @@ type Submission = {
 
 const submitProblem = async (req, res): Promise<Express.Response> => {
   const submission: Submission = req.body;
-  submission.submission_time = new Date().valueOf();
+  submission.submission_time = new Date();
 
   //Get the user for the submission
   //const user = await User.findOne({ short_id: submission.user_id });
@@ -75,8 +75,10 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   let verdicts: string[];
   try {
     verdicts = await job.finished();
+    job.remove();
   } catch (err) {
     console.log(err);
+    job.moveToFailed(err);
     return res.status(400).json({
       message: err.message,
     });

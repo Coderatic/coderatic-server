@@ -21,7 +21,7 @@ time_limit="$7"
 
 case "$lang" in
 cpp | c | rust)
-	timeout "$time_limit"s docker run --rm -v "$host_shared_path/bins":"$bin_path" --runtime=runsc --memory="$mem_limit"m -i -e BIN="$exec" bin_img <"$in_file" | ("$THE_JUDGE" "$out_file")
+	timeout "$time_limit"s docker run --rm -v "$host_shared_path/bins":"$bin_path" --network none --security-opt apparmor=docker-default --cap-drop=SETFCAP --read-only --runtime=runsc --memory="$mem_limit"m -i -e BIN="$exec" bin_img <"$in_file" | ("$THE_JUDGE" "$out_file")
 	pipe_exit_codes=("${PIPESTATUS[@]}")
 	docker_exit_code="${pipe_exit_codes[0]}"
 	judge_exit_code="${pipe_exit_codes[1]}"

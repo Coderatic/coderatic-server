@@ -10,7 +10,7 @@ interpreted_dest_path="../cache/processed/scripts"
 
 case "$lang" in
 cpp)
-	g++ "$compiled_src_path/$src".cpp -static -static-libgcc -static-libstdc++ -o "$bin_path"/"$bin_name"
+	g++ "$compiled_src_path/$src".cpp -static -static-libgcc -static-libstdc++ -O0 -o "$bin_path"/"$bin_name"
 	;;
 c)
 	gcc "$compiled_src_path/$src".c -static -static-libgcc -o "$bin_path"/"$bin_name"

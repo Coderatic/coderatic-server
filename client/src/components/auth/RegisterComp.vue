@@ -6,11 +6,10 @@
       <div
         class="w-[100%] h-[100%] bg-light-secondary dark:bg-dark-secondary rounded-md flex flex-col justify-start py-5"
       >
-        <!-- <div class="relative my-2">
-        <h1 class="text-center text-white font-montserrat text-2xl">Register</h1>
-      </div> -->
         <div class="relative my-2">
-          <label for="username" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono"
+          <label
+            for="username"
+            class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono"
             >Username</label
           >
           <div class="px-4 w-[100%]">
@@ -25,7 +24,11 @@
         </div>
         <div class="relative my-2">
           <div class="flex justify-between">
-            <label for="email" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono">Email</label>
+            <label
+              for="email"
+              class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono"
+              >Email</label
+            >
             <p
               class="text-red-700 font-robotomono text-sm inline mr-4"
               v-if="!validateEmail()"
@@ -36,8 +39,8 @@
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
+              :class="!validateEmail() ? '!border-red-500' : ''"
               type="text"
-              required
               name="email"
               v-model="email"
               placeholder="email"
@@ -45,14 +48,16 @@
           </div>
         </div>
         <div class="relative my-2">
-          <label for="password" class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono inline"
+          <label
+            for="password"
+            class="text-light-paragraph-text dark:text-dark-paragraph-text pl-4 font-robotomono inline"
             >Password</label
           >
 
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
-              :class="highlightPasswordFields"
+              :class="!passwordsMatch() ? '!border-red-500' : ''"
               type="password"
               name="password"
               v-model="password"
@@ -78,7 +83,7 @@
           <div class="px-4 w-[100%]">
             <input
               class="input-field"
-              :class="highlightPasswordFields"
+              :class="!passwordsMatch() ? '!border-red-500' : ''"
               type="password"
               name="confirm_password"
               v-model="confirm_password"
@@ -86,9 +91,6 @@
             />
           </div>
         </div>
-        <!-- <div class="relative my-2">
-          <input type="checkbox" class="inline ml-[16px] outline-none "/><p class="text-white inline ml-[5px] font-robotomono text-sm">By Registering You agree with the terms and conditions.</p>
-        </div> -->
         <div class="px-4 my-3 w-full">
           <div
             id="gradient-btn-bg"
@@ -96,7 +98,7 @@
             :class="disableButton()"
           >
             <button
-              class="w-[100%] h-[100%] py-1 bg-light-secondary text-white font-robotomono text-center rounded disabled:text-dark-paragraph-text"
+              class="w-[100%] h-[100%] py-1 bg-black text-white font-robotomono text-center rounded disabled:text-gray-500"
               type="submit"
               value="Register"
               @click="registerUser"
@@ -119,75 +121,6 @@
   </div>
   <PopUp ref="popUpRef" :message="message" :is_error="is_error"></PopUp>
 </template>
-
-<!-- <script lang="ts">
-import { AxiosError, AxiosResponse } from "axios";
-import { mapActions } from "vuex";
-export default {
-  name: "RegisterComp",
-  emits: ["regFailure", "regSuccess"],
-  data() {
-    return {
-      username: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-    };
-  },
-  computed: {
-    passwordsMatch() {
-      return (
-        this.confirm_password === "" || this.password === this.confirm_password
-      );
-    },
-    fieldsValid() {
-      return (
-        this.username !== "" &&
-        this.email !== "" &&
-        this.validateEmail &&
-        this.password !== "" &&
-        this.confirm_password !== "" &&
-        this.passwordsMatch &&
-        this.password.length >= 8
-      );
-    },
-    highlightPasswordFields() {
-      if (this.passwordsMatch) {
-        return "border-gray-900 focus:border-purple-900";
-      }
-      return "!border-red-500";
-    },
-    disableButton() {
-      return !this.fieldsValid
-        ? "bg-gray-400"
-        : "bg-gradient-to-r from-purple-800 w-[100%] to-red-900";
-    },
-    validateEmail() {
-      var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return this.email === "" || this.email.match(emailRegex);
-    },
-  },
-  methods: {
-    ...mapActions(["register"]),
-    async registerUser() {
-      window.scrollTo(0, 0);
-      const userData = {
-        username: this.username,
-        email: this.email,
-        password: this.password,
-      };
-      try {
-        await this.register(userData);
-        this.$emit("regSuccess");
-        //add a popup div here
-      } catch (error) {
-        console.log(error);
-        this.$emit("regFailure");
-      }
-    },
-  },
-};
-</script> -->
 
 <script setup lang="ts">
 import { ref } from "vue";
@@ -225,13 +158,6 @@ function fieldsValid() {
     passwordsMatch() &&
     password.value.length >= 8
   );
-}
-
-function highlightPasswordFields() {
-  if (passwordsMatch()) {
-    return "border-gray-900 focus:border-purple-900";
-  }
-  return "!border-red-500";
 }
 
 function disableButton() {

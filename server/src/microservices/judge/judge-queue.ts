@@ -2,7 +2,7 @@ import Queue from "bull";
 import fs from "fs";
 import path from "path";
 import shortId from "shortid";
-import exec from "child_process";
+import { exec } from "child_process";
 import dotenv from "dotenv";
 
 import { fileURLToPath } from "url";
@@ -37,39 +37,67 @@ function handle_exit_code(exit_code: string): string {
     case 0:
       return "AC";
     case 1:
-      return "WA";
+      return "CE";
     case 2:
+      return "WA";
+    case 124:
       return "TLE";
-    case 3:
+    case 137:
       return "MLE";
-    case 4:
+    case 5:
       return "IE";
     default:
+      console.log("Unknown exit code: ", exit_code);
       return "RE";
   }
 }
 
 function runCommand(command, workingDir): Promise<any> {
   return new Promise((resolve, reject) => {
-    exec.exec(command, { cwd: workingDir }, (error, stdout, stderr) => {
-      if (stderr) {
-        reject(stderr);
-      } else {
-        resolve({ stdout, stderr });
+    const process = exec(
+      command,
+      { cwd: workingDir },
+      (error, stdout, stderr) => {
+        if (error) {
+          reject(process);
+        } else {
+          resolve({ process, stdout, stderr });
+        }
       }
-    });
+    );
   });
+}
+
+async function cleanup(file_path: string, exec_path: string = null) {
+  if (file_path) {
+    fs.unlink(file_path, (err) => {
+      if (err) console.log(err);
+    });
+  }
+  if (exec_path) {
+    fs.unlink(exec_path, (err) => {
+      if (err) console.log(err);
+    });
+  }
 }
 
 JudgeQueue.process(async (job): Promise<string[]> => {
   const { problem_id, source_code, lang, test_set, file_name } = job.data;
   const src_type = lang.is_compiled ? "compiled" : "interpreted";
+  const exec_type = lang.is_compiled ? "bins" : "scripts";
+
   const file_path = path.join(
     __dirname,
     `cache/src/${src_type}/${file_name}.${lang.extension}`
   );
+  const exec_path = path.join(
+    __dirname,
+    `cache/processed/${exec_type}/${file_name}`,
+    lang.is_compiled ? "" : `.${lang.extension}`
+  );
+
   const workingDir = path.join(__dirname, "controller-scripts");
-  //Save source code to file
+
   //Escape \n, \t, \ and \r
   const escaped_source_code = source_code.replace(/[\\n\\t\\r\\]/g, (match) => {
     switch (match) {
@@ -87,39 +115,43 @@ JudgeQueue.process(async (job): Promise<string[]> => {
         return match;
     }
   });
+
+  //Save source code to file
   fs.writeFileSync(file_path, escaped_source_code, { flag: "w" });
 
   //Compile the program
   const compile_script = `./compile.sh ${lang.name} ${file_name}`;
-  let result: { stdout: string; stderr: string };
 
   try {
-    result = await runCommand(compile_script, workingDir);
+    await runCommand(compile_script, workingDir);
   } catch (err) {
-    console.log(err);
-    if (result !== undefined && result.stderr) return ["CE"];
+    cleanup(file_path);
+    if (err.exitCode === 1) {
+      return ["CE"];
+    }
     return ["IE"];
   }
 
   //Judge for each test case
-  const verdicts = [];
+  const verdicts: string[] = [];
   for (let i = 0; i < test_set.length; i++) {
-    const test_case = test_set[i];
-    const judge_script = `./judge.sh ${problem_id} ${file_name} ${lang.extension}  ${test_case.input_file} ${test_case.output_file}`;
+    const tc = test_set[i];
+    const judge_script = `./judge.sh ${problem_id} ${file_name} ${lang.extension} ${tc.input_file} ${tc.output_file} ${tc.mem_lim} ${tc.time_lim}`;
+
     let result: { stdout: string; stderr: string };
     try {
       result = await runCommand(judge_script, workingDir);
       const verdict: string = handle_exit_code(result.stdout);
-      console.log("Verdict: ", verdict);
       verdicts.push(verdict);
     } catch (err) {
-      console.log(err);
-      if (result !== undefined && result.stdout) {
-        verdicts.push(handle_exit_code(result.stdout));
-        console.log("Verdict: ", handle_exit_code(result.stdout));
+      if (err.exitCode !== undefined) {
+        verdicts.push(handle_exit_code(err.exitCode));
       } else verdicts.push("IE");
     }
   }
+
+  cleanup(file_path, exec_path);
+
   return verdicts;
 });
 

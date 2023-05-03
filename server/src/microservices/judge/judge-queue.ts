@@ -68,13 +68,17 @@ function runCommand(command, workingDir): Promise<any> {
   });
 }
 
-async function cleanup(file_path: string, exec_path: string) {
-  fs.unlink(file_path, (err) => {
-    if (err) console.log(err);
-  });
-  fs.unlink(exec_path, (err) => {
-    if (err) console.log(err);
-  });
+async function cleanup(file_path: string, exec_path: string = null) {
+  if (file_path) {
+    fs.unlink(file_path, (err) => {
+      if (err) console.log(err);
+    });
+  }
+  if (exec_path) {
+    fs.unlink(exec_path, (err) => {
+      if (err) console.log(err);
+    });
+  }
 }
 
 JudgeQueue.process(async (job): Promise<string[]> => {
@@ -121,7 +125,7 @@ JudgeQueue.process(async (job): Promise<string[]> => {
   try {
     await runCommand(compile_script, workingDir);
   } catch (err) {
-    cleanup(file_path, exec_path);
+    cleanup(file_path);
     if (err.exitCode === 1) {
       return ["CE"];
     }
@@ -138,12 +142,10 @@ JudgeQueue.process(async (job): Promise<string[]> => {
     try {
       result = await runCommand(judge_script, workingDir);
       const verdict: string = handle_exit_code(result.stdout);
-      console.log("Verdict: ", verdict); //TODO: Remove this line
       verdicts.push(verdict);
     } catch (err) {
       if (err.exitCode !== undefined) {
         verdicts.push(handle_exit_code(err.exitCode));
-        console.log("Verdict: ", handle_exit_code(err.exitCode));
       } else verdicts.push("IE");
     }
   }

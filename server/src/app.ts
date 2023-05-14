@@ -19,7 +19,8 @@ dotenv.config();
 
 // db connection
 //const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_NAME}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
-const uri = `mongodb://127.0.0.1:27017/coderatic`;
+const uri = process.env.CONNECTION_STRING;
+// const uri = `mongodb://127.0.0.1:27017/coderatic`;
 
 async function connectToDB() {
   try {

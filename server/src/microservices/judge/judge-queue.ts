@@ -27,8 +27,13 @@ type JudgeJob = {
 
 const JudgeQueue = new Queue<JudgeJob>("judge", {
   redis: {
-    host: process.env.REDIS_HOST,
-    port: 6379,
+    host: "coderatic-queue.redis.cache.windows.net",
+    port: 6380,
+    password: "fO2AM7RIyAacLlyGgbPRxdOCsLpnHvUJEAzCaJ1eH70=",
+    tls: {
+      servername: "coderatic-queue.redis.cache.windows.net",
+      rejectUnauthorized: false,
+    },
   },
 });
 
@@ -40,12 +45,12 @@ function handle_exit_code(exit_code: string): string {
       return "CE";
     case 2:
       return "WA";
-    case 124:
-      return "TLE";
-    case 137:
-      return "MLE";
     case 5:
       return "IE";
+    case 137:
+      return "TLE";
+    case 139:
+      return "MLE";
     default:
       console.log("Unknown exit code: ", exit_code);
       return "RE";
@@ -90,10 +95,10 @@ JudgeQueue.process(async (job): Promise<string[]> => {
     __dirname,
     `cache/src/${src_type}/${file_name}.${lang.extension}`
   );
+
   const exec_path = path.join(
     __dirname,
-    `cache/processed/${exec_type}/${file_name}`,
-    lang.is_compiled ? "" : `.${lang.extension}`
+    `cache/processed/${exec_type}/${file_name}${lang.is_compiled ? "" : '.' + lang.extension}`
   );
 
   const workingDir = path.join(__dirname, "controller-scripts");
@@ -136,7 +141,11 @@ JudgeQueue.process(async (job): Promise<string[]> => {
   const verdicts: string[] = [];
   for (let i = 0; i < test_set.length; i++) {
     const tc = test_set[i];
-    const judge_script = `./judge.sh ${problem_id} ${file_name} ${lang.extension} ${tc.input_file} ${tc.output_file} ${tc.mem_lim} ${tc.time_lim}`;
+    const judge_script = `./judge.sh ${problem_id} ${file_name} ${
+      lang.extension
+    } ${tc.input_file} ${tc.output_file} ${7000 + Number(tc.mem_lim) * 1000} ${
+      tc.time_lim
+    }`;
 
     let result: { stdout: string; stderr: string };
     try {

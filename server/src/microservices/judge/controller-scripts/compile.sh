@@ -10,10 +10,10 @@ interpreted_dest_path="../cache/processed/scripts"
 
 case "$lang" in
 cpp)
-	g++ "$compiled_src_path/$src".cpp -static -static-libgcc -static-libstdc++ -O0 -o "$bin_path"/"$bin_name"
+	g++ "$compiled_src_path/$src".cpp -O0 -o "$bin_path"/"$bin_name"
 	;;
 c)
-	gcc "$compiled_src_path/$src".c -static -static-libgcc -o "$bin_path"/"$bin_name"
+	gcc "$compiled_src_path/$src".c -o "$bin_path"/"$bin_name"
 	;;
 rust)
 	rustc "$compiled_src_path/$src".rs --crate-type=bin -C prefer-dynamic=no -C target-feature=+crt-static -o "$bin_path"/"$bin_name"

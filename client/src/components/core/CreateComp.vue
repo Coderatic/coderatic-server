@@ -51,106 +51,121 @@
           <h1 class="text-3xl">Contest Details</h1>
           <p class="mb-5 text-gray-500">
             Please provide detail for your competition. The details will be
-            visible to thos taking part in teh competiton.
+            visible to those taking part in the competiton.
           </p>
-          <div class="flex justify-center gap-20">
-            <div class="flex flex-col justify-around gap-10">
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                Competition Name
-              </h1>
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                Start Time
-              </h1>
-              <h1 class="whitespace-nowrap flex flex-col justify-center">
-                End Time
-              </h1>
-            </div>
-            <div class="flex flex-col justify-center gap-10">
-              <input
-                class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                type="text"
-                name=""
-                id=""
-              />
-              <div class="flex justify-center items-center gap-5">
-                <Calendar v-model="start_date" dateFormat="dd/mm/yy" showIcon />
-                <p class="px-2">at</p>
-                <input
-                  class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                  :class="startTimeCheck ? 'border-gray-900' : 'border-red-500'"
-                  v-model="start_time"
-                  type="text"
-                  placeholder="HH:MM:SS am|pm"
-                />
-                PKT
+          <div class="flex flex-col justify-center">
+            <div class="flex justify-between gap-10">
+              <h1>Competition Name</h1>
+              <div class="flex flex-col justify-center">
+                <QInput v-model="competition_name" dark filled color="purple">
+                </QInput>
               </div>
-              <div class="flex justify-center items-center gap-5">
-                <Calendar v-model="end_date" dateFormat="dd/mm/yy" showIcon />
-                <p class="px-2">at</p>
-                <input
-                  class="border-[2px] border-gray-900 bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                  :class="endTimeCheck ? 'border-gray-900' : 'border-red-500'"
-                  v-model="end_time"
-                  type="text"
-                  placeholder="HH:MM:SS am|pm"
-                />
-                PKT
+            </div>
+            <div class="flex justify-between gap-10">
+              <h1>Start Time</h1>
+              <div class="flex flex-col justify-center">
+                <QInput v-model="start_date_time" dark filled color="purple">
+                  <template #prepend>
+                    <QIcon name="event" class="cursor-pointer">
+                      <QPopupProxy
+                        trasition-show="scale"
+                        trasition-hide="scale"
+                      >
+                        <QDate :mask="date_format" v-model="start_date_time" dark color="purple" />
+                      </QPopupProxy>
+                    </QIcon>
+                  </template>
+                  <template #append>
+                    <QIcon name="access_time" class="cursor-pointer">
+                      <QPopupProxy
+                        trasition-show="scale"
+                        trasition-hide="scale"
+                      >
+                        <QTime :mask="date_format" v-model="start_date_time" dark color="purple" />
+                      </QPopupProxy>
+                    </QIcon>
+                  </template>
+                </QInput>
+              </div>
+            </div>
+            <div class="flex justify-between gap-10">
+              <h1>End Time</h1>
+              <div class="flex flex-col justify-center">
+                <QInput v-model="end_date_time" dark filled color="purple">
+                  <template #prepend>
+                    <QIcon name="event" class="cursor-pointer">
+                      <QPopupProxy
+                        trasition-show="scale"
+                        trasition-hide="scale"
+                      >
+                        <QDate :mask="date_format" v-model="end_date_time" dark color="purple" />
+                      </QPopupProxy>
+                    </QIcon>
+                  </template>
+                  <template #append>
+                    <QIcon name="access_time" class="cursor-pointer">
+                      <QPopupProxy
+                        trasition-show="scale"
+                        trasition-hide="scale"
+                      >
+                        <QTime :mask="date_format" v-model="end_date_time" dark color="purple" />
+                      </QPopupProxy>
+                    </QIcon>
+                  </template>
+                </QInput>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div
+        class="flex flex-col items-start w-full gap-5"
+        v-if="currentTab === 'challenges'"
+      >
+        <h1 class="text-3xl">Contest Challenges</h1>
+        <p class="mb-5 text-gray-500">
+          Please provide the challenges you want to add in your competition
+          here.
+        </p>
         <div
-          class="flex flex-col items-start w-full gap-5"
-          v-if="currentTab === 'challenges'"
+          class="w-full flex flex-col justify-center items-start"
+          v-if="addchallenge"
         >
-          <h1 class="text-3xl">Contest Challenges</h1>
-          <p class="mb-5 text-gray-500">
-            Please provide the challenges you want to add in your competition
-            here.
-          </p>
-          <div
-            class="w-full flex flex-col justify-center items-start"
-            v-if="addchallenge"
-          >
-            <div class="flex justify-center items-center gap-10">
-              <h1 class="w-[200px]">Problem Title</h1>
+          <div class="flex justify-center items-center gap-10">
+            <h1 class="w-[200px]">Problem Title</h1>
 
-              <input
-                class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                type="text"
-              />
-            </div>
-            <div class="w-full flex justify-start items-center gap-10">
-              <h1 class="w-[200px]">Problem Statement</h1>
-
-              <textarea
-                class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                
-              ></textarea>
-            </div>
-            <div class="w-full flex justify-start items-center gap-10">
-              <h1 class="w-[200px]">Input Format</h1>
-
-              <textarea
-                class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                
-              ></textarea>
-            </div>
-            <div class="w-full flex justify-start items-center gap-10">
-              <h1 class="w-[200px]">Output Format</h1>
-
-              <textarea
-                class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
-                
-              ></textarea>
-            </div>
+            <input
+              class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
+              type="text"
+            />
           </div>
-          <div
-            class="border-[0.5px] select-none cursor-pointer rounded hover:bg-gray-800 px-2 py-2"
-            v-on:click="addchallenge = !addchallenge"
-          >
-            ADD CHALLENGE
+          <div class="w-full flex justify-start items-center gap-10">
+            <h1 class="w-[200px]">Problem Statement</h1>
+
+            <textarea
+              class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
+            ></textarea>
           </div>
+          <div class="w-full flex justify-start items-center gap-10">
+            <h1 class="w-[200px]">Input Format</h1>
+
+            <textarea
+              class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
+            ></textarea>
+          </div>
+          <div class="w-full flex justify-start items-center gap-10">
+            <h1 class="w-[200px]">Output Format</h1>
+
+            <textarea
+              class="border-[2px] bg-background-grey focus:border-purple-900 focus:outline-none py-[4px] px-[3px] text-sm text-white rounded w-[200px] my-3 font-robotomono"
+            ></textarea>
+          </div>
+        </div>
+        <div
+          class="border-[0.5px] select-none cursor-pointer rounded hover:bg-gray-800 px-2 py-2"
+          v-on:click="addchallenge = !addchallenge"
+        >
+          ADD CHALLENGE
         </div>
       </div>
     </div>
@@ -159,20 +174,26 @@
 <script>
 import Calendar from "primevue/calendar";
 import NavBar from "../global/NavBar.vue";
+import { ref } from "vue";
+import { QDate, QInput, QTime, QPopupProxy } from "quasar";
 export default {
   name: "CreateComp",
   components: {
     NavBar,
     Calendar,
+    QDate,
+    QInput,
+    QTime,
+    QPopupProxy,
   },
-  data() {
+  setup() {
     return {
-      currentTab: "detail",
-      start_date: "",
-      start_time: "",
-      end_date: "",
-      end_time: "",
-      addchallenge: false,
+      currentTab: ref("detail"),
+      competition_name: ref(""),
+      start_date_time: ref(""),
+      end_date_time: ref(""),
+      addchallenge: ref(false),
+      date_format: "DD/MM/YYYY HH:mm A"
     };
   },
   computed: {

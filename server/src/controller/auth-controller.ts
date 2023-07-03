@@ -2,18 +2,17 @@ import User from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import _ from "lodash";
 import { expressjwt as expressJwt } from "express-jwt";
-import shortId from "shortid";
 import dotenv from "dotenv";
 dotenv.config();
 
 // sendgrid
 import sgMail from "@sendgrid/mail";
+import { env } from "process";
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 const preSignUp = async (req, res) => {
   try {
     const { username, email, password } = req.body;
-
     const user = await User.findOne({
       $or: [{ username: username }, { email: email }],
     });
@@ -29,6 +28,7 @@ const preSignUp = async (req, res) => {
       { username, email, password },
       process.env.JWT_ACCOUNT_ACTIVATION,
       {
+        //TODO: Change it to 5m before production
         expiresIn: "24h",
       }
     );
@@ -39,11 +39,13 @@ const preSignUp = async (req, res) => {
       subject: "Welcome to Coderatic! - Account Activation Link",
       html: `
 	  <h4>Please use the following link to activate your account:</h4>
-	  <p>http://localhost:5173/#/auth/account/activate/${token}</p>
+	  <p>http://localhost:3000/auth/account/activate/${token}</p>
 
 	  <hr/>
 	  <p>This email may contain sensitive information</p>
-	  <a href="${process.env.PRODUCTION_URL}">https://coderatic.com</a>`,
+	  <a href="${
+      process.env.PROD_CLIENT_URL || process.env.DEV_CLIENT_URL
+    }">https://coderatic.net</a>`,
     };
 
     sgMail.send(emailData).then((sent) => {
@@ -61,53 +63,28 @@ const preSignUp = async (req, res) => {
   }
 };
 
-const signup = (req, res) => {
+const signup = async (req, res) => {
   try {
-    const token = req.body.token;
-    console.log(req);
-    if (token) {
-      jwt.verify(token, process.env.JWT_ACCOUNT_ACTIVATION, (err, decoded) => {
-        if (err) {
-          return res.status(401).json({
-            error: "Expired link. Signup again.",
-          });
-        }
+    const { username, email, password } = req.user;
 
-        const { username, email, password } = decoded;
-        const uid = shortId.generate();
-        const profile = `${process.env.CLIENT_URL}/profile/${uid}`;
-
-        const user = new User({
-          username: username,
-          email: email,
-          password: password,
-          profile: profile,
-        });
-
-        user
-          .save()
-          .then(() => {
-            return res.json({
-              message: "Signup sucessful! Please sign in.",
-            });
-          })
-          .catch((err) => {
-            return res.status(401).json({
-              error: err,
-            });
-          });
-      });
-    } else {
-      return res.status(401).json({
-        message: "Something went wrong. Try again.",
-      });
-    }
+    const user = new User({
+      username: username,
+      email: email,
+      password: password,
+      authMethod: "local",
+    });
+    await user.save();
+    return res.json({
+      message: "Signup sucessful! Please sign in.",
+    });
   } catch (err) {
-    console.log(err);
+    return res.status(401).json({
+      error: err,
+    });
   }
 };
-
-const signin = (req, res) => {
+import { Response } from "express";
+const login = (req, res) => {
   try {
     const { username, password } = req.body;
     // check if user exist
@@ -129,10 +106,9 @@ const signin = (req, res) => {
 
         // generate a token and send to client
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
-          expiresIn: "1d",
+          expiresIn: "1h",
         });
 
-        res.cookie("token", token, { expiresIn: "1d", httpOnly: true });
         const { _id, username, first_name, last_name, email, role } = user;
         return res.json({
           token,
@@ -153,20 +129,6 @@ const signout = (req, res) => {
   } catch (err) {
     console.log(err);
   }
-};
-
-const verifyToken = (req, res) => {
-  const token = req.body.token;
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(401).json({
-        error: "Expired link. Login again.",
-      });
-    } else
-      return res.status(200).json({
-        message: "Token is valid",
-      });
-  });
 };
 
 const requireSignin = expressJwt({
@@ -249,11 +211,13 @@ const forgotPassword = async (req, res) => {
         subject: "Password reset link",
         html: `
           <h4>Please use the following link to reset your password:</h4>
-          <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+          <p>${
+            process.env.PROD_CLIENT_URL || process.env.DEV_CLIENT_URL
+          }/auth/password/reset/${token}</p>
   
           <hr/>
           <p>This email may contain sensitive information</p>
-          <a href="https://bloggingcoder.com">https://bloggingcoder.com</a>
+          <a href="https://coderatic.net">https://coderatic.net</a>
       `,
       };
 
@@ -337,8 +301,7 @@ const resetPassword = async (req, res) => {
 export {
   preSignUp,
   signup,
-  signin,
-  verifyToken,
+  login,
   signout,
   requireSignin,
   authMiddleWare,

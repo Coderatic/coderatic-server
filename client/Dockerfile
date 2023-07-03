@@ -8,9 +8,9 @@ RUN npm install
 
 COPY . .
 
-ENV PORT=3000
+ENV PORT=5173
 
-EXPOSE 3000
+EXPOSE 5173
 
 RUN npm run build
 

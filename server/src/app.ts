@@ -4,23 +4,28 @@ import bodyParser from "body-parser";
 import mongoose, { ConnectOptions } from "mongoose";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import passportSetup from "./configs/passport-setup.js";
 
 // Routes
 import authRoutes from "./routes/auth-routes.js";
+import OAuthRoutes from "./routes/oauth-routes.js";
 import submissionRoutes from "./routes/submission-routes.js";
 import problemRoutes from "./routes/problem-routes.js";
 
+import fs from "fs";
 const app = Express();
 import http from "http";
+const options = {
+  key: fs.readFileSync('/home/saad/cert/CA/localhost/localhost.decrypted.key'),
+  cert: fs.readFileSync('/home/saad/cert/CA/localhost/localhost.crt'),
+};
 http.createServer(app);
 
 import dotenv from "dotenv";
 dotenv.config();
 
 // db connection
-//const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_NAME}.tlyosaf.mongodb.net/?retryWrites=true&w=majority`;
 const uri = process.env.CONNECTION_STRING;
-// const uri = `mongodb://127.0.0.1:27017/coderatic`;
 
 async function connectToDB() {
   try {
@@ -48,10 +53,11 @@ app.use(
   })
 );
 app.use(cookieParser());
+app.use(passportSetup.initialize());
 
 // Set credentials to true
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -59,6 +65,7 @@ app.use(cors(corsOptions));
 
 // routes middlewares
 app.use("/api/auth", authRoutes);
+app.use("/api/oauth", OAuthRoutes);
 app.use("/api/problem", problemRoutes);
 app.use("/api/submission", submissionRoutes);
 

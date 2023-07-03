@@ -1,7 +1,7 @@
 import Problem from "../models/problem-model.js";
 import SampleSet from "../models/sample-set-model.js";
 
-const getProblemData = async (req, res): Promise<Express.Response> => {
+const getProblemData = async (req, res) => {
   const problem_id = req.query.problem_id;
 
   const problem = await Problem.findOne({ short_id: problem_id });

@@ -24,7 +24,7 @@ router.get(
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    res.redirect(`${process.env.CLIENT_URL}/OAuthRedirecting/${token}`);
+    res.redirect(`${process.env.CLIENT_URL}/auth/account/OAuth/${token}`);
   }
 );
 

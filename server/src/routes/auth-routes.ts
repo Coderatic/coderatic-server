@@ -32,7 +32,9 @@ router.post(
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
     const token = req.headers.authorization.split(" ")[1];
-    res.json({ token: token });
+    let user: any = req.user;
+    user = user.user;
+    res.json({ token: token, user: user });
   }
 );
 

@@ -92,15 +92,15 @@ const login = (req, res) => {
       .exec()
       .then((user) => {
         if (!user) {
-          return res.status(400).json({
-            error: "This username does not exist. Please signup.",
+          return res.status(401).json({
+            message: "This username does not exist. Please signup.",
           });
         }
 
         // authenticate
         if (!user.authenticate(password)) {
-          return res.status(400).json({
-            error: "Username and password do not match.",
+          return res.status(401).json({
+            message: "Username and password do not match.",
           });
         }
 

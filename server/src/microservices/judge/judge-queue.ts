@@ -1,128 +1,58 @@
 import Queue from "bull";
 import fs from "fs";
 import path from "path";
-import shortId from "shortid";
-import { exec } from "child_process";
 import dotenv from "dotenv";
+dotenv.config();
 
+//Types
+import { JudgeJob } from "../../controller/types/submission-controller.types.js";
+import { verdict } from "./judge-queue.types.js";
+
+// Utils
+import { startJudging, cleanup, runCommand, escapeSrc } from "./utils.js";
+
+// File system config
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-dotenv.config();
-
-type JudgeJob = {
-  problem_id: string;
-  source_code: string;
-  file_name: string;
-  lang: {
-    name: string;
-    extension?: string;
-    is_compiled?: boolean;
-  };
-  test_set?: any[];
-};
-
 const JudgeQueue = new Queue<JudgeJob>("judge", {
   redis: {
-    host: "coderatic-queue.redis.cache.windows.net",
-    port: 6380,
-    password: "fO2AM7RIyAacLlyGgbPRxdOCsLpnHvUJEAzCaJ1eH70=",
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT),
+    password: process.env.REDIS_PASSWORD,
     tls: {
-      servername: "coderatic-queue.redis.cache.windows.net",
+      servername: process.env.REDIS_HOST,
       rejectUnauthorized: false,
     },
   },
 });
 
-function handle_exit_code(exit_code: string): string {
-  switch (parseInt(exit_code)) {
-    case 0:
-      return "AC";
-    case 1:
-      return "CE";
-    case 2:
-      return "WA";
-    case 5:
-      return "IE";
-    case 137:
-      return "TLE";
-    case 139:
-      return "MLE";
-    default:
-      console.log("Unknown exit code: ", exit_code);
-      return "RE";
-  }
-}
-
-function runCommand(command, workingDir): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const process = exec(
-      command,
-      { cwd: workingDir },
-      (error, stdout, stderr) => {
-        if (error) {
-          reject(process);
-        } else {
-          resolve({ process, stdout, stderr });
-        }
-      }
-    );
-  });
-}
-
-async function cleanup(file_path: string, exec_path: string = null) {
-  if (file_path) {
-    fs.unlink(file_path, (err) => {
-      if (err) console.log(err);
-    });
-  }
-  if (exec_path) {
-    fs.unlink(exec_path, (err) => {
-      if (err) console.log(err);
-    });
-  }
-}
-
-JudgeQueue.process(async (job): Promise<string[]> => {
-  const { problem_id, source_code, lang, test_set, file_name } = job.data;
+JudgeQueue.process(async (job): Promise<Object> => {
+  const { source_code, lang, sample_test_cases, hidden_test_cases, file_name } =
+    job.data;
   const src_type = lang.is_compiled ? "compiled" : "interpreted";
   const exec_type = lang.is_compiled ? "bins" : "scripts";
 
-  const file_path = path.join(
+  const src_path = path.join(
     __dirname,
     `cache/src/${src_type}/${file_name}.${lang.extension}`
   );
 
   const exec_path = path.join(
     __dirname,
-    `cache/processed/${exec_type}/${file_name}${lang.is_compiled ? "" : '.' + lang.extension}`
+    `cache/processed/${exec_type}/${file_name}${
+      lang.is_compiled ? "" : "." + lang.extension
+    }`
   );
 
   const workingDir = path.join(__dirname, "controller-scripts");
 
-  //Escape \n, \t, \ and \r
-  const escaped_source_code = source_code.replace(/[\\n\\t\\r\\]/g, (match) => {
-    switch (match) {
-      case "\\n":
-        return "\\n";
-      case "\\t":
-        return "\\t";
-      case "\\r":
-        return "\\r";
-      case "\\\\":
-        return "\\\\";
-      case '"':
-        return '\\"';
-      default:
-        return match;
-    }
-  });
+  const escaped_src = escapeSrc(source_code);
 
   //Save source code to file
-  fs.writeFileSync(file_path, escaped_source_code, { flag: "w" });
+  fs.writeFileSync(src_path, escaped_src, { flag: "w" });
 
   //Compile the program
   const compile_script = `./compile.sh ${lang.name} ${file_name}`;
@@ -130,39 +60,41 @@ JudgeQueue.process(async (job): Promise<string[]> => {
   try {
     await runCommand(compile_script, workingDir);
   } catch (err) {
-    cleanup(file_path);
+    cleanup([src_path]);
     if (err.exitCode === 1) {
-      return ["CE"];
+      return [
+        {
+          judge_verdict: "CE",
+          test_case_type: "sample",
+        },
+      ];
     }
-    return ["IE"];
+    return [
+      {
+        judge_verdict: "IE",
+        test_case_type: "sample",
+      },
+    ];
   }
 
-  //Judge for each test case
-  const verdicts: string[] = [];
-  for (let i = 0; i < test_set.length; i++) {
-    const tc = test_set[i];
-    const judge_script = `./judge.sh ${problem_id} ${file_name} ${
-      lang.extension
-    } ${tc.input_file} ${tc.output_file} ${7000 + Number(tc.mem_lim) * 1000} ${
-      tc.time_lim
-    }`;
+  const sample_case_verdicts: verdict[] = await startJudging(
+    workingDir,
+    sample_test_cases,
+    job.data,
+    true
+  );
+  const hidden_case_verdicts: verdict[] = await startJudging(
+    workingDir,
+    hidden_test_cases,
+    job.data,
+    false
+  );
+  cleanup([src_path, exec_path]);
 
-    let result: { stdout: string; stderr: string };
-    try {
-      result = await runCommand(judge_script, workingDir);
-      const verdict: string = handle_exit_code(result.stdout);
-      verdicts.push(verdict);
-    } catch (err) {
-      if (err.exitCode !== undefined) {
-        verdicts.push(handle_exit_code(err.exitCode));
-      } else verdicts.push("IE");
-    }
-  }
-
-  cleanup(file_path, exec_path);
-
-  return verdicts;
+  return {
+    sample_case_verdicts: sample_case_verdicts,
+    hidden_case_verdicts: hidden_case_verdicts,
+  };
 });
 
 export default JudgeQueue;
-export type { JudgeJob };

@@ -1,15 +1,16 @@
-import mongoose, { Document, ObjectId } from "mongoose";
-import { ITestSet } from "./test-set-model.js";
+import mongoose, { Document } from "mongoose";
+import { IHiddenTest } from "./hidden-test-model.js";
+import { ISampleTest } from "./sample-test-model.js";
 import shortId from "shortid";
 
 interface IProblem extends Document {
   name: string;
   short_id: string;
-  description: string;
+  statement: string;
   input_format: string;
   output_format: string;
-  sample_test_sets: ITestSet["_id"];
-  hidden_test_sets: ITestSet["_id"];
+  sample_test_sets?: ISampleTest["_id"];
+  hidden_test_sets?: IHiddenTest["_id"];
 }
 
 const ProblemSchema = new mongoose.Schema<IProblem>(
@@ -22,9 +23,10 @@ const ProblemSchema = new mongoose.Schema<IProblem>(
     short_id: {
       type: String,
       unique: true,
+      index: true,
       default: shortId.generate,
     },
-    description: {
+    statement: {
       type: String,
       trim: true,
       required: true,
@@ -43,13 +45,14 @@ const ProblemSchema = new mongoose.Schema<IProblem>(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "TestSet",
-      } as ITestSet["_id"],
+        required: false,
+      } as ISampleTest["_id"],
     ],
     hidden_test_sets: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "TestSet",
-      } as ITestSet["_id"],
+      } as IHiddenTest["_id"],
     ],
   },
   { collection: "problem", timestamps: true }

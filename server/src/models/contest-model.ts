@@ -1,5 +1,5 @@
 import mongoose, { Document } from "mongoose";
-import { ITestSet } from "./test-set-model.js";
+import HiddenTest from "./hidden-test-model.js";
 import shortId from "shortid";
 
 interface IContest extends Document {
@@ -14,7 +14,7 @@ interface IContest extends Document {
         ref: "User";
       };
       score: number;
-      time: number;
+      penalty: number;
     }
   ];
 }
@@ -49,7 +49,7 @@ const ContestSchema = new mongoose.Schema<IContest>(
           type: Number,
           default: 0,
         },
-        time: {
+        penalty: {
           type: Number,
           default: 0,
         },

@@ -1,38 +1,29 @@
 import Problem from "../models/problem-model.js";
-import TestSet from "../models/test-set-model.js";
-import SampleSet from "../models/sample-set-model.js";
-import shortId from "shortid";
+import HiddenTest from "../models/hidden-test-model.js";
+import SampleTest from "../models/sample-test-model.js";
+import { v4 as uuidv4 } from "uuid";
 
-import JudgeQueue, { JudgeJob } from "../microservices/judge/judge-queue.js";
+import JudgeQueue from "../microservices/judge/judge-queue.js";
 
-type Submission = {
-  problem_id: string;
-  user_id: string;
-  submission_time?: Date;
-  source_code: string;
-  lang: {
-    name: string;
-    extension?: string;
-    is_compiled?: boolean;
-  };
-};
+// Types
+import {
+  Submission,
+  JudgeJob,
+  JobResponse,
+} from "./types/submission-controller.types.js";
 
 const submitProblem = async (req, res): Promise<Express.Response> => {
   const submission: Submission = req.body;
   submission.submission_time = new Date();
 
-  //Get the user for the submission
-  //const user = await User.findOne({ short_id: submission.user_id });
-  //if (!user) return res.status(404).json({ message: "User not found" });
-
-  //Get the problem for the submission
   const problem = await Problem.findOne({ short_id: submission.problem_id });
   if (problem) {
-    // TODO: Check if submission is within time limit
+    // TODO: Check if submission is within time limit if the problem is from a live contest (Probably a different API for contest submissions)
   } else return res.status(404).json({ message: "Problem not found" });
 
-  //Assign extension according to language name from a key-value pair
   const lang = submission.lang.name;
+
+  //Determine the src extension
   const lang_ext = {
     c: "c",
     cpp: "cpp",
@@ -59,23 +50,27 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
   };
   submission.lang.extension = lang_ext[lang];
 
-  //Assign is_compiled according to language name if it's in the list
-  const compiled_langs = ["c", "cpp", "java", "rust"];
+  //Determine if the language is compiled or not
+  const compiled_langs = ["c", "cpp", "rust", "golang"];
   submission.lang.is_compiled = compiled_langs.includes(lang);
 
   const judge_job: JudgeJob = {
     problem_id: problem.short_id,
     source_code: submission.source_code,
-    file_name: shortId.generate(),
+    file_name: uuidv4.generate(),
     lang: submission.lang,
-    test_set: await TestSet.find({ problem_id: problem._id }),
+    sample_test_cases: await HiddenTest.find({
+      problem_id: problem._id,
+    }).select("-_id -problem_id -__v"),
+    hidden_test_cases: await SampleTest.find({
+      problem_id: problem._id,
+    }).select("-_id -problem_id -__v"),
   };
 
   const job = await JudgeQueue.add(judge_job);
-  let verdicts: string[];
+  let verdicts: JobResponse;
   try {
     verdicts = await job.finished();
-    job.remove();
   } catch (err) {
     console.log(err);
     job.moveToFailed(err);
@@ -83,6 +78,8 @@ const submitProblem = async (req, res): Promise<Express.Response> => {
       message: err.message,
     });
   }
+  job.remove();
+
   res.status(200).json({
     message: "Submission successful",
     submission_time: submission.submission_time,

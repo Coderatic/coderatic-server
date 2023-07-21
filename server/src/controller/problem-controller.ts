@@ -1,5 +1,5 @@
 import Problem from "../models/problem-model.js";
-import SampleSet from "../models/sample-set-model.js";
+import TestCase from "../models/hidden-test-model.js";
 
 const getProblemData = async (req, res) => {
   const problem_id = req.query.problem_id;
@@ -12,12 +12,13 @@ const getProblemData = async (req, res) => {
   return res.status(200).json({
     problem_data: {
       name: problem.name,
-      description: problem.description,
+      statement: problem.statement,
       input_format: problem.input_format,
       output_format: problem.output_format,
-      sample_sets: await SampleSet.find({
+      sample_tests: await TestCase.find({
         problem_id: problem._id,
-      }).select("-problem_id"),
+        test_type: "sample",
+      }).select("-_id -problem_id -test_type -__v"),
     },
   });
 };

@@ -1,10 +1,9 @@
 import Contest from "../models/contest-model.js";
-import SampleSet from "../models/sample-set-model.js";
 
 const getAllContestList = async (req, res): Promise<Express.Response> => {
   return res.status(200).json({
     contests: await Contest.find({}).select(
-      "-participants -__v -_id -createdAt -updatedAt -starting_time -ending_time"
+      "-_id name short_id starting_time ending_time"
     ),
   });
 };

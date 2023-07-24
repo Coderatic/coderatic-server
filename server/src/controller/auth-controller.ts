@@ -111,15 +111,20 @@ const login = async (req, res) => {
 			role,
 		};
 
-		const token = jwt.sign({ _id: userData._id, username: userData.username,
-      email: userData.email,
-      first_name: userData.first_name,
-      last_name: userData.last_name,
-      role: userData.role
-    },
-      process.env.JWT_SECRET, {
-		  expiresIn: TOKEN_AGE,
-		});
+		const token = jwt.sign(
+			{
+				_id: userData._id,
+				username: userData.username,
+				email: userData.email,
+				first_name: userData.first_name,
+				last_name: userData.last_name,
+				role: userData.role,
+			},
+			process.env.JWT_SECRET,
+			{
+				expiresIn: TOKEN_AGE,
+			}
+		);
 		res.cookie("token", token, {
 			maxAge: COOKIE_AGE,
 			httpOnly: COOKIE_HTTP_ONLY,

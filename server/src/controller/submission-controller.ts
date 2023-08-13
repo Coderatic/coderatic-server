@@ -1,90 +1,114 @@
 import Problem from "../models/problem-model.js";
-import HiddenTest from "../models/hidden-test-model.js";
-import SampleTest from "../models/sample-test-model.js";
-import { v4 as uuidv4 } from "uuid";
+import SubmissionModel from "../models/submission-model.js";
 
 import JudgeQueue from "../microservices/judge/judge-queue.js";
 
 // Types
 import {
-  Submission,
-  JudgeJob,
-  JobResponse,
+	Submission,
+	JudgeJob,
+	JobResult,
 } from "./types/submission-controller.types.js";
 
-const submitProblem = async (req, res): Promise<Express.Response> => {
-  const submission: Submission = req.body;
-  submission.submission_time = new Date();
+// Models
+import SampleTest from "../models/sample-test-model.js";
+import HiddenTest from "../models/hidden-test-model.js";
+SampleTest;
+HiddenTest;
 
-  const problem = await Problem.findOne({ short_id: submission.problem_id });
-  if (problem) {
-    // TODO: Check if submission is within time limit if the problem is from a live contest (Probably a different API for contest submissions)
-  } else return res.status(404).json({ message: "Problem not found" });
+//Utils
+import {
+	langExtension,
+	isCompiled,
+} from "./utils/submission-controller.utils.js";
+import crypto from "crypto";
 
-  const lang = submission.lang.name;
+const getMySubmissions = async (req, res) => {
+	const user_id = req.user._id;
+	const { problem_id, startingRow, count, sortBy } = req.query;
 
-  //Determine the src extension
-  const lang_ext = {
-    c: "c",
-    cpp: "cpp",
-    csharp: "cs",
-    dart: "dart",
-    golang: "go",
-    haskell: "hs",
-    java: "java",
-    javascript: "js",
-    julia: "jl",
-    kotlin: "kt",
-    lisp: "el",
-    lua: "lua",
-    octave: "m",
-    perl: "pl",
-    php: "php",
-    py3: "py",
-    python: "py",
-    R: "r",
-    ruby: "rb",
-    rust: "rs",
-    scala: "scala",
-    typescript: "ts",
-  };
-  submission.lang.extension = lang_ext[lang];
+	const submissionsQuery = {
+		user_id: user_id,
+		problem_id: problem_id,
+	};
+	try {
+		const submissions = await SubmissionModel.find(
+			submissionsQuery,
+			{},
+			{ skip: startingRow, limit: count }
+		)
+			.select("-_id -__v -user_id -problem_id -source_code")
+			.sort({
+				submission_time: sortBy,
+			});
 
-  //Determine if the language is compiled or not
-  const compiled_langs = ["c", "cpp", "rust", "golang"];
-  submission.lang.is_compiled = compiled_langs.includes(lang);
+		const totalSubmissions = await SubmissionModel.countDocuments(
+			submissionsQuery
+		);
 
-  const judge_job: JudgeJob = {
-    problem_id: problem.short_id,
-    source_code: submission.source_code,
-    file_name: uuidv4.generate(),
-    lang: submission.lang,
-    sample_test_cases: await HiddenTest.find({
-      problem_id: problem._id,
-    }).select("-_id -problem_id -__v"),
-    hidden_test_cases: await SampleTest.find({
-      problem_id: problem._id,
-    }).select("-_id -problem_id -__v"),
-  };
-
-  const job = await JudgeQueue.add(judge_job);
-  let verdicts: JobResponse;
-  try {
-    verdicts = await job.finished();
-  } catch (err) {
-    console.log(err);
-    job.moveToFailed(err);
-    return res.status(400).json({
-      message: err.message,
-    });
-  }
-  job.remove();
-
-  res.status(200).json({
-    message: "Submission successful",
-    submission_time: submission.submission_time,
-    verdicts: verdicts,
-  });
+		return res.status(200).json({ submissions, totalSubmissions });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
 };
 
-export { submitProblem };
+const submitProblem = async (req, res) => {
+	const submission: Submission = req.body;
+	submission.submission_time = new Date();
+	submission.id = crypto.randomInt(10000, 99999).toString();
+
+	const problem = await Problem.findOne({ _id: submission.problem_id })
+		.populate("sample_tests", "test_input test_output")
+		.populate(
+			"hidden_tests",
+			"input_file_path output_file_path time_lim mem_lim"
+		)
+		.select("slug time_lim mem_lim sample_tests hidden_tests");
+
+	if (!problem) {
+		//TODO: Check if submission is within time limit if the problem is from a live contest
+		// ? A different API for this perhaps? (contest submissions)
+		return res.status(404).json({ message: "Problem not found" });
+	}
+
+	submission.lang.extension = langExtension(submission.lang.name);
+	submission.lang.is_compiled = isCompiled(submission.lang.name);
+
+	const judge_job: JudgeJob = {
+		problemData: {
+			slug: problem.slug,
+			time_lim: problem.time_lim,
+			mem_lim: problem.mem_lim,
+			source_code: submission.source_code,
+			lang: submission.lang,
+			sample_tests: problem.sample_tests,
+			hidden_tests: problem.hidden_tests,
+		},
+		submissionData: {
+			id: submission.id,
+			user_id: req.user._id,
+			problem_id: submission.problem_id,
+			submission_time: submission.submission_time,
+		},
+	};
+
+	const job = await JudgeQueue.add(judge_job);
+	let result: JobResult;
+	try {
+		result = await job.finished();
+	} catch (err) {
+		console.log(err);
+		return res.status(400).json({
+			message: err.message,
+		});
+	}
+
+	res.status(200).json({
+		message: "Judging successful",
+		submission_time: submission.submission_time,
+		results: result,
+	});
+};
+
+export { submitProblem, getMySubmissions };

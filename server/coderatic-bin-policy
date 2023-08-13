@@ -1,7 +1,0 @@
-#include <tunables/global>
-
-profile bin_jail {
-  /usr/lib/** r,
-  /usr/lib/** ix,
-  deny /** x,
-}

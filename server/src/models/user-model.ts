@@ -95,7 +95,6 @@ UserSchema.methods = {
 
 UserSchema.virtual("password")
   .set(function (password: string) {
-    this.hashed_password = password;
     this.hashed_password = this.hashPassword(password);
   })
   .get(function () {

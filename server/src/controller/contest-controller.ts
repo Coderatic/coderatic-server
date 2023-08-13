@@ -10,7 +10,7 @@ const getAllContestList = async (req, res): Promise<Express.Response> => {
 
 const getContestData = async (req, res): Promise<Express.Response> => {
   const contest_id = req.query.contest_id;
-  const contest = await Contest.findOne({ short_id: contest_id }).select(
+  const contest = await Contest.findOne({ slug: contest_id }).select(
     "-participants"
   );
   if (!contest) {
@@ -19,7 +19,7 @@ const getContestData = async (req, res): Promise<Express.Response> => {
   return res.status(200).json({
     contest_data: {
       name: contest.name,
-      short_id: contest.short_id,
+      short_id: contest.slug,
       starting_time: contest.starting_time,
       ending_time: contest.ending_time,
     },

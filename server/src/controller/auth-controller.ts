@@ -9,6 +9,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 import {
 	CLIENT_URI,
+	PRE_SIGNUP_TOKEN_AGE,
 	TOKEN_AGE,
 	COOKIE_AGE,
 	COOKIE_SECURE,
@@ -23,7 +24,6 @@ const preSignUp = async (req, res) => {
 			$or: [{ username: username }, { email: email }],
 		});
 
-		// If user is found, return error
 		if (user) {
 			return res.status(400).json({
 				error: "Username or email is already taken",
@@ -34,7 +34,7 @@ const preSignUp = async (req, res) => {
 			{ username, email, password },
 			process.env.JWT_ACCOUNT_ACTIVATION,
 			{
-				expiresIn: process.env.NODE_ENV === "production" ? "10m" : "1d",
+				expiresIn: PRE_SIGNUP_TOKEN_AGE,
 			}
 		);
 
@@ -48,7 +48,7 @@ const preSignUp = async (req, res) => {
 
 	  <hr/>
 	  <p>This email may contain sensitive information</p>
-	  <a href="${CLIENT_URI}">https://coderatic.net</a>`,
+	  <a href="${CLIENT_URI}">${CLIENT_URI}</a>`,
 		};
 
 		sgMail.send(emailData).then((sent) => {
@@ -78,11 +78,11 @@ const signup = async (req, res) => {
 		});
 		await user.save();
 		return res.json({
-			message: "Signup sucessful! Please sign in.",
+			message: "Signup sucessful! Please log in.",
 		});
 	} catch (err) {
 		return res.status(401).json({
-			error: err,
+			message: err,
 		});
 	}
 };
@@ -114,11 +114,13 @@ const login = async (req, res) => {
 		const token = jwt.sign(
 			{
 				_id: userData._id,
-				username: userData.username,
-				email: userData.email,
-				first_name: userData.first_name,
-				last_name: userData.last_name,
-				role: userData.role,
+				user: {
+					username: userData.username,
+					email: userData.email,
+					first_name: userData.first_name,
+					last_name: userData.last_name,
+					role: userData.role,
+				},
 			},
 			process.env.JWT_SECRET,
 			{
@@ -132,8 +134,14 @@ const login = async (req, res) => {
 			sameSite: COOKIE_SAME_SITE,
 		});
 
+		res.cookie("token_set", true, {
+			maxAge: COOKIE_AGE,
+			httpOnly: false,
+			secure: COOKIE_SECURE,
+			sameSite: COOKIE_SAME_SITE,
+		});
+
 		return res.json({
-			token,
 			user: userData,
 		});
 	} catch (err) {
@@ -141,8 +149,9 @@ const login = async (req, res) => {
 	}
 };
 
-const signout = (req, res) => {
+const logout = (req, res) => {
 	try {
+		res.clearCookie("token_set");
 		res.clearCookie("token");
 		res.json({
 			message: "Signout success",
@@ -232,13 +241,11 @@ const forgotPassword = async (req, res) => {
 				subject: "Password reset link",
 				html: `
           <h4>Please use the following link to reset your password:</h4>
-          <p>${
-				process.env.PROD_CLIENT_URL || process.env.DEV_CLIENT_URL
-			}/auth/password/reset/${token}</p>
+          <p>${CLIENT_URI}/auth/password/reset/${token}</p>
   
           <hr/>
           <p>This email may contain sensitive information</p>
-          <a href="https://coderatic.net">https://coderatic.net</a>
+          <a href="${CLIENT_URI}">${CLIENT_URI}</a>
       `,
 			};
 
@@ -326,7 +333,7 @@ export {
 	preSignUp,
 	signup,
 	login,
-	signout,
+	logout,
 	requireSignin,
 	authMiddleWare,
 	adminMiddleWare,

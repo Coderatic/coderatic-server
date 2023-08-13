@@ -1,35 +1,46 @@
-import { verdict } from "../../microservices/judge/judge-queue.types.js";
-import ISampleTest from "../../models/sample-test-model.js";
-import IHiddenTest from "../../models/hidden-test-model.js";
+import { TestResult } from "../../microservices/judge/judge-queue.types.js";
 
 type Submission = {
-  problem_id: string;
-  user_id: string;
-  submission_time?: Date;
-  source_code: string;
-  lang: {
-    name: string;
-    extension: string;
-    is_compiled: boolean;
-  };
+	id: string;
+	problem_id: string;
+	user_id: string;
+	submission_time?: Date;
+	source_code: string;
+	lang: {
+		name: string;
+		extension: string;
+		is_compiled: boolean;
+	};
 };
 
 type JudgeJob = {
-  problem_id: string;
-  source_code: string;
-  file_name: string;
-  lang: {
-    name: string;
-    extension: string;
-    is_compiled: boolean;
-  };
-  sample_test_cases: any[];
-  hidden_test_cases: any[];
+	problemData: {
+		slug: string;
+		time_lim: number;
+		mem_lim: number;
+		source_code: string;
+		lang: {
+			name: string;
+			extension: string;
+			is_compiled: boolean;
+		};
+		sample_tests: [];
+		hidden_tests: [];
+	};
+	submissionData: {
+		id: string;
+		user_id: string;
+		problem_id: string;
+		submission_time: Date;
+	};
 };
 
-type JobResponse = {
-  sample_case_verdicts: verdict[];
-  hidden_case_verdicts: verdict[];
+type JobResult = {
+	verdict: string;
+	cpu_time: number;
+	memory: number;
+	sample_tests_results?: TestResult[];
+	hidden_tests_results: TestResult[];
 };
 
-export type { Submission, JudgeJob, JobResponse };
+export type { Submission, JudgeJob, JobResult };

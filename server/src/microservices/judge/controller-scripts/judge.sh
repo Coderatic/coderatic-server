@@ -6,38 +6,37 @@ lang="$3"
 in_file_name="$4"
 out_file_name="$5"
 
-host_shared_path="$(pwd)/../cache/processed"
-bin_path="/processed/bins"
-scripts_path="/processed/scripts"
 test_sets="../cache/test_sets"
 
 in_file="$test_sets"/"$problem"/input/"$in_file_name"
 out_file="$test_sets"/"$problem"/output/"$out_file_name"
 
-THE_JUDGE="./THE_JUDGE.out"
+CHECKER_PATH="./THE_JUDGE.out"
 
 mem_limit="$6"
 time_limit="$7"
 
-case "$lang" in
-cpp | c | rust)
-	timeout "$time_limit"s docker run --rm -v "$host_shared_path/bins":"$bin_path" --network none --security-opt apparmor=docker-default --cap-drop=SETFCAP --read-only --runtime=runsc --memory="$mem_limit"m -i -e BIN="$exec" bin_img <"$in_file" | ("$THE_JUDGE" "$out_file")
-	pipe_exit_codes=("${PIPESTATUS[@]}")
-	docker_exit_code="${pipe_exit_codes[0]}"
-	judge_exit_code="${pipe_exit_codes[1]}"
+STACK_SIZE=268435456 #256 MB
 
-	exit_code=$judge_exit_code
-	if [ "$docker_exit_code" -ne 0 ]; then
-		exit_code=$docker_exit_code
+user_out_file=$(mktemp)
+
+case "$lang" in
+cpp | c | rs)
+	start_time=$(date +%s%N)
+	ulimit -t "$time_limit" -v "$mem_limit" -s $STACK_SIZE
+	memory=$( { /usr/bin/time -f " %M" aa-exec -p bin_jail ../cache/code/"$exec" < "$in_file" 2>&1 1> "$user_out_file"; } 2>&1 )
+	program_exit_code=$?
+	end_time=$(date +%s%N)
+
+	# Judging
+	checker_output="{}"
+	if [ $program_exit_code == 0 ]; then
+    	checker_output=$("$CHECKER_PATH" "$user_out_file" "$out_file")
+    	checker_exit_code=$?
+	else
+    	checker_exit_code=1
 	fi
-	;;
-java)
-	(docker run --rm -v "$host_shared_path/bins":"$bin_path" --runtime=runsc -i -e BIN="$exec" java_img <"$in_file") | ("$THE_JUDGE" "$out_file")
-	exit_code=$?
-	;;
-py3)
-	(docker run --rm -v "$host_shared_path/scripts":"$scripts_path" --runtime=runsc -i -e BIN="$exec" py3_img <"$in_file") | ("$THE_JUDGE" "$out_file")
-	exit_code=$?
+	# pipe_exit_codes=("${PIPESTATUS[@]}")
 	;;
 *)
 	echo "Language not supported"
@@ -45,9 +44,18 @@ py3)
 	;;
 esac
 
-echo "$exit_code"
-exit "$exit_code"
+time=$((($end_time - $start_time)/1000000))
+memory=$(echo "$memory" | awk -v RS='[ \n]' 'NF{word=$0} END{print word}')
 
-# DOCKER_BUILDKIT=1
-# docker build . -t cpp_img -f cpp.Dockerfile
-# docker build . -t py3_img -f py3.Dockerfile
+rm "$user_out_file"
+
+# Create a JSON object with the variables
+json_data=$(jq -n \
+            --arg program_exit_code "$program_exit_code" \
+            --arg checker_exit_code "$checker_exit_code" \
+            --arg memory "$memory" \
+            --arg time "$time" \
+            --argjson checker_output "$checker_output" \
+            '{program_exit_code: $program_exit_code, checker_exit_code: $checker_exit_code, memory: $memory, cpu_time: $time, checker_output: $checker_output}')
+echo "$json_data"
+exit 0

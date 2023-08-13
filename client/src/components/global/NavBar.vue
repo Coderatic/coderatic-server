@@ -55,7 +55,7 @@
   </div>
   <div class="z-[2] bg-gradient-to-r from-purple-700 to-red-900 pb-[2px] relative">
     <nav class="h-[45px] bg-light-secondary dark:bg-dark-secondary w-[100%] sticky">
-      <div class="flex justify-between items-center h-[100%]">
+      <div class="flex no-wrap justify-between items-center h-[100%]">
         <div class="hidden sm:block md:block">
           <div class="flex justify-center items-center ml-4">
             <div class="h-[30px] w-[35px] rounded bg-light-highlight dark:bg-dark-highlight p-[1.5px]">

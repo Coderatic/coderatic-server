@@ -1,29 +1,25 @@
 import mongoose, { Document } from "mongoose";
-import shortId from "shortid";
 import bcrypt from "bcrypt";
 
 interface IUser extends Document {
-  short_id: string;
   first_name?: string;
   last_name?: string;
   username: string;
   email: string;
-  hashed_password: string;
-  profile: string;
+  hashed_password?: string;
+  oauth_id?: string;
   resetCode?: string;
   role: number;
   resetPasswordLink?: string;
   authenticate: (plainText: string) => boolean;
   hashPassword: (password: string) => string;
+
+  // Mode of authentication
+  authMethod: "local" | "oauth";
 }
 
 const UserSchema = new mongoose.Schema<IUser>(
   {
-    short_id: {
-      type: String,
-      unique: true,
-      default: shortId.generate,
-    },
     first_name: String,
     last_name: String,
     username: {
@@ -45,11 +41,16 @@ const UserSchema = new mongoose.Schema<IUser>(
     },
     hashed_password: {
       type: String,
-      required: true,
+      required: function () {
+        return this.authMethod === "local";
+      },
     },
-    profile: {
+    oauth_id: {
       type: String,
-      required: true,
+      unique: true,
+      required: function () {
+        return this.authMethod === "oauth";
+      },
     },
     resetCode: {
       type: String,
@@ -62,6 +63,11 @@ const UserSchema = new mongoose.Schema<IUser>(
     resetPasswordLink: {
       type: String,
       default: "",
+    },
+    authMethod: {
+      type: String,
+      enum: ["local", "oauth"],
+      required: true,
     },
   },
   { timestamps: true, collection: "user" }
@@ -89,11 +95,10 @@ UserSchema.methods = {
 
 UserSchema.virtual("password")
   .set(function (password: string) {
-    this.hashed_password = password;
     this.hashed_password = this.hashPassword(password);
   })
   .get(function () {
     return this.hashed_password;
   });
-
 export default mongoose.model<IUser>("User", UserSchema);
+export { IUser };

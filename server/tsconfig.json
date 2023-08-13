@@ -10,5 +10,6 @@
   "ts-node": {
     "esm": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "skipLibCheck": true
 }

@@ -1,25 +1,64 @@
 import Problem from "../models/problem-model.js";
-import SampleSet from "../models/sample-set-model.js";
+import SampleTest from "../models/sample-test-model.js";
+SampleTest;
 
-const getProblemData = async (req, res): Promise<Express.Response> => {
-  const problem_id = req.query.problem_id;
-
-  const problem = await Problem.findOne({ short_id: problem_id });
-  if (!problem) {
-    return res.status(404).json({ message: "Problem not found" });
-  }
-
-  return res.status(200).json({
-    problem_data: {
-      name: problem.name,
-      description: problem.description,
-      input_format: problem.input_format,
-      output_format: problem.output_format,
-      sample_sets: await SampleSet.find({
-        problem_id: problem._id,
-      }).select("-problem_id"),
-    },
-  });
+const createProblem = async (req, res) => {
+	const problem = req.body;
+	try {
+		const existing_problem = await Problem.findOne({ slug: problem.slug });
+		if (existing_problem) {
+			return res
+				.status(409)
+				.json({ message: "Problem slug already in use" });
+		}
+		const new_problem = await Problem.create(problem);
+		return res.status(201).json({
+			message: "Problem created successfully",
+			problem_id: new_problem.short_id,
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
 };
 
-export { getProblemData };
+const getAllProblems = async (req, res) => {
+	try {
+		const problems = await Problem.find().select("name slug difficulty");
+		return res.status(200).json({ problems });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+const getProblemData = async (req, res) => {
+	const problem_slug = req.query.slug;
+
+	try {
+		const problem = await Problem.findOne({ slug: problem_slug })
+			.populate("sample_tests", "test_input test_output explanation")
+			.select("-id -__v -hidden_tests -createdAt -updatedAt");
+		if (!problem) {
+			return res.status(404).json({ message: "Problem not found" });
+		}
+		return res.status(200).json({
+			problem_data: {
+				name: problem.name,
+				problem_id: problem._id,
+				difficulty: problem.difficulty,
+				time_lim: problem.time_lim,
+				mem_lim: problem.mem_lim,
+				statement: problem.statement,
+				input_format: problem.input_format,
+				output_format: problem.output_format,
+				sample_tests: problem.sample_tests,
+			},
+		});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ message: "Internal server error" });
+	}
+};
+
+export { getProblemData, getAllProblems, createProblem };

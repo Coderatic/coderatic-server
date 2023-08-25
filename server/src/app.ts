@@ -38,7 +38,6 @@ app.use(
 app.use(cookieParser());
 app.use(passportSetup.initialize());
 
-// Set credentials to true
 const corsOptions = {
 	origin: CLIENT_URI,
 	credentials: true,

@@ -9,7 +9,10 @@ import passport from "../configs/passport-setup.js";
 
 // validators
 import runValidation from "../validators/index.js";
-import { submissionValidator } from "../validators/submission-validator.js";
+import {
+	submissionValidator,
+	mySubmissionsValidator,
+} from "../validators/submission-validator.js";
 
 router.post(
 	"/code",
@@ -20,6 +23,8 @@ router.post(
 );
 router.get(
 	"/mine",
+	mySubmissionsValidator,
+	runValidation,
 	passport.authenticate("jwt", { session: false }),
 	getMySubmissions
 );

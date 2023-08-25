@@ -1,12 +1,14 @@
 const langExtension = (lang) => {
 	const ext_map = {
-		c: "c",
-		cpp: "cpp",
-		csharp: "cs",
+		C: "c",
+		"C++ 11": "cpp",
+		"C++ 17": "cpp",
+		"C++ 20": "cpp",
+		"C#": "cs",
 		dart: "dart",
-		golang: "go",
-		haskell: "hs",
-		java: "java",
+		Golang: "go",
+		Haskell: "hs",
+		"Java": "java",
 		javascript: "js",
 		julia: "jl",
 		kotlin: "kt",
@@ -19,7 +21,7 @@ const langExtension = (lang) => {
 		python: "py",
 		R: "r",
 		ruby: "rb",
-		rust: "rs",
+		Rust: "rs",
 		scala: "scala",
 		typescript: "ts",
 	};
@@ -27,9 +29,18 @@ const langExtension = (lang) => {
 };
 
 const isCompiled = (lang) => {
-	return ["c", "csharp", "cpp", "golang", "java", "kotlin", "rust"].includes(
-		lang
-	);
+	return [
+		"C",
+		"C++ 11",
+		"C++ 14",
+		"C++ 17",
+		"C++ 20",
+		"Java 8",
+		"Java 11",
+		"Golang",
+		"Kotlin",
+		"Rust",
+	].includes(lang);
 };
 
 export { langExtension, isCompiled };

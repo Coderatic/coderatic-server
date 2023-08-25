@@ -26,30 +26,28 @@ int main(int argc, char* argv[]) {
     };
 
     if (argc == 2) {
-        result["verdict"] = "Judgement Failed";
+        result["verdict"] = "IE";
         result["message"] = "Didn't receive the solution output file path";
         return -1;
     }
 
     std::ifstream user_out_file(argv[1]);
     std::ifstream sol_out_file(argv[2]);
-    //std::ofstream judge_log("judge-log.json");
 
     if (!sol_out_file) {
-        result["verdict"] = "Judgement Failed";
+        result["verdict"] = "IE";
         result["message"] = "Failed to open the solution output file for reading.";
-        return -1;
+        return 1;
     }
     else if(!user_out_file) {
-        result["verdict"] = "Judgement Failed";
+        result["verdict"] = "IE";
         result["message"] = "Failed to open the user output file for reading.";
-        return -1;
+        return 1;
     }
 
     std::string sol_out_line;
     std::string user_out_line;
     int line_number = 1;
-    int hc = 0;
     bool inner_break = false;
     while (true) {
         do {
@@ -60,12 +58,12 @@ int main(int argc, char* argv[]) {
         } while(sol_out_line.empty() && !sol_out_file.eof());
 
         if (user_out_line != sol_out_line) {
-            result["verdict"] = "Wrong Answer";
+            result["verdict"] = "WA";
             result["message"] = std::format("{}{} line differs from the solution output file", line_number, getOrdinalIndicator(line_number));
             break;
         }
         else if(user_out_file.eof() && sol_out_file.eof()) {
-            result["verdict"] = "Accepted";
+            result["verdict"] = "AC";
             result["message"] = std::format("Ok {} lines", line_number);
             break;
         }
@@ -73,15 +71,15 @@ int main(int argc, char* argv[]) {
         if(user_out_file.eof()) {
           while(std::getline(sol_out_file, sol_out_line)) {
             if(!sol_out_line.empty()) {
-              result["verdict"] = "Presentation Error";
+              result["verdict"] = "";
               result["message"] = "Your program output less lines than the solution output file";
               inner_break = true;
               break;
             }
           }
           if(user_out_file.eof()) {
-              result["verdict"] = "Accepted";
-              result["message"] = std::format("Ok {} lines", line_number);
+              result["verdict"] = "AC";
+              result["message"] = std::format("Ok {} line(s)", line_number);
               inner_break = true;
               break;
             }
@@ -91,14 +89,14 @@ int main(int argc, char* argv[]) {
         else if(sol_out_file.eof()) {
           while(std::getline(user_out_file, user_out_line)) {
             if(!user_out_line.empty()) {
-              result["verdict"] = "Presentation Error";
+              result["verdict"] = "PE";
               result["message"] = "Your program output more lines than the solution output file";
               inner_break = true;
               break;
             }
           }
           if(user_out_file.eof()) {
-              result["verdict"] = "Accepted";
+              result["verdict"] = "AC";
               result["message"] = std::format("Ok {} lines", line_number);
               inner_break = true;
               break;
@@ -111,12 +109,11 @@ int main(int argc, char* argv[]) {
     }
 
 if(result["verdict"] == nullptr) {
-        result["verdict"] = "Accepted";
+        result["verdict"] = "AC";
         result["message"] = std::format("Ok {} lines", line_number);
     }
 
     std::cout << result.dump(4) << std::endl;
-    //judge_log.close();
     user_out_file.close();
     sol_out_file.close();
     return 0;

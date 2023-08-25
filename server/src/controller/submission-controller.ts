@@ -56,7 +56,7 @@ const getMySubmissions = async (req, res) => {
 const submitProblem = async (req, res) => {
 	const submission: Submission = req.body;
 	submission.submission_time = new Date();
-	submission.id = crypto.randomInt(10000, 99999).toString();
+	submission.id = crypto.createHash("sha256").update(submission.submission_time + submission.user_id).digest("hex");
 
 	const problem = await Problem.findOne({ _id: submission.problem_id })
 		.populate("sample_tests", "test_input test_output")
@@ -107,7 +107,10 @@ const submitProblem = async (req, res) => {
 	res.status(200).json({
 		message: "Judging successful",
 		submission_time: submission.submission_time,
-		results: result,
+		submission_id: submission.id,
+		lang: submission.lang.name,
+		code_size: Buffer.byteLength(submission.source_code, "utf8"),
+		result: result,
 	});
 };
 

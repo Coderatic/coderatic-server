@@ -5,7 +5,7 @@ import { IUser } from "./user-model.js";
 interface ISubmission extends Document {
 	problem_id: mongoose.Schema.Types.ObjectId;
 	user_id: mongoose.Schema.Types.ObjectId;
-	submission_id: number;
+	submission_id: String;
 	lang: string;
 	code: string;
 	submission_time: Date;
@@ -30,7 +30,7 @@ const SubmissionSchema = new mongoose.Schema<ISubmission>(
 			index: true,
 		} as IUser["_id"],
 		submission_id: {
-			type: Number,
+			type: String,
 			required: true,
 			unique: true,
 			default: 0,

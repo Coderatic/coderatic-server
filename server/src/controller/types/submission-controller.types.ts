@@ -1,4 +1,7 @@
-import { TestResult } from "../../microservices/judge/judge-queue.types.js";
+import {
+	TestResult,
+	Verdict,
+} from "../../microservices/judge/judge-queue.types.js";
 
 type Submission = {
 	id: string;
@@ -8,8 +11,8 @@ type Submission = {
 	source_code: string;
 	lang: {
 		name: string;
-		extension: string;
-		is_compiled: boolean;
+		extension?: string;
+		is_compiled?: boolean;
 	};
 };
 
@@ -21,8 +24,8 @@ type JudgeJob = {
 		source_code: string;
 		lang: {
 			name: string;
-			extension: string;
-			is_compiled: boolean;
+			extension?: string;
+			is_compiled?: boolean;
 		};
 		sample_tests: [];
 		hidden_tests: [];
@@ -36,7 +39,7 @@ type JudgeJob = {
 };
 
 type JobResult = {
-	verdict: string;
+	verdict: Verdict;
 	cpu_time: number;
 	memory: number;
 	sample_tests_results?: TestResult[];

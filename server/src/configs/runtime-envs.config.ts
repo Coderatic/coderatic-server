@@ -5,7 +5,7 @@ const ONE_DAY = 1000 * 60 * 60 * 24;
 // URIs
 const CLIENT_URI =
 	process.env.NODE_ENV === "production"
-		? process.env.DEV_CLIENT_URL
+		? process.env.PROD_CLIENT_URL
 		: process.env.DEV_CLIENT_URL;
 const SERVER_URI =
 	process.env.NODE_ENV === "production"

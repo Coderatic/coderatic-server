@@ -10,32 +10,12 @@ import { JudgeJob } from "../../controller/types/submission-controller.types.js"
 //Directory config
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import { check } from "express-validator";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Constants
 const CWD = __dirname;
 const JUDGE_WD = path.join(CWD, "controller-scripts");
-
-const handle_exit_code = (exit_code: Number): Verdict => {
-	switch (exit_code) {
-		case 0:
-			return "Accepted";
-		case 2:
-			return "Wrong Answer";
-		case 5:
-			return "IE";
-		case 137:
-			return "TLE";
-		case 139:
-			return "MLE";
-		default:
-			//TODO: Remove this log before hitting production.
-			console.log("Unknown exit code: ", exit_code);
-			return "RE";
-	}
-};
 
 const escapeSrc = (source_code: string): string => {
 	return source_code.replace(/[\n\t\r\\"]/g, (match) => `${match}`);
@@ -118,11 +98,11 @@ const startJudging = async (
 				testsDirectoryPath
 			);
 		}
-		const judge_script = `./judge.sh ${slug} ${file_name} ${
-			lang.extension
-		} ${input_filename} ${output_filename} ${
-			Number(tc.mem_lim ?? mem_lim) * 1024
-		} ${tc.time_lim ?? time_lim}`;
+		const judge_script = `python3 judge.py ${slug} ${file_name} "${
+			lang.name
+		}" ${input_filename} ${output_filename} ${Number(
+			tc.mem_lim ?? mem_lim
+		)} ${tc.time_lim ?? time_lim} "./THE_JUDGE.out"`;
 
 		let tcResult: TestResult = {
 			verdict: "IE",
@@ -136,8 +116,6 @@ const startJudging = async (
 				judge_script_result.stdout as string
 			);
 
-			// TODO: Refactor this
-			//Convert strings entries to numbers
 			const {
 				cpu_time: cpu_time,
 				memory: memory,
@@ -145,28 +123,13 @@ const startJudging = async (
 				checker_exit_code: checkerExitCode,
 			} = judge_output;
 
-			const integerJudgeOutputEntries = {
-				cpu_time: parseInt(cpu_time),
-				memory: parseInt(memory),
-				program_exit_code: parseInt(programExitCode),
-				checker_exit_code: parseInt(checkerExitCode),
-			};
-
-			if (integerJudgeOutputEntries.program_exit_code != 0) {
-				throw "Runtime Error";
-			}
 			const verdict = judge_output.checker_output.verdict;
 			tcResult = { ...tcResult, verdict, cpu_time, memory };
 		} catch (err) {
-			if (err === "Runtime Error") {
-				tcResult.verdict = "RE";
-			} else {
-				console.log("Judge Error: ", err);
-				tcResult.verdict = "IE";
-			}
+			tcResult.verdict = "IE";
 		} finally {
 			verdicts.push(tcResult);
-			if (tcResult.verdict !== "Accepted") break;
+			if (tcResult.verdict !== "AC") break;
 		}
 	}
 	return verdicts;
@@ -192,11 +155,4 @@ const aggregateResults = (
 	};
 };
 
-export {
-	startJudging,
-	cleanup,
-	handle_exit_code,
-	runCommand,
-	escapeSrc,
-	aggregateResults,
-};
+export { startJudging, cleanup, runCommand, escapeSrc, aggregateResults };

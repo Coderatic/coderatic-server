@@ -1,6 +1,6 @@
 import { JobResult } from "../../controller/types/submission-controller.types.js";
 
-type Verdict = "Accepted" | "Wrong Answer" | "TLE" | "MLE" | "RE" | "IE";
+type Verdict = "CE" | "AC" | "WA" | "TLE" | "MLE" | "RE" | "IE" | "PE";
 
 type TestResult = {
 	verdict: Verdict;

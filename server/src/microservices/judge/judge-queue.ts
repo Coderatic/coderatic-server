@@ -47,8 +47,8 @@ const JudgeQueue = new Queue<JudgeJob>("judge", {
 });
 
 JudgeQueue.process(async (job): Promise<JobResult> => {
-	const { source_code, lang, sample_tests, hidden_tests } =
-		job.data.problemData;
+	const { lang, sample_tests, hidden_tests } = job.data.problem_data;
+	const { source_code } = job.data.submission_data;
 	const file_name = uuidv4();
 
 	const exec_path = path.join(CWD, `cache/code/${file_name}`);
@@ -62,8 +62,8 @@ JudgeQueue.process(async (job): Promise<JobResult> => {
 		verdict: "AC",
 		cpu_time: 0,
 		memory: 0,
-		hidden_tests_results: [],
-		sample_tests_results: [],
+		hidden_test_results: [],
+		sample_test_results: [],
 	};
 	//Compile the program (if required)
 	if (lang.is_compiled) {
@@ -101,20 +101,20 @@ JudgeQueue.process(async (job): Promise<JobResult> => {
 
 		result = {
 			...aggregateResults(sample_test_results, hidden_test_results),
-			sample_tests_results: sample_test_results,
-			hidden_tests_results: hidden_test_results,
+			sample_test_results: sample_test_results,
+			hidden_test_results: hidden_test_results,
 		};
 	}
 
 	// Save submission to db but don't await (le trolling the user on failed save)
-	const submissionData = job.data.submissionData;
+	const submission_data = job.data.submission_data;
 	new SubmissionModel({
-		problem_id: submissionData.problem_id,
-		user_id: submissionData.user_id,
-		submission_id: submissionData.id,
+		problem_id: submission_data.problem_id,
+		user_id: submission_data.user_id,
+		submission_id: submission_data.id,
 		code: escaped_src,
 		lang: lang.name,
-		submission_time: submissionData.submission_time,
+		submission_time: submission_data.submission_time,
 		verdict: result.verdict,
 		cpu_time: result.cpu_time,
 		memory: result.memory,

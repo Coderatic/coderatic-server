@@ -77,7 +77,7 @@ const startJudging = async (
 	testType: string
 ): Promise<TestResult[]> => {
 	const verdicts: TestResult[] = [];
-	const { slug, lang, time_lim, mem_lim } = job_data.problemData;
+	const { slug, lang, time_lim, mem_lim } = job_data.problem_data;
 	for (let i = 0; i < testCases.length; i++) {
 		const tc = testCases[i];
 		let input_filename = tc?.input_file_path;

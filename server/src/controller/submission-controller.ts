@@ -1,7 +1,8 @@
-import Problem from "../models/problem-model.js";
-import SubmissionModel from "../models/submission-model.js";
-
-import JudgeQueue from "../microservices/judge/judge-queue.js";
+import amqpChannel, {
+	submissionQueue,
+	rpcQueue,
+	connection,
+} from "../configs/amqp.js";
 
 // Types
 import {
@@ -13,6 +14,8 @@ import {
 // Models
 import SampleTest from "../models/sample-test-model.js";
 import HiddenTest from "../models/hidden-test-model.js";
+import Problem from "../models/problem-model.js";
+import SubmissionModel from "../models/submission-model.js";
 SampleTest;
 HiddenTest;
 
@@ -32,7 +35,7 @@ const getMySubmissions = async (req, res) => {
 		problem_id: problem_id,
 	};
 	try {
-		const submissions = await SubmissionModel.find(
+		const submissionsPromise: Promise<any> = SubmissionModel.find(
 			submissionsQuery,
 			{},
 			{ skip: startingRow, limit: count }
@@ -42,9 +45,13 @@ const getMySubmissions = async (req, res) => {
 				submission_time: sortBy,
 			});
 
-		const totalSubmissions = await SubmissionModel.countDocuments(
-			submissionsQuery
-		);
+		const totalSubmissionsPromise =
+			SubmissionModel.countDocuments(submissionsQuery);
+
+		const [submissions, totalSubmissions] = await Promise.all([
+			submissionsPromise,
+			totalSubmissionsPromise,
+		]);
 
 		return res.status(200).json({ submissions, totalSubmissions });
 	} catch (error) {
@@ -56,7 +63,10 @@ const getMySubmissions = async (req, res) => {
 const submitProblem = async (req, res) => {
 	const submission: Submission = req.body;
 	submission.submission_time = new Date();
-	submission.id = crypto.createHash("sha256").update(submission.submission_time + submission.user_id).digest("hex");
+	submission.id = crypto
+		.createHash("sha256")
+		.update(submission.submission_time + submission.user_id)
+		.digest("hex");
 
 	const problem = await Problem.findOne({ _id: submission.problem_id })
 		.populate("sample_tests", "test_input test_output")
@@ -76,42 +86,51 @@ const submitProblem = async (req, res) => {
 	submission.lang.is_compiled = isCompiled(submission.lang.name);
 
 	const judge_job: JudgeJob = {
-		problemData: {
+		problem_data: {
 			slug: problem.slug,
 			time_lim: problem.time_lim,
 			mem_lim: problem.mem_lim,
-			source_code: submission.source_code,
 			lang: submission.lang,
 			sample_tests: problem.sample_tests,
 			hidden_tests: problem.hidden_tests,
 		},
-		submissionData: {
+		submission_data: {
 			id: submission.id,
 			user_id: req.user._id,
+			source_code: submission.source_code,
 			problem_id: submission.problem_id,
 			submission_time: submission.submission_time,
 		},
 	};
 
-	const job = await JudgeQueue.add(judge_job);
-	let result: JobResult;
-	try {
-		result = await job.finished();
-	} catch (err) {
-		console.log(err);
-		return res.status(400).json({
-			message: err.message,
-		});
-	}
+	amqpChannel.sendToQueue(
+		submissionQueue,
+		Buffer.from(JSON.stringify(judge_job)),
+		{
+			replyTo: rpcQueue,
+			correlationId: submission.id,
+		}
+	);
 
-	res.status(200).json({
-		message: "Judging successful",
-		submission_time: submission.submission_time,
-		submission_id: submission.id,
-		lang: submission.lang.name,
-		code_size: Buffer.byteLength(submission.source_code, "utf8"),
-		result: result,
-	});
+	let result: JobResult = null;
+	amqpChannel.consume(
+		rpcQueue,
+		async (msg) => {
+			if (msg.properties.correlationId !== submission.id) return;
+			result = JSON.parse(msg.content.toString());
+			res.status(200).json({
+				message: "Judging successful",
+				submission_time: submission.submission_time,
+				submission_id: submission.id,
+				lang: submission.lang.name,
+				code_size: Buffer.byteLength(submission.source_code, "utf8"),
+				result: result,
+			});
+			//Stop listening
+			amqpChannel.cancel(msg.fields.consumerTag);
+		},
+		{ noAck: true }
+	);
 };
 
 export { submitProblem, getMySubmissions };

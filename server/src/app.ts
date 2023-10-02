@@ -5,9 +5,6 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import passportSetup from "./configs/passport-setup.js";
 
-//Microservices
-import JudgeQueue from "./microservices/judge/judge-queue.js";
-
 //Configs
 import { connectDB } from "./configs/db-setup.js";
 connectDB();
@@ -54,16 +51,4 @@ app.use("/api/submission", submissionRoutes);
 const PORT = process.env.PORT;
 app.listen(PORT, async () => {
 	console.log(`Server is up and running at ${SERVER_URI}.`);
-	const awaitedJobs =
-		(await JudgeQueue.getFailedCount()) +
-		(await JudgeQueue.getWaitingCount()) +
-		(await JudgeQueue.getActiveCount());
-	if (awaitedJobs > 0) {
-		try {
-			await JudgeQueue.resume(true);
-			console.log("Queue processing resumed.");
-		} catch (error) {
-			console.error("Error resuming queue processing:", error);
-		}
-	}
 });

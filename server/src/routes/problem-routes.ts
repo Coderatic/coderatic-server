@@ -13,6 +13,7 @@ import {
 	createProblemValidator,
 } from "../validators/problem-validator.js";
 
+router.get("/", getAllProblems);
 router.get(
 	"/get-problem",
 	getProblemDataValidator,

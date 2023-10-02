@@ -17,11 +17,10 @@ type Submission = {
 };
 
 type JudgeJob = {
-	problemData: {
+	problem_data: {
 		slug: string;
 		time_lim: number;
 		mem_lim: number;
-		source_code: string;
 		lang: {
 			name: string;
 			extension?: string;
@@ -30,10 +29,11 @@ type JudgeJob = {
 		sample_tests: [];
 		hidden_tests: [];
 	};
-	submissionData: {
+	submission_data: {
 		id: string;
 		user_id: string;
 		problem_id: string;
+		source_code: string;
 		submission_time: Date;
 	};
 };
@@ -42,8 +42,8 @@ type JobResult = {
 	verdict: Verdict;
 	cpu_time: number;
 	memory: number;
-	sample_tests_results?: TestResult[];
-	hidden_tests_results: TestResult[];
+	sample_test_results?: TestResult[];
+	hidden_test_results: TestResult[];
 };
 
 export type { Submission, JudgeJob, JobResult };

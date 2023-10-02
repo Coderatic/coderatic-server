@@ -24,7 +24,14 @@ const createProblem = async (req, res) => {
 
 const getAllProblems = async (req, res) => {
 	try {
-		const problems = await Problem.find().select("name slug difficulty");
+		const { problem_id, startingRow, count, sortBy } = req.query;
+		const problems = await Problem.find(
+			{},
+			{},
+			{ skip: startingRow, limit: count }
+		)
+			.select("name slug difficulty")
+			.sort({ slug: sortBy });
 		return res.status(200).json({ problems });
 	} catch (error) {
 		console.log(error);

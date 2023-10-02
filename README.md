@@ -1,5 +1,5 @@
 # Coderatic
-A competitive programming website that has it's own judge. Inspired by codeforces and google kickstart
+A competitive programming website that has it's own judge. Inspired by codeforces, google kickstart and later on, lightOJ
 
 To install dependencies,
 ```

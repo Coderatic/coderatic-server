@@ -35,7 +35,7 @@ const getMySubmissions = async (req, res) => {
 		problem_id: problem_id,
 	};
 	try {
-		const submissions = await SubmissionModel.find(
+		const submissionsPromise: Promise<any> = SubmissionModel.find(
 			submissionsQuery,
 			{},
 			{ skip: startingRow, limit: count }
@@ -45,9 +45,13 @@ const getMySubmissions = async (req, res) => {
 				submission_time: sortBy,
 			});
 
-		const totalSubmissions = await SubmissionModel.countDocuments(
-			submissionsQuery
-		);
+		const totalSubmissionsPromise =
+			SubmissionModel.countDocuments(submissionsQuery);
+
+		const [submissions, totalSubmissions] = await Promise.all([
+			submissionsPromise,
+			totalSubmissionsPromise,
+		]);
 
 		return res.status(200).json({ submissions, totalSubmissions });
 	} catch (error) {

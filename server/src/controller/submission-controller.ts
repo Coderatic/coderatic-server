@@ -118,6 +118,20 @@ const submitProblem = async (req, res) => {
 		async (msg) => {
 			if (msg.properties.correlationId !== submission.id) return;
 			result = JSON.parse(msg.content.toString());
+
+			SubmissionModel.create({
+				problem_id: submission.problem_id,
+				user_id: req.user._id,
+				submission_id: submission.id,
+				lang: submission.lang.name,
+				code: submission.source_code,
+				submission_time: submission.submission_time,
+				verdict: result?.verdict || "Judging Unsuccessful",
+				cpu_time: result?.cpu_time || 0,
+				memory: result?.memory || 0,
+				code_size: Buffer.byteLength(submission.source_code, "utf8"),
+			});
+
 			res.status(200).json({
 				message: "Judging successful",
 				submission_time: submission.submission_time,

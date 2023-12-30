@@ -101,13 +101,15 @@ const login = async (req, res) => {
 			});
 		}
 
-		const { _id, email, first_name, last_name, role } = user;
+		const { _id, email, first_name, last_name, profile_picture, role } =
+			user;
 		const userData = {
 			_id,
 			username,
 			email,
 			first_name,
 			last_name,
+			profile_picture,
 			role,
 		};
 
@@ -117,6 +119,7 @@ const login = async (req, res) => {
 				user: {
 					username: userData.username,
 					email: userData.email,
+					profile_picture: userData.profile_picture,
 					first_name: userData.first_name,
 					last_name: userData.last_name,
 					role: userData.role,
